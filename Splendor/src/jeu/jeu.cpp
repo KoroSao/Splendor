@@ -7,7 +7,6 @@
 #include "jeu.h"
 #include "../carte/carte.h"
 
-
 namespace Splendor{
 
     Jeu& Jeu::getInstance(){
@@ -24,12 +23,11 @@ namespace Splendor{
     Jeu::Handler Jeu::handler = Handler();
 
 Jeu::Jeu(){
-    for (size_t i =0; i<10; i++){
-        ressources cst = {1,2,3,4,5};
-        ressources bns = {5,4,3,2,1};
-        CarteDeveloppement* c = new CarteDeveloppement(cst, bns, Type::un, i);
+    for (int i = 0; i<10; i++){
+        ressources cst = {i,i*3,i,10-i,i*5};
+        ressources bns = {10-i,10-i,i,i*2,i};
         
-        cartes[Type::un].push_back(c);
+        cartes[Type::un].push_back(new CarteDeveloppement(cst, bns, Type::un, i));
     }
 }
 

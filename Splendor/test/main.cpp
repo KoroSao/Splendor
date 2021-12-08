@@ -3,6 +3,7 @@
 //#include "../src/controleur/controleur.h"
 #include "../src/carte/carte.h"
 #include "../src/jeu/jeu.h"
+#include "../src/pioche/pioche.h"
 
 using namespace Splendor;
 
@@ -21,10 +22,17 @@ int main(){
 
     Jeu::getInstance().getCartes(Type::un)[0]->afficherCarte();
 
+    Pioche p(Type::un);
+    std::cout << "nbr de carte dans la pioche : "<< p.getNbCartes() << std::endl;
+
+    p.piocher().afficherCarte();
+
+    std::cout << "nbr de carte dans la pioche : "<< p.getNbCartes() << std::endl;
+
     return 0;
 }
 
 
-//g++ -std=c++11 main.cpp ../src/carte/carte.cpp ../src/controleur/controleur.cpp ../src/jeu/jeu.cpp ../src/joueur/joueur.cpp ../src/niveau/niveau.cpp ../src/plateau/plateau.cpp ../src/type/type.cpp -o main && ./main
+//g++ -std=c++11 main.cpp ../src/carte/carte.cpp ../src/controleur/controleur.cpp ../src/jeu/jeu.cpp ../src/joueur/joueur.cpp ../src/niveau/niveau.cpp ../src/plateau/plateau.cpp ../src/type/type.cpp ../src/pioche/pioche.cpp -o main && ./main
 
-//g++ -std=c++11 main.cpp ../src/carte/carte.cpp ../src/jeu/jeu.cpp ../src/type/type.cpp -o main && ./main
+//g++ -std=c++11 main.cpp ../src/carte/carte.cpp ../src/jeu/jeu.cpp ../src/type/type.cpp ../src/pioche/pioche.cpp -o main && ./main

@@ -16,7 +16,7 @@ class Jeu{
 
         struct Handler{
             Jeu* instance;
-            Handler():instance(nullptr) {}
+            Handler() : instance(nullptr) {}
         };
         static Handler handler;
 

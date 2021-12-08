@@ -2,50 +2,50 @@
 #define _NIVEAU_H
 
 #include <iostream>
-#include <string>
+#include <string.h>
+#include <cstdlib>
+#include <stdlib.h>
 #include <initializer_list>
 #include <array>
-#include <cstdlib>
-#include <map>
-#include <vector>
-#include <time.h>
+
+#include "../type/type.h"
+#include "../pioche/pioche.h"
+#include "../splendorException/splendorexception.h"
 
 using namespace std;
 
-namespace Splendor {
+namespace Splendor{
 
-enum class Type { Nobles, cite, un=1, deux=2, trois=3 };
+    class Niveau{
+        private:
+            vector<Carte*> cartes;   //Cartes situées sur un niveau du plateau
+            const int nbMax;        //Nombre maximum de cartes maxi sur un niveau (4 pour les cartes dvlp)
+            int nb;                 //Nombre de cartes sur le Niveau
+            const Type type;        //Type de carte développement situées dans le niveau
+            Pioche pioche;          //Pioche associée au type distribuant sur cartes.
 
-class Carte {}; //juste pour eviter erreur de compil
-class Pioche {};
+        public:
+            //Constructor et Destructor
+            Niveau(int t, Type ty);
+            Niveau& operator=(const Niveau& n) = default;
+            Niveau (const Niveau& n) = default;
+            ~Niveau() = default;    //vector delete auto ?
 
-class SetException : public exception {
-public:
-    SetException (const string& info);
-};
+            //Getters
+            int getTaille() { return nbMax; }
+            int getNbCartes() { return nb; }
+            Type getType() { return type; }
+            Pioche& getPioche() { return pioche; }
+            vector<Carte*> getCartes() { return cartes; }    // Renvoie le tableau des cartes
 
-class Jeu {
-    map<Type,vector<Carte>> cartes;
-public:
-    vector<Carte> getCartesType(Type t){return cartes[t];};
-    static Jeu& getInstance();
-    size_t getNbCartesType();
-}; //juste pour eviter erreur de compil
+            //Fonctions d'usage
+            const Carte& retirerCarte(const Carte& c);      // Retirer une carte du Niveau 
+            void ajouterCarte(const Carte& c);              // Ajouter une carte du Niveau
+            
+            //Utilité d'une méthode pour retourner une carte aléatoire de la pioche ?
+            //Sachant que la pioche aura déjà une méthode le faisant.
+            //Unique argument valide: interface plus simple avec la classe Niveau.
+    };
 
-
-
-class Niveau {
-    vector<Carte*> cartes;
-    Pioche& pioche;
-    Type type ;
-    unsigned int taille;
-public :
-    Niveau(Type t);
-    ~Niveau();
-    Carte ::Carte getCartes();
-    Carte ::Carte* retirerCarte(int i);
-    Carte ::Carte* getCarteFromPioche();
-};
 }
-
 #endif
