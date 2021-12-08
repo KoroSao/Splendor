@@ -6,8 +6,9 @@ namespace Splendor{
                                          CLASS NIVEAU
         ============================================================================ */
     Niveau::Niveau(int t, Type ty): pioche(ty), nb(0), nbMax(t), type(ty), cartes() {
-      for (size_t i = 0; i < 3; i++)
-        ajouterCarte(pioche.piocher());
+        for (size_t i = 0; i < t; i++)
+            ajouterCarte(pioche.piocher());
+        nb = 4;
     }
 
 
@@ -19,7 +20,10 @@ namespace Splendor{
 
 
     const Carte& Niveau::retirerCarte(const Carte& c){
-        /*size_t i = 0;
+
+        //TODO: IMPLEMANTER LA METHODE ERASE DE VECTOR
+
+        size_t i = 0;
         //Décalage sur la bonne carte
         while (i < nb && cartes[i] != &c)
             i++;
@@ -33,10 +37,6 @@ namespace Splendor{
         }
         nb--;
         return c;
-        */
-       
-       cartes.erase(&c);
-       return c;
     } 
 
 }

@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <initializer_list>
 #include <array>
+#include<algorithm>
+
 
 #include "../type/type.h"
 #include "../pioche/pioche.h"
@@ -29,7 +31,7 @@ namespace Splendor{
             Niveau(int t, Type ty);
             Niveau& operator=(const Niveau& n) = default;
             Niveau (const Niveau& n) = default;
-            ~Niveau() = default;    //vector delete auto ?
+            //~Niveau() = default;    //vector delete auto ?
 
             //Getters
             int getTaille() { return nbMax; }
@@ -42,9 +44,6 @@ namespace Splendor{
             const Carte& retirerCarte(const Carte& c);      // Retirer une carte du Niveau 
             void ajouterCarte(const Carte& c);              // Ajouter une carte du Niveau
             
-            //Utilité d'une méthode pour retourner une carte aléatoire de la pioche ?
-            //Sachant que la pioche aura déjà une méthode le faisant.
-            //Unique argument valide: interface plus simple avec la classe Niveau.
     };
 
 }
