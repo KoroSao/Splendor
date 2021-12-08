@@ -1,7 +1,7 @@
 #ifndef JEU_H_INCLUDED
 #define JEU_H_INCLUDED
 
-#include "carte.h"
+#include "../carte/carte.h"
 #include <map>
 #include <array>
 

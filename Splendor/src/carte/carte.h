@@ -3,12 +3,9 @@
 #include <vector>
 #include <iostream>
 #include <array>
-#include "joueur.h"
-
+#include "../joueur/joueur.h"
 
 using namespace std;
-
-
 
 
 namespace Splendor
@@ -24,7 +21,7 @@ class Joueur{
 //Definition de l'enum type pour la classe Jeu et CarteDevelopement
 enum class Type {nobles, cite, un=1, deux=2, trois=3 };
 
-//pour alléger
+//pour allï¿½ger
 typedef array<int, 5> ressources;
 
 //classe abstraite
