@@ -18,8 +18,8 @@ namespace Splendor{
 
     class Niveau{
         private:
-            vector<Carte*> cartes;   //Cartes situées sur un niveau du plateau
-            const int nbMax;        //Nombre maximum de cartes maxi sur un niveau (4 pour les cartes dvlp)
+            vector<const Carte*> cartes;   //Cartes situées sur un niveau du plateau
+            const int nbMax;        //Nombre maximum de cartes sur un niveau (4 pour les cartes dvlp)
             int nb;                 //Nombre de cartes sur le Niveau
             const Type type;        //Type de carte développement situées dans le niveau
             Pioche pioche;          //Pioche associée au type distribuant sur cartes.
@@ -36,7 +36,7 @@ namespace Splendor{
             int getNbCartes() { return nb; }
             Type getType() { return type; }
             Pioche& getPioche() { return pioche; }
-            vector<Carte*> getCartes() { return cartes; }    // Renvoie le tableau des cartes
+            vector<const Carte*> getCartes() { return cartes; }    // Renvoie le tableau des cartes
 
             //Fonctions d'usage
             const Carte& retirerCarte(const Carte& c);      // Retirer une carte du Niveau 
