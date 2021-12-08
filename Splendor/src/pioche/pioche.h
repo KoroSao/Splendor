@@ -10,26 +10,17 @@
 #include <vector>
 #include <time.h>
 
+#include "../type/type.h"
+#include "../carte/carte.h"
+#include "../jeu/jeu.h"
+
+#include "../splendorException/splendorexception.h"
+
 using namespace std;
 
 namespace Splendor {
 
-enum class Type { Nobles, cite, un=1, deux=2, trois=3 };
 
-class Carte {}; //juste pour eviter erreur de compil
-
-class SetException : public exception {
-public:
-    SetException (const string& info);
-};
-
-class Jeu {
-    map<Type,vector<Carte>> cartes;
-public:
-    vector<Carte> getCartesType(Type t){return cartes[t];};
-    static Jeu& getInstance();
-    size_t getNbCartesType();
-}; //juste pour eviter erreur de compil
 
 class Pioche {
     vector<const Carte*> cartes;

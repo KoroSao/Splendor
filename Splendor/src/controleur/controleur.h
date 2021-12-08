@@ -6,7 +6,13 @@
 #include <cstdlib>
 #include <stdlib.h>
 
+#include "../carte/carte.h"
+#include "../jeu/jeu.h"
+#include "../joueur/joueur.h"
+#include "../niveau/niveau.h"
+#include "../plateau/plateau.h"
 #include "../splendorException/splendorexception.h"
+#include "../type/type.h"
 
 
 namespace Splendor{

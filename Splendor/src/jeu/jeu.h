@@ -11,19 +11,35 @@ namespace Splendor{
 
 
 class Jeu{
-protected:
-    map<Type, vector<Splendor::Carte*>> cartes;
-public:
-    vector<Carte*> getCartes(Type t){return cartes[t];};
+    protected:
+        map<Type, vector<Carte*>> cartes;
+
+        struct Handler{
+            Jeu* instance;
+            Handler():instance(nullptr) {}
+        };
+        static Handler handler;
+
+        Jeu();
+        ~Jeu() = default;
+        Jeu(const Jeu&) = delete;
+        Jeu& operator=(const Jeu&) = delete;
+        
+    public:
+        static Jeu& getInstance();
+        static void freeInstance();
+        const vector<Carte*> getCartes(Type t){return cartes[t];}
+        int getNbCartes(Type t){return cartes[t].size();}
+
 };
 
-class Jeu_Classique:public Jeu{
+/*class Jeu_Classique:public Jeu{
     Jeu_Classique();
 };
 
 class Jeu_Cite:public Jeu{
     Jeu_Cite();
-};
+};*/
 
 }
 

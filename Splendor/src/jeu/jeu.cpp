@@ -7,20 +7,29 @@
 #include "jeu.h"
 #include "../carte/carte.h"
 
-using namespace std;
 
 namespace Splendor{
-/*
-Jeu_Classique(){
-    ifstream cartes_classique("./cartes_classique")
-    string ligne;
-    getline(cartes_classique, ligne)//premi�re ligne  est le nombre de cartes
-    int nb_cartes =
-    cartes[Type::un] = array<Carte*>()
-    while(getline(cartes_classique, ligne_carte)){
 
+    Jeu& Jeu::getInstance(){
+        if (handler.instance == nullptr)
+            handler.instance = new Jeu;
+        return *handler.instance;
     }
 
+    void Jeu::freeInstance(){
+        delete handler.instance;
+        handler.instance = nullptr;
+    }
+
+    Jeu::Handler Jeu::handler = Handler();
+
+Jeu::Jeu(){
+    for (size_t i =0; i<10; i++){    
+        ressources cst = {1,2,3,4,5};
+        ressources bns = {5,4,3,2,1};
+        CarteDeveloppement c(cst, bns, Type::un, i);
+        cartes[Type::un].push_back(&c);
+    }
 }
-*/
+
 }
