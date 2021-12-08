@@ -30,9 +30,11 @@ class Carte{
 protected:
     Carte(ressources c):couts(c){}
 public:
-    const int getCouts(size_t i){return couts[i];}
+    const int getCouts(size_t i) const {return couts[i];}
     virtual bool canBeBougth(Joueur& j) = 0;
     friend class Jeu; //Jeu est le seul constructeur de la classe Carte
+    
+    virtual void afficherCarte(std::ostream& f = std::cout) const =  0;
 };
 
 //classe abstraite
@@ -41,7 +43,9 @@ class Carte_avec_bonus : public Carte{
 protected:
     Carte_avec_bonus(ressources c, ressources b): Carte(c), bonus(b){};
 public:
-    const int getBonus(size_t i){return bonus[i];};
+    const int getBonus(size_t i) const {return bonus[i];};
+
+    void afficherCarte(std::ostream& f = std::cout) const override {}
 };
 
 
@@ -55,6 +59,11 @@ public:
     const Type getType(){return type;};
     const int getPDV(){return PDV;};
     bool canBeBougth(Joueur& j) override;
+
+    void afficherCarte(std::ostream& f = std::cout) const override {
+        f << "cout : " << getCouts(0) << " " << getCouts(1) << " " << getCouts(2) << " " << getCouts(3) << " " << getCouts(4) << std::endl;
+        f << "bonus : " << getBonus(0) << " " << getBonus(1) << " " << getBonus(2) << " " << getBonus(3) << " " << getBonus(4) << std::endl;
+    }
 };
 
 class CarteNoble : public Carte_avec_bonus{
@@ -63,6 +72,8 @@ class CarteNoble : public Carte_avec_bonus{
 public:
     const int getPDV(){return PDV;};
     bool canBeBougth(Joueur& j) override;
+
+    void afficherCarte(std::ostream& f = std::cout) const override {}
 };
 
 class CarteCite : public Carte{
@@ -70,6 +81,8 @@ class CarteCite : public Carte{
     CarteCite(ressources c, int pdv_r): Carte(c), pdv_requis(pdv_r){};
 public:
     bool canBeBougth(Joueur& j) override;
+
+    void afficherCarte(std::ostream& f = std::cout) const override {}
 };
 
 }

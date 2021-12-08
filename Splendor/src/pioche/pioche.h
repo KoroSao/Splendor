@@ -20,12 +20,10 @@ using namespace std;
 
 namespace Splendor {
 
-
-
 class Pioche {
     vector<const Carte*> cartes;
-    size_t nb = 0 ;
-    Type type ;
+    size_t nb = 0;
+    Type type;
 public :
     Pioche(Type t);
     ~Pioche(); //se fait auto car vecteur

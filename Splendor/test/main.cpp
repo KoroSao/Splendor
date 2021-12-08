@@ -16,6 +16,9 @@ int main(){
     std::cout << "c : " << c.getPDV() << std::endl;
 
     std::cout << Jeu::getInstance().getNbCartes(Type::un) << std::endl;
+
+    Jeu::getInstance().getCartes(Type::un)[0]->getCouts(4);
+
     return 0;
 }
 
