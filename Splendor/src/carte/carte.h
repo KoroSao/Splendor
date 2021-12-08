@@ -41,9 +41,9 @@ public:
 class Carte_avec_bonus : public Carte{
     const ressources bonus;
 protected:
-    Carte_avec_bonus(ressources c, ressources b): Carte(c), bonus(b){};
+    Carte_avec_bonus(ressources c, ressources b) : Carte(c), bonus(b) {};
 public:
-    const int getBonus(size_t i) const {return bonus[i];};
+    const int getBonus(size_t i) const { return bonus[i]; }
 
     void afficherCarte(std::ostream& f = std::cout) const override {}
 };
@@ -56,8 +56,8 @@ class CarteDeveloppement : public Carte_avec_bonus{
 public:
     CarteDeveloppement(ressources c, ressources b, Type t,  int pdv):
             Carte_avec_bonus(c, b), type(t), PDV(pdv){};
-    const Type getType(){return type;};
-    const int getPDV(){return PDV;};
+    const Type getType(){ return type; }
+    const int getPDV(){ return PDV; }
     bool canBeBougth(Joueur& j) override;
 
     void afficherCarte(std::ostream& f = std::cout) const override {

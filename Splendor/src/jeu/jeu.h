@@ -28,8 +28,8 @@ class Jeu{
     public:
         static Jeu& getInstance();
         static void freeInstance();
-        /* //TODO: const*/ vector<Carte*> getCartes(Type t){ return cartes[t]; }
-        int getNbCartes(Type t){return cartes[t].size();}
+        /* //TODO: const*/vector<Carte*> getCartes(Type t){ return cartes[t]; }
+        int getNbCartes(Type t){ return cartes[t].size(); }
 
 };
 

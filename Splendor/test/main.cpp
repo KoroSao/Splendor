@@ -19,6 +19,8 @@ int main(){
 
     Jeu::getInstance().getCartes(Type::un)[0]->getCouts(4);
 
+    Jeu::getInstance().getCartes(Type::un)[0]->afficherCarte();
+
     return 0;
 }
 
