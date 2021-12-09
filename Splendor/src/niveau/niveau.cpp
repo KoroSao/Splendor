@@ -20,6 +20,9 @@ namespace Splendor{
 
 
     const Carte& Niveau::retirerCarte(const Carte& c){
+        if (cartes.empty())
+            throw SplendorException("Splendor::Pioche::piocher() : niveau vide");
+
         vector<const Carte*>::iterator it = find(cartes.begin(), cartes.end(), &c);
         if(it == cartes.end()){
             throw SplendorException("Splendor::Pioche::piocher() : carte à supp inexistante");

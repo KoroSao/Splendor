@@ -6,26 +6,14 @@
 #include <iostream>
 #include <string.h>
 #include <cstdlib>
+#include <algorithm>
+
+#include "../carte/carte.h"
+#include "../splendorException/splendorexception.h"
 
 using namespace std;
 
-namespace Splendor {
-    
-    //Exception class for the game Splendor
-    class SplendorException {
-        private:
-            string info;
-        public:
-            SplendorException(const string & i): info(i) {}
-            string getInfo() const { return info; }
-    };
-
-    //Fake class
-    class Carte{
-        public:
-            Carte()=default;
-    };
-
+namespace Splendor{
     // ----------- Début de la classe Joueur : -----------
 
     class Joueur {
@@ -33,56 +21,58 @@ namespace Splendor {
             unsigned int id;                    //
             string nom;                         //
             int inventaire[6];                  // ordre : émeraude / saphir / rubis / diamant / onyx / joker
-            int bonus[6];                       // ordre : émeraude / saphir / rubis / diamant / onyx / joker
-            Carte reserve[3];                   //
-            unsigned int nbCartesReservee;      //
-            Carte **CartesRemportees;           //
-            unsigned int nbCartesRemportees;    // 
-            unsigned int PV;                    // Nombre de point de victoire du joueur
+            int bonus[5];                       // ordre : émeraude / saphir / rubis / diamant / onyx / joker
+            vector<const Carte*> reserve;             // reserve (un joueur peut posséder au max 3 cartes en réserve)
+            //unsigned int nbCartesReservee;      //Potentiellement inutile avec reserve.size()
+            vector<const Carte*> cartesRemportees;    //Stocke les cartes gagnées par le joueur (size infinie)
+            unsigned int PDV;                    // Nombre de point de victoire du joueur
 
         public:
             // ----------- Constructor et Destructor -----------
             Joueur(unsigned int id, const string& nom) : 
-                id(id), nom(nom), inventaire({0,0,0,0,0,0}), bonus({0,0,0,0,0,0}), reserve(), nbCartesReservee(0), CartesRemportees(), nbCartesRemportees(0), PV(0) {};
+                id(id), nom(nom), inventaire(), bonus(),    //Par défaut les tableaux sont initaliés à 0
+                reserve(), cartesRemportees(), PDV(0) {};
             
-            ~Joueur() { delete[] CartesRemportees; }
+            ~Joueur() = default;
 
 
             //----------- Getters -----------
             unsigned int getId() const { return id; }
             const string getNom() const { return nom; }
 
-            int getInventaire(unsigned int i) const { return inventaire[i]; }
-            //const int* getInventaire() const { return inventaire; }
+            int getInventaire(unsigned int i) const;
+            int* getInventaire() { return inventaire; }
 
-            int getBonus(unsigned int i) const { return bonus[i]; }
-            //const int* getBonus() const { return bonus; }
+            int getBonus(unsigned int i) const;
+            int* getBonus() { return bonus; }
 
-            const Carte* getReserve() const { return reserve; }
-            unsigned int getNbCartesReservee() const { return nbCartesReservee; }
 
-            const Carte** getCartesRemportees() { return CartesRemportees; }
-            unsigned int getNbCartesRemportees() const { return nbCartesRemportees; }
+            vector<const Carte*> getReserve() { return reserve; }
 
-            unsigned int getPV() const { return PV; }
+            vector<const Carte*> getCartesRemportees() { return cartesRemportees; }
+
+            unsigned int getPDV() const { return PDV; }
 
 
             // ----------- Setters -----------
                 //pas besoin de setters pour l'id et le nom car fait à la création
+                //TODO: voir l'utilité du bool ou du void
             bool setInventaire(unsigned int i, unsigned int val);        
             bool setBonus(unsigned int i, unsigned int val); 
 
-            bool addCarteReserve(const Carte &c);
-            bool removeCarteReserve(const Carte &c);
-            
             bool addCartesRemportees(const Carte &c);
 
-            void addPV(unsigned int i) { PV += i; }
+            bool ajouterCarteReserve(const Carte &c);
+            const Carte& retirerCarteReserve(const Carte &c);
+        
+            void addPDV(unsigned int i);
 
+            // ----------- Affichage -----------
+            void afficherInventaire(std::ostream& f = std::cout) const;
+            void afficherBonus(std::ostream& f = std::cout) const;
+            void afficherReserve() ;
+            void afficherCartesRemportees() ;
 
-            // ----------- Fonctions d'usage -----------
-            void reserverCarte(const Carte&);
-            void acheterCarte();
     };
 
 } 

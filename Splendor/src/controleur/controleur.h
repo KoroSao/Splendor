@@ -17,19 +17,6 @@
 
 namespace Splendor{
 
-    class Plateau{
-
-    };
-
-    class Joueur{
-
-    };
-
-    class Jeu{
-
-    };
-
-
 
     class Controleur{
         private:

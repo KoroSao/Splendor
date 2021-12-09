@@ -2,48 +2,109 @@
 
 namespace Splendor {
 
+    /*
+            =========================== GETTERS ===========================
+    */
+    int Joueur::getInventaire(unsigned int i) const { 
+        if (i > 5)
+            throw SplendorException("Splendor::Joueur::getInventaire() : indice i invalide");
+        return inventaire[i]; 
+    }
+
+    int Joueur::getBonus(unsigned int i) const { 
+        if (i > 4)
+            throw SplendorException("Splendor::Joueur::getBonus() : indice i invalide");
+        return bonus[i]; 
+    }
+
+    /*
+            =========================== SETTERS ===========================
+    */
+
     bool Joueur::setInventaire(unsigned int i, unsigned int val){
-        if(i > 5)
-            SplendorException("class Joueur : setInventaire() -> indice i invalide");
+        if(i > 5){
+            throw SplendorException("Splendor::Joueur::setInventaire() : indice i invalide");
+            return false;
+        }
         inventaire[i] = val;
-        return 0;
+        return true;
     };  
 
     bool Joueur::setBonus(unsigned int i, unsigned int val){
-        if(i > 5)
-            throw SplendorException("class Joueur : setBonus() -> indice i invalide");
+        if(i > 4){
+            throw SplendorException("Splendor::Joueur::setBonus() : indice i invalide");
+            return false;
+        }
         bonus[i] = val;
-        return 0;
-    };  
-    
-    bool Joueur::addCarteReserve(const Carte &c){
-        if (nbCartesReservee > 2)
-            throw SplendorException("class Joueur : setReserve() -> reserve pleine");
-        reserve[nbCartesReservee++] = &c;
+        return true;
+    }; 
+
+    /*
+            =========================== FONCTIONS ==========================
+    */
+
+
+    bool Joueur::ajouterCarteReserve(const Carte &c){
+        if (reserve.size() > 3){
+            throw SplendorException("Splendor::Joueur::ajouterCarteReserve() : reserve pleine");
+            return false;
+        }
+        reserve.push_back(&c);
+        return true;
     };
 
-    bool Joueur::removeCarteReserve(const Carte &c){
-        unsigned int i = 0;
-        //Décalage sur la bonne carte
-        while (i < nbCartesReservee && reserve[i] != &c)
-            i++;
-        if (i == nbCartesReservee) //Arrivé à la fin de la réserve sans trouver la carte
-            throw SplendorException("class Joueur : remvoveCarteReserve() -> carte inexistante");
-        i++;
-        //Redécalage des cartes au début du tableau
-        while (i < nbCartesReservee - 1){
-            reserve[i] = reserve[i+1];
-            i++;
+    const Carte& Joueur::retirerCarteReserve(const Carte &c){
+        if (reserve.empty())
+            throw SplendorException("Splendor::Joueur::retirerCarteReserve() : reserve vide");
+        
+        vector<const Carte*>::iterator it = find(reserve.begin(), reserve.end(), &c);
+        if(it == reserve.end()){
+            throw SplendorException("Splendor::Pioche::piocher() : carte à supp inexistante");
         }
-        nbCartesReservee--;
-        //L'execution s'est bien passé, en retourne 0
-        return 0;
+        reserve.erase(it);
+
+        return c;
     };
 
     bool Joueur::addCartesRemportees(const Carte &c){
-        CartesRemportees[nbCartesRemportees++] = &c;
+        cartesRemportees.push_back(&c);
         return 0;
     };
+
+    void Joueur::addPDV(unsigned int i) {
+        if (i<0){
+            throw SplendorException("Splendor::Pioche::addPDV() : parametre i negatif");
+        } 
+        PDV += i; 
+    }
+
+    // AFFICHAGE
+
+    void Joueur::afficherInventaire(std::ostream& f) const{
+        f << "Inventaire: [";
+        for (size_t i = 0; i < 5; i++) {
+            f << inventaire[i] << ",";
+        }
+        f << inventaire[5] << "]" << std::endl;
+    }
+
+    void Joueur::afficherBonus(std::ostream& f) const{
+        f << "Bonus: [";
+        for (size_t i = 0; i < 4; i++) {
+            f << bonus[i] << ",";
+        }
+        f << bonus[4] << "]" << std::endl;
+    }
+
+    void Joueur::afficherReserve() {
+        for(auto i: getReserve() )
+            i->afficherCarte();
+    }   
+    void Joueur::afficherCartesRemportees()  {
+        for(auto i: getCartesRemportees() )
+            i->afficherCarte();
+    }
+
 
 
 } 

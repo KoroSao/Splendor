@@ -6,6 +6,7 @@
 #include "../src/pioche/pioche.h"
 #include "../src/niveau/niveau.h"
 #include "../src/plateau/plateau.h"
+#include "../src/joueur/joueur.h"
 
 using namespace Splendor;
 
@@ -58,6 +59,24 @@ int main(){
     // p.getNiveauDeveloppement(2).afficherNiveau();
 
     p.printPlateau();
+    Joueur j(0, "AJouglet");
+    j.addPDV(10);
+    std::cout << j.getPDV() << std::endl;
+    j.afficherBonus();
+    j.afficherInventaire();
+
+    j.setInventaire(0, 3);
+    j.setBonus(3,4);
+    j.setBonus(3, j.getBonus(3) + 2);
+
+    j.afficherBonus();
+    j.afficherInventaire();
+
+    j.ajouterCarteReserve(p.getNiveauDeveloppement(0).retirerCarte(*p.getNiveauDeveloppement(0).getCartes()[0]));
+    j.afficherCartesRemportees();
+    j.afficherReserve();
+
+    p.printPlateau();
 
 
     return 0;
@@ -66,4 +85,4 @@ int main(){
 
 //g++ -std=c++11 main.cpp ../src/carte/carte.cpp ../src/controleur/controleur.cpp ../src/jeu/jeu.cpp ../src/joueur/joueur.cpp ../src/niveau/niveau.cpp ../src/plateau/plateau.cpp ../src/type/type.cpp ../src/pioche/pioche.cpp -o main && ./main
 
-//g++ -std=c++11 main.cpp ../src/carte/carte.cpp ../src/niveau/niveau.cpp ../src/jeu/jeu.cpp ../src/type/type.cpp ../src/pioche/pioche.cpp ../src/plateau/plateau.cpp -o main && ./main
+//g++ -std=c++11 main.cpp ../src/carte/carte.cpp ../src/niveau/niveau.cpp ../src/jeu/jeu.cpp ../src/type/type.cpp ../src/pioche/pioche.cpp ../src/plateau/plateau.cpp ../src/joueur/joueur.cpp -o main && ./main

@@ -3,94 +3,84 @@
 #include <vector>
 #include <iostream>
 #include <array>
-//#include "../joueur/joueur.h"
+
 #include "../type/type.h"
 
 
 using namespace std;
 
+namespace Splendor{
 
-namespace Splendor
-{
-//Fake class
-class Joueur{
+    //pour alléger
+    typedef array<int, 5> ressources;
+
+    //classe abstraite
+    class Carte{
+        const ressources couts;
+    protected:
+        Carte(ressources c):couts(c){}
     public:
-    int getInventaire(size_t i){return 0;}
-    int getBonus(size_t i){return 0;}
-    int getPV(){return 0;}
-};
+        const int getCouts(size_t i) const {return couts[i];}
+        //TODO: nécessaire ? ou controleur ?  virtual bool canBeBougth(Joueur& j) = 0;
+        friend class Jeu; //Jeu est le seul constructeur de la classe Carte
+        
+        virtual void afficherCarte(std::ostream& f = std::cout) const =  0;
+    };
+
+    //classe abstraite
+    class Carte_avec_bonus : public Carte{
+        const ressources bonus;
+    protected:
+        Carte_avec_bonus(ressources c, ressources b) : Carte(c), bonus(b) {};
+    public:
+        const int getBonus(size_t i) const { return bonus[i]; }
+
+        void afficherCarte(std::ostream& f = std::cout) const override {}
+    };
 
 
-//pour alléger
-typedef array<int, 5> ressources;
+    class CarteDeveloppement : public Carte_avec_bonus{
+        const int PDV;
+        const Type type;
+        
+    public:
+        /* //TODO:: à remettre en privé un jour*/ CarteDeveloppement(ressources c, ressources b, Type t,  int pdv):
+                Carte_avec_bonus(c, b), type(t), PDV(pdv){};
+        const Type getType() /* si on rajoute const ici ça bug de ouf (masse d'erreurs) */ { return type; }
+        const int getPDV() const { return PDV; }
+        //bool canBeBougth(Joueur& j) override;
 
-//classe abstraite
-class Carte{
-    const ressources couts;
-protected:
-    Carte(ressources c):couts(c){}
-public:
-    const int getCouts(size_t i) const {return couts[i];}
-    virtual bool canBeBougth(Joueur& j) = 0;
-    friend class Jeu; //Jeu est le seul constructeur de la classe Carte
-    
-    virtual void afficherCarte(std::ostream& f = std::cout) const =  0;
-};
+        void afficherCarte(std::ostream& f = std::cout) const override {
+            f << "PDV : " << getPDV() << std::endl;
+            f << "cout : " << getCouts(0) << " " << getCouts(1) << " " << getCouts(2) << " " << getCouts(3) << " " << getCouts(4) << std::endl;
+            f << "bonus : " << getBonus(0) << " " << getBonus(1) << " " << getBonus(2) << " " << getBonus(3) << " " << getBonus(4) << std::endl;
+            f << " - - -" << std::endl;
+        }
+    };
 
-//classe abstraite
-class Carte_avec_bonus : public Carte{
-    const ressources bonus;
-protected:
-    Carte_avec_bonus(ressources c, ressources b) : Carte(c), bonus(b) {};
-public:
-    const int getBonus(size_t i) const { return bonus[i]; }
+    class CarteNoble : public Carte_avec_bonus{
+        const int PDV;
+    public:
+        /* //TODO:: à remettre en privé un jour*/ CarteNoble(ressources c,ressources b, int pdv):Carte_avec_bonus(c, b), PDV(pdv){};
+        const int getPDV() const {return PDV;};
+        //bool canBeBougth(Joueur& j) override;
 
-    void afficherCarte(std::ostream& f = std::cout) const override {}
-};
+        void afficherCarte(std::ostream& f = std::cout) const override {
+            f << "PDV : " << getPDV() << std::endl;
+            f << "cout : " << getCouts(0) << " " << getCouts(1) << " " << getCouts(2) << " " << getCouts(3) << " " << getCouts(4) << std::endl;
+            f << "bonus : " << getBonus(0) << " " << getBonus(1) << " " << getBonus(2) << " " << getBonus(3) << " " << getBonus(4) << std::endl;
+            f << " - - -" << std::endl;
+        }
+    };
 
+    class CarteCite : public Carte{
+        const int pdv_requis;
+        CarteCite(ressources c, int pdv_r): Carte(c), pdv_requis(pdv_r){};
+    public:
+        //bool canBeBougth(Joueur& j) override;
 
-class CarteDeveloppement : public Carte_avec_bonus{
-    const int PDV;
-    const Type type;
-    
-public:
-    /* //TODO:: à remettre en privé un jour*/ CarteDeveloppement(ressources c, ressources b, Type t,  int pdv):
-            Carte_avec_bonus(c, b), type(t), PDV(pdv){};
-    const Type getType() /* si on rajoute const ici ça bug de ouf (masse d'erreurs) */ { return type; }
-    const int getPDV() const { return PDV; }
-    bool canBeBougth(Joueur& j) override;
-
-    void afficherCarte(std::ostream& f = std::cout) const override {
-        f << "PDV : " << getPDV() << std::endl;
-        f << "cout : " << getCouts(0) << " " << getCouts(1) << " " << getCouts(2) << " " << getCouts(3) << " " << getCouts(4) << std::endl;
-        f << "bonus : " << getBonus(0) << " " << getBonus(1) << " " << getBonus(2) << " " << getBonus(3) << " " << getBonus(4) << std::endl;
-        f << " - - -" << std::endl;
-    }
-};
-
-class CarteNoble : public Carte_avec_bonus{
-    const int PDV;
-public:
-    /* //TODO:: à remettre en privé un jour*/ CarteNoble(ressources c,ressources b, int pdv):Carte_avec_bonus(c, b), PDV(pdv){};
-    const int getPDV() const {return PDV;};
-    bool canBeBougth(Joueur& j) override;
-
-    void afficherCarte(std::ostream& f = std::cout) const override {
-        f << "PDV : " << getPDV() << std::endl;
-        f << "cout : " << getCouts(0) << " " << getCouts(1) << " " << getCouts(2) << " " << getCouts(3) << " " << getCouts(4) << std::endl;
-        f << "bonus : " << getBonus(0) << " " << getBonus(1) << " " << getBonus(2) << " " << getBonus(3) << " " << getBonus(4) << std::endl;
-        f << " - - -" << std::endl;
-    }
-};
-
-class CarteCite : public Carte{
-    const int pdv_requis;
-    CarteCite(ressources c, int pdv_r): Carte(c), pdv_requis(pdv_r){};
-public:
-    bool canBeBougth(Joueur& j) override;
-
-    void afficherCarte(std::ostream& f = std::cout) const override {}
-};
+        void afficherCarte(std::ostream& f = std::cout) const override {}
+    };
 
 }
 
