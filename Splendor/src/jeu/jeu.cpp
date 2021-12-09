@@ -24,10 +24,35 @@ namespace Splendor{
 
 Jeu::Jeu(){
     for (int i = 0; i<10; i++){
-        ressources cst = {i,i,i,i,i};
-        ressources bns = {i,i,i,i,i};
+        int j = rand()%(11);
+        ressources cst = {j,j,j,j,j};
+        ressources bns = {j,j,j,j,j};
         
-        cartes[Type::un].push_back(new CarteDeveloppement(cst, bns, Type::un, i));
+        cartes[Type::un].push_back(new CarteDeveloppement(cst, bns, Type::un, rand()%(8)));
+    }
+
+    for (int i = 0; i<10; i++){
+        int j = rand()%(11);
+        ressources cst = {j,j,j,j,j};
+        ressources bns = {j,j,j,j,j};
+        
+        cartes[Type::deux].push_back(new CarteDeveloppement(cst, bns, Type::deux, rand()%(8)));
+    }
+
+    for (int i = 0; i<10; i++){
+        int j = rand()%(11);
+        ressources cst = {j,j,j,j,j};
+        ressources bns = {j,j,j,j,j};
+        
+        cartes[Type::trois].push_back(new CarteDeveloppement(cst, bns, Type::trois, rand()%(8)));
+    }
+
+    for (int i = 0; i<10; i++){
+        int j = rand()%(11);
+        ressources cst = {j,j,j,j,j};
+        ressources bns = {j,j,j,j,j};
+        
+        cartes[Type::nobles].push_back(new CarteNoble(cst, bns, rand()%(8)));
     }
 }
 

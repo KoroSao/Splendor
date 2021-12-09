@@ -7,8 +7,9 @@
 #include <stdlib.h>
 #include <initializer_list>
 #include <array>
+#include <vector>
 
-#include "niveau.h"
+#include "../niveau/niveau.h"
 #include "../splendorException/splendorexception.h"
 #include "../pioche/pioche.h"
 #include "../carte/carte.h"
@@ -16,26 +17,26 @@
 
 using namespace std;
 
-namespace Splendor{
-
-
+namespace Splendor {
 
     class Plateau {
         private:
-
-            int banque[6];              //Banque centrale
-            Niveau** niveaux;          //Niveaux constituants les rangees de carte
-            Niveau* cartesNobles;        //Tableau de pointeurs sur les cartes nobles
+            int banque[6];                    //Banque centrale
+            //Niveau** niveaux;          
+            vector<Niveau*> niveaux;          //Niveaux constituants les rangees de carte
+            //Niveau* cartesNobles;        
+            Niveau* cartesNobles; //Tableau de pointeurs sur les cartes nobles
 
         public:
             Plateau(int nbj);
             ~Plateau() = default;
             Plateau(const Plateau&) = delete;
-            Niveau& operator[](int i) { return *niveaux[i]; }
             int* getBanque() { return banque; }
-            void setBanque(int i, int val) { banque[i] = val; }
-            Niveau& getCartesNobles() { return *cartesNobles; }
+            void setBanque(int pos, int val);
+            Niveau& getNiveauNobles() { return *cartesNobles; }
+            Niveau& getNiveauDeveloppement(int i);
             void printBanque();
+            void printPlateau();
     };
 
 }

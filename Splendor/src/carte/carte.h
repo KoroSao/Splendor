@@ -54,13 +54,14 @@ class CarteDeveloppement : public Carte_avec_bonus{
     const Type type;
     
 public:
-    CarteDeveloppement(ressources c, ressources b, Type t,  int pdv):
+    /* //TODO:: à remettre en privé un jour*/ CarteDeveloppement(ressources c, ressources b, Type t,  int pdv):
             Carte_avec_bonus(c, b), type(t), PDV(pdv){};
-    const Type getType(){ return type; }
-    const int getPDV(){ return PDV; }
+    const Type getType() /* si on rajoute const ici ça bug de ouf (masse d'erreurs) */ { return type; }
+    const int getPDV() const { return PDV; }
     bool canBeBougth(Joueur& j) override;
 
     void afficherCarte(std::ostream& f = std::cout) const override {
+        f << "PDV : " << getPDV() << std::endl;
         f << "cout : " << getCouts(0) << " " << getCouts(1) << " " << getCouts(2) << " " << getCouts(3) << " " << getCouts(4) << std::endl;
         f << "bonus : " << getBonus(0) << " " << getBonus(1) << " " << getBonus(2) << " " << getBonus(3) << " " << getBonus(4) << std::endl;
         f << " - - -" << std::endl;
@@ -69,12 +70,17 @@ public:
 
 class CarteNoble : public Carte_avec_bonus{
     const int PDV;
-    CarteNoble(ressources c,ressources b, int pdv):Carte_avec_bonus(c, b), PDV(pdv){};
 public:
-    const int getPDV(){return PDV;};
+    /* //TODO:: à remettre en privé un jour*/ CarteNoble(ressources c,ressources b, int pdv):Carte_avec_bonus(c, b), PDV(pdv){};
+    const int getPDV() const {return PDV;};
     bool canBeBougth(Joueur& j) override;
 
-    void afficherCarte(std::ostream& f = std::cout) const override {}
+    void afficherCarte(std::ostream& f = std::cout) const override {
+        f << "PDV : " << getPDV() << std::endl;
+        f << "cout : " << getCouts(0) << " " << getCouts(1) << " " << getCouts(2) << " " << getCouts(3) << " " << getCouts(4) << std::endl;
+        f << "bonus : " << getBonus(0) << " " << getBonus(1) << " " << getBonus(2) << " " << getBonus(3) << " " << getBonus(4) << std::endl;
+        f << " - - -" << std::endl;
+    }
 };
 
 class CarteCite : public Carte{

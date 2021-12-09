@@ -8,7 +8,7 @@ namespace Splendor{
         ============================================================================ */
 
     
-    Plateau::Plateau(int nb_joueurs): niveaux(new Niveau*[3]) {
+    Plateau::Plateau(int nb_joueurs) : niveaux() {
         /*
         FAIRE ATTENTION, LA PLUPART DES ATTRIBUTS DU PLATEAU DEPENDENT
         DES VARIABLES D'ENVIRONNEMENT DU JEU COMME LE NOMBRE DE JOUEURS
@@ -34,21 +34,52 @@ namespace Splendor{
         
         
         //Initialisation des Niveaux de cartes Développement
-        size_t i = 0;
-        for (auto t : Types)
-            if (i < 3)
-                niveaux[i] = new Niveau(4,t);
+        niveaux.push_back(new Niveau(4,Type::un));
+        niveaux.push_back(new Niveau(4,Type::deux));
+        niveaux.push_back(new Niveau(4,Type::trois));
+
         //Initalisation des cartes nobles
-        
-        cartesNobles = new Niveau(nb_joueurs+1, Type::Noble);
+        cartesNobles = new Niveau(nb_joueurs+1, Type::nobles);
     }
 
+    Niveau& Plateau::getNiveauDeveloppement(int i) { 
+        if(i<0 || i>2){
+            throw SplendorException("Splendor::Plateau::getNiveauDeveloppement() : indice i invalide");
+        }
+        return *niveaux[i]; 
+    }
+
+    void Plateau::setBanque(int pos, int val) { 
+        if(pos < 0 || pos > 4){
+            throw SplendorException("Splendor::Plateau::setBanque() : indice i invalide");
+        }
+        banque[pos] = val;
+    }
 
     void Plateau::printBanque(){
         auto banque = getBanque();
         std::cout << "[";
         for (size_t i = 0; i < 5; i++)
             std::cout << banque[i] << ",";
-        std::cout << banque[5] << "]";
+        std::cout << banque[5] << "]" << std::endl;
     }
+
+    void Plateau::printPlateau(){
+        std::cout << " $ $ $ Banque : $ $ $ " << std::endl;
+        printBanque();
+        std::cout << std::endl;
+
+        std::cout << " # # # # # # Niveau 3 # # # # # # " << std::endl;
+        getNiveauDeveloppement(2).afficherNiveau();
+
+        std::cout << " # # # # # # Niveau 2 # # # # # # " << std::endl;
+        getNiveauDeveloppement(1).afficherNiveau();
+
+        std::cout << " # # # # # # Niveau 1 # # # # # # " << std::endl;
+        getNiveauDeveloppement(0).afficherNiveau();
+
+        std::cout << " * * * * * * Nobles * * * * * * * *" << std::endl;
+        getNiveauNobles().afficherNiveau();
+
+    };
 }
