@@ -8,35 +8,34 @@ namespace Splendor{
     Niveau::Niveau(int t, Type ty): pioche(ty), nb(0), nbMax(t), type(ty), cartes() {
         for (size_t i = 0; i < t; i++)
             ajouterCarte(pioche.piocher());
-        nb = 4;
     }
 
 
     void Niveau::ajouterCarte(const Carte& c){
         if (nb>=nbMax)
-            SplendorException("Niveau plein");
+            throw SplendorException("Splendor::Pioche::piocher() : niveau plein");
         cartes.push_back(&c);
+        nb++;
     }
 
 
     const Carte& Niveau::retirerCarte(const Carte& c){
-
-        //TODO: IMPLEMANTER LA METHODE ERASE DE VECTOR
-
-        size_t i = 0;
-        //Décalage sur la bonne carte
-        while (i < nb && cartes[i] != &c)
-            i++;
-        if (i == nb) //Arrivé à la fin du paquet sans trouver la carte
-            throw SplendorException("Carte inexistante");
-        i++;
-        //Redécalage des cartes au début du tableau
-        while (i < nb - 1){
-            cartes[i] = cartes[i+1];
-            i++;
+        vector<const Carte*>::iterator it = find(cartes.begin(), cartes.end(), &c);
+        if(it == cartes.end()){
+            throw SplendorException("Splendor::Pioche::piocher() : carte à supp inexistante");
         }
+        cartes.erase(it);
         nb--;
+        if(!getPioche().estVide()){
+            ajouterCarte(getPioche().piocher());
+        }
         return c;
     } 
+
+    void Niveau::afficherNiveau(){
+        for(auto i: getCartes()){
+            i->afficherCarte();
+        }
+    }
 
 }

@@ -24,8 +24,8 @@ namespace Splendor{
 
 Jeu::Jeu(){
     for (int i = 0; i<10; i++){
-        ressources cst = {i,i*3,i,10-i,i*5};
-        ressources bns = {10-i,10-i,i,i*2,i};
+        ressources cst = {i,i,i,i,i};
+        ressources bns = {i,i,i,i,i};
         
         cartes[Type::un].push_back(new CarteDeveloppement(cst, bns, Type::un, i));
     }

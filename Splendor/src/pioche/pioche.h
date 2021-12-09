@@ -9,6 +9,7 @@
 #include <map>
 #include <vector>
 #include <time.h>
+#include <algorithm>
 
 #include "../type/type.h"
 #include "../carte/carte.h"

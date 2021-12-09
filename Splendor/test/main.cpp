@@ -31,16 +31,24 @@ int main(){
 
     std::cout << "nbr de carte dans la pioche : "<< p.getNbCartes() << std::endl;
     */
+   
     //Création d'un niveau de cartes de type un.
     Niveau n(4,Type::un);
     std::cout << n.getTaille() << std::endl;
-    n.getCartes()[0]->afficherCarte();
-    n.getCartes()[1]->afficherCarte();
-    n.getCartes()[2]->afficherCarte();
-    n.getCartes()[3]->afficherCarte();
+
+    std::cout << "###### Carte dans le niveau initial : ######" << std::endl;
+    n.afficherNiveau();
+
+    n.retirerCarte(*n.getCartes()[3]);
+
+    //n.ajouterCarte(n.getPioche().piocher());
+
+    //n.ajouterCarte(n.getPioche().piocher());
+
+    std::cout << "###### Carte dans le niveau après piocher : #######" << std::endl;
+    n.afficherNiveau();
 
     
-
     return 0;
 }
 
