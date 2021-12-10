@@ -33,5 +33,19 @@ namespace Splendor{
         return bonus_manquants==0 && j.getPDV() >= pdv_requis;
     }
 
+    void CarteDeveloppement::afficherCarte(std::ostream& f) const {
+        f << "PDV : " << getPDV() << std::endl;
+        f << "cout : " << getCouts(0) << " " << getCouts(1) << " " << getCouts(2) << " " << getCouts(3) << " " << getCouts(4) << std::endl;
+        f << "bonus : " << getBonus(0) << " " << getBonus(1) << " " << getBonus(2) << " " << getBonus(3) << " " << getBonus(4) << std::endl;
+        f << " - - -" << std::endl;
+    }
+
+    void CarteNoble::afficherCarte(std::ostream& f) const {
+        f << "PDV : " << getPDV() << std::endl;
+        f << "cout : " << getCouts(0) << " " << getCouts(1) << " " << getCouts(2) << " " << getCouts(3) << " " << getCouts(4) << std::endl;
+        f << "bonus : " << getBonus(0) << " " << getBonus(1) << " " << getBonus(2) << " " << getBonus(3) << " " << getBonus(4) << std::endl;
+        f << " - - -" << std::endl;
+    }
+
 
 }
