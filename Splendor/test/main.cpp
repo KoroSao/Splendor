@@ -7,6 +7,7 @@
 #include "../src/niveau/niveau.h"
 #include "../src/plateau/plateau.h"
 #include "../src/joueur/joueur.h"
+#include "../src/controleur/controleur.h"
 
 using namespace Splendor;
 
@@ -50,39 +51,46 @@ int main(){
     // std::cout << "###### Carte dans le niveau après piocher : #######" << std::endl;
     // n.afficherNiveau();
 
-    Plateau p(4);
-    //p.printBanque();
+    // Plateau p(4);
+    // //p.printBanque();
 
-    //p.getCartesNobles().afficherNiveau();
-    // p.getNiveauDeveloppement(0).afficherNiveau();
-    // p.getNiveauDeveloppement(1).afficherNiveau();
-    // p.getNiveauDeveloppement(2).afficherNiveau();
+    // //p.getCartesNobles().afficherNiveau();
+    // // p.getNiveauDeveloppement(0).afficherNiveau();
+    // // p.getNiveauDeveloppement(1).afficherNiveau();
+    // // p.getNiveauDeveloppement(2).afficherNiveau();
 
-    p.printPlateau();
-    Joueur j(0, "AJouglet");
-    j.addPDV(10);
-    std::cout << j.getPDV() << std::endl;
-    j.afficherBonus();
-    j.afficherInventaire();
+    // // p.printPlateau();
+    // Joueur j(0, "AJouglet");
+    // j.addPDV(10);
+    // std::cout << j.getPDV() << std::endl;
+    // j.afficherBonus();
+    // j.afficherInventaire();
 
-    j.setInventaire(0, 3);
-    j.setBonus(3,4);
-    j.setBonus(3, j.getBonus(3) + 2);
+    // j.setInventaire(0, 3);
+    // j.setBonus(3,4);
+    // j.setBonus(3, j.getBonus(3) + 2);
 
-    j.afficherBonus();
-    j.afficherInventaire();
+    // j.afficherBonus();
+    // j.afficherInventaire();
 
-    j.ajouterCarteReserve(p.getNiveauDeveloppement(0).retirerCarte(*p.getNiveauDeveloppement(0).getCartes()[0]));
-    j.afficherCartesRemportees();
-    j.afficherReserve();
+    // j.ajouterCarteReserve(p.getNiveauDeveloppement(0).retirerCarte(*p.getNiveauDeveloppement(0).getCartes()[0]));
+    // j.afficherCartesRemportees();
+    // j.afficherReserve();
 
-    p.printPlateau();
+    // std::cout << j.getNom() << std::endl;
 
+    // p.printPlateau();
 
+    Controleur c(4);
+    for (size_t i = 0; i < c.getNbJoueurs(); i++){
+        std::cout << c.getJoueur(i).getNom() << std::endl;
+    }
+
+    c.getPlateau().printPlateau();
     return 0;
 }
 
 
 //g++ -std=c++11 main.cpp ../src/carte/carte.cpp ../src/controleur/controleur.cpp ../src/jeu/jeu.cpp ../src/joueur/joueur.cpp ../src/niveau/niveau.cpp ../src/plateau/plateau.cpp ../src/type/type.cpp ../src/pioche/pioche.cpp -o main && ./main
 
-//g++ -std=c++11 main.cpp ../src/carte/carte.cpp ../src/niveau/niveau.cpp ../src/jeu/jeu.cpp ../src/type/type.cpp ../src/pioche/pioche.cpp ../src/plateau/plateau.cpp ../src/joueur/joueur.cpp -o main && ./main
+//g++ -std=c++11 main.cpp ../src/controleur/controleur.cpp ../src/carte/carte.cpp ../src/niveau/niveau.cpp ../src/jeu/jeu.cpp ../src/type/type.cpp ../src/pioche/pioche.cpp ../src/plateau/plateau.cpp ../src/joueur/joueur.cpp -o main && ./main

@@ -20,29 +20,21 @@ namespace Splendor{
 
     class Controleur{
         private:
-
-            struct Handler{
-                Controleur* instance;
-                Handler():instance(nullptr) {}
-            };
-            static Handler handler;
-
-            Controleur() = default;
-            ~Controleur() = default;
-            Controleur(const Controleur&) = delete;
-            Controleur& operator=(const Controleur&) = delete;
-
             //Attributes
             unsigned int nbJoueurs;
             Plateau plateau;
-            Joueur** joueurs;
-            Jeu jeu;
+            vector<Joueur*> joueurs;
 
         public:
+            Controleur(unsigned int nbj);
+
+            ~Controleur() = default;
+            Controleur(const Controleur&) = default;
+            Controleur& operator=(const Controleur&) = default;
+
             int getNbJoueurs() const { return nbJoueurs; }
-            static Controleur& getInstance();
-            static void freeInstance();
-            Plateau& getPlateau();
+            Plateau& getPlateau() { return plateau; }
+            Joueur& getJoueur(unsigned int i);
     };
 }
  
