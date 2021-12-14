@@ -83,7 +83,8 @@ int main(){
 
     Controleur c(4);
     for (size_t i = 0; i < c.getNbJoueurs(); i++){
-        std::cout << c.getJoueur(i).getNom() << std::endl;
+        std::cout << c.getJoueur(i).getNom() ;
+        std::cout << c.getJoueur(i).getId() << std::endl;
     }
 
     c.getPlateau().printPlateau();

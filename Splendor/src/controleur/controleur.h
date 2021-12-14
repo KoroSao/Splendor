@@ -37,6 +37,7 @@ namespace Splendor{
             Joueur& getJoueur(unsigned int i);
     };
 }
- 
+
+
 
 #endif
