@@ -110,16 +110,25 @@ namespace Splendor {
     */
 
     void Joueur::acheterCarte(const Carte& c, Plateau& p) {
-        //if (c.canBeBougth(*this))
-
+        if (c.canBeBougth(*this)) {
+            addCartesRemportees(c);
+            //TODO: traitement sur l'inventaire du joueur
+        }
+        throw SplendorException("Splendor::Joueur::acheterCarte() : ressources insuffisantes");
     }
 
     void Joueur::prendreRessource(unsigned int i, Plateau& p) {
         if(i > 5 || i < 0)
-            throw SplendorException("Splendor::Joueur::setInventaire() : indice i invalide");
+            throw SplendorException("Splendor::Joueur::prendreRessource() : indice i invalide");
         if (!p.getBanque(i))
-            throw SplendorException("Splendor::Joueur::setInventaire() : Banque vide");
+            throw SplendorException("Splendor::Joueur::prendreRessource() : Banque vide");
         p.setBanque(i, p.getBanque(i) - 1); //Retirer un jeton de la banque
         setInventaire(i, getInventaire(i) + 1); //Ajouter un jeton au joueur
+    }
+
+    void Joueur::selectCarte(const Carte& c, Plateau& p) {
+        if (c.canBeBougth(*this))
+            acheterCarte(c, p);
+        ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
     }
 } 

@@ -87,11 +87,22 @@ int main(){
         std::cout << c.getJoueur(i).getId() << std::endl;
     }
 
-    c.getPlateau().printPlateau();
+    //c.getPlateau().printPlateau();
     c.getJoueur(0).afficherInventaire();
     c.getJoueur(0).prendreRessource(0, c.getPlateau());
-    c.getJoueur(0).afficherInventaire();
     c.getPlateau().printBanque();
+    c.getJoueur(0).setInventaire(0,10);
+    c.getJoueur(0).setInventaire(1,10);
+    c.getJoueur(0).setInventaire(2,10);
+    c.getJoueur(0).setInventaire(3,10);
+    c.getJoueur(0).setInventaire(4,10);
+    c.getJoueur(0).afficherInventaire();
+
+    c.getJoueur(0).selectCarte(c.getPlateau().getNiveauDeveloppement(0).retirerCarte(*c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]), c.getPlateau());
+    std::cout << "CartesRemportees:" << std::endl;
+    c.getJoueur(0).afficherCartesRemportees();
+    std::cout << "Reserve:" << std::endl;
+    c.getJoueur(0).afficherReserve();
 
     return 0;
 }

@@ -77,6 +77,8 @@ namespace Splendor{
             // ------------ Action du joueur --------------
             void acheterCarte(const Carte& c, Plateau& p);
             void prendreRessource(unsigned int i, Plateau& p);
+            void selectCarte(const Carte&c, Plateau &p);
+
 
     };
 
