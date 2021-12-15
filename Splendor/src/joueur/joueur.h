@@ -9,6 +9,7 @@
 #include <algorithm>
 
 #include "../carte/carte.h"
+#include "../plateau/plateau.h"
 #include "../splendorException/splendorexception.h"
 
 using namespace std;
@@ -18,7 +19,7 @@ namespace Splendor{
 
     class Joueur {
         private:
-            unsigned int id;                    //
+            unsigned int id;                    //const
             string nom;                         //
             int inventaire[6];                  // ordre : émeraude / saphir / rubis / diamant / onyx / joker
             int bonus[5];                       // ordre : émeraude / saphir / rubis / diamant / onyx / joker
@@ -71,7 +72,11 @@ namespace Splendor{
             void afficherInventaire(std::ostream& f = std::cout) const;
             void afficherBonus(std::ostream& f = std::cout) const;
             void afficherReserve() ;
-            void afficherCartesRemportees() ;
+            void afficherCartesRemportees();
+
+            // ------------ Action du joueur --------------
+            void acheterCarte(const Carte& c, Plateau& p);
+            void prendreRessource(unsigned int i, Plateau& p);
 
     };
 

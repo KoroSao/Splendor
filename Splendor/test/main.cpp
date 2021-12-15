@@ -88,6 +88,11 @@ int main(){
     }
 
     c.getPlateau().printPlateau();
+    c.getJoueur(0).afficherInventaire();
+    c.getJoueur(0).prendreRessource(0, c.getPlateau());
+    c.getJoueur(0).afficherInventaire();
+    c.getPlateau().printBanque();
+
     return 0;
 }
 
