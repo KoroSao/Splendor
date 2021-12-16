@@ -110,11 +110,26 @@ namespace Splendor {
     */
 
     void Joueur::acheterCarte(const Carte& c, Plateau& p) {
-        if (!c.canBeBougth(*this)) {
+        if (!c.canBeBougth(*this))
             throw SplendorException("Splendor::Joueur::acheterCarte() : ressources insuffisantes");
-            //TODO: traitement sur l'inventaire du joueur
-        }
+
         addCartesRemportees(c);
+        //TODO: traitement sur l'inventaire du joueur
+        int jetons_manquants = 0;
+        
+        for (size_t i = 0; i<5;i++){
+            jetons_manquants += max(0, c.getCouts(i)-getBonus(i)-getInventaire(i));
+            setInventaire(i, max(0,getBonus(i)+getInventaire(i) - c.getCouts(i))); //Soustrait les jetons
+        }
+
+        if(jetons_manquants)
+            setInventaire(5, getInventaire(5) - jetons_manquants);  //soustrait les jokers
+    
+        //TODO: Dynamic Cast pour convertir en carte avec bonus...
+        /*for (size_t i = 0; i<5;i++){
+            setBonus(i, getBonus(i) + c.getBonus(i) ); // TODO: UPDATE AVEC GETBONUS;
+        }*/
+        
     }
 
     void Joueur::prendreRessource(unsigned int i, Plateau& p) {
