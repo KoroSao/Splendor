@@ -32,6 +32,7 @@ namespace Splendor {
             ~Plateau() = default;
             Plateau(const Plateau&) = delete;
             int* getBanque() { return banque; }
+            int getBanque(unsigned int pos) { return banque[pos]; }
             void setBanque(int pos, int val);
             Niveau& getNiveauNobles() { return *cartesNobles; }
             Niveau& getNiveauDeveloppement(int i);
