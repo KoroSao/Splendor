@@ -117,6 +117,7 @@ int main(){
         c.getJoueur(0).afficherCartesRemportees();
         std::cout << "Reserve:" << std::endl;
         c.getJoueur(0).afficherReserve();
+        c.getJoueur(0).afficherBonus();
     }
     catch(SplendorException& e) { std::cout << e.getInfo() << std::endl;}
     

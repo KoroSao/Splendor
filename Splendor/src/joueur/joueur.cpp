@@ -126,10 +126,12 @@ namespace Splendor {
             setInventaire(5, getInventaire(5) - jetons_manquants);  //soustrait les jokers
     
         //TODO: Dynamic Cast pour convertir en carte avec bonus...
-        /*for (size_t i = 0; i<5;i++){
-            setBonus(i, getBonus(i) + c.getBonus(i) ); // TODO: UPDATE AVEC GETBONUS;
-        }*/
-        
+        try{
+            Carte_avec_bonus* cab = dynamic_cast<Carte_avec_bonus*>(const_cast<Carte*>(&c));
+            for (size_t i = 0; i<5;i++){
+                setBonus(i, getBonus(i) + cab->getBonus(i) ); // TODO: UPDATE AVEC GETBONUS;
+            }        
+        }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
     }
 
     void Joueur::prendreRessource(unsigned int i, Plateau& p) {
