@@ -110,11 +110,11 @@ namespace Splendor {
     */
 
     void Joueur::acheterCarte(const Carte& c, Plateau& p) {
-        if (c.canBeBougth(*this)) {
-            addCartesRemportees(c);
+        if (!c.canBeBougth(*this)) {
+            throw SplendorException("Splendor::Joueur::acheterCarte() : ressources insuffisantes");
             //TODO: traitement sur l'inventaire du joueur
         }
-        throw SplendorException("Splendor::Joueur::acheterCarte() : ressources insuffisantes");
+        addCartesRemportees(c);
     }
 
     void Joueur::prendreRessource(unsigned int i, Plateau& p) {
@@ -127,8 +127,10 @@ namespace Splendor {
     }
 
     void Joueur::selectCarte(const Carte& c, Plateau& p) {
-        if (c.canBeBougth(*this))
+        if (c.canBeBougth(*this)){
             acheterCarte(c, p);
+        } else {
         ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
+        }
     }
 } 
