@@ -14,7 +14,7 @@ namespace Splendor{
         
         for (size_t i = 0; i<5;i++) 
             jetons_manquants += max(0, getCouts(i)-j.getBonus(i)-j.getInventaire(i));
-        return j.getInventaire(5)>jetons_manquants;
+        return j.getInventaire(5)>=jetons_manquants;
     }
 
     bool CarteNoble::canBeBougth(Joueur &j) const {

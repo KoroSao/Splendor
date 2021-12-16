@@ -98,11 +98,24 @@ int main(){
     c.getJoueur(0).setInventaire(4,10);
     c.getJoueur(0).afficherInventaire();
 
+
+    typedef array<int, 5> ressources;
+
+    ressources cst = {1,1,1,1,1};
+    ressources bns = {0,0,0,0,1};
+
+        
+    CarteDeveloppement* cartetest = new CarteDeveloppement(cst, bns, Type::un, 2);
+    if(cartetest->canBeBougth(c.getJoueur(0)))
+        std::cout << "Achetable" << std::endl;
+    std::cout << "Non Achetable" << std::endl;
+
+    /*
     c.getJoueur(0).selectCarte(c.getPlateau().getNiveauDeveloppement(0).retirerCarte(*c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]), c.getPlateau());
     std::cout << "CartesRemportees:" << std::endl;
     c.getJoueur(0).afficherCartesRemportees();
     std::cout << "Reserve:" << std::endl;
-    c.getJoueur(0).afficherReserve();
+    c.getJoueur(0).afficherReserve();*/
 
     return 0;
 }
