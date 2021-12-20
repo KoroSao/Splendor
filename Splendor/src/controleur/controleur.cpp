@@ -3,7 +3,7 @@
 namespace Splendor{
 
 
-    Controleur::Controleur(unsigned int nbj): nbJoueurs(nbj), plateau(nbj) {
+    Controleur::Controleur(unsigned int nbj): nbJoueurs(nbj), plateau(nbj), currentPlayer(0) {
         //Init joueurs vector
         //TODO: appeler à la place de la loop le menu de création d'une partie
         for (size_t i = 0; i < nbj; i++) {
@@ -12,7 +12,6 @@ namespace Splendor{
             std::cin >> playerName;
             joueurs.push_back(new Joueur(i, playerName));
         }
-        currentJoueur = joueurs[0];
     }
 
 
@@ -96,13 +95,36 @@ namespace Splendor{
             endOfTurn(j);
    }
 
+   void Controleur::nextPlayer() {
+        currentPlayer++;
+        if (currentPlayer >= nbJoueurs)
+            currentPlayer = 0;
+   }
+
    void Controleur::endOfTurn(Joueur& j) {
        std::cout << "Fin de ton tour !" << std::endl;
+
        //RESET tableau jetonspris
+       for (size_t i = 0; i < 5; i++)
+           j.setJetonsPris(i,0);
+
        //Check si trop de ressources (demander d'en surppirmer)
+       if (j.inventaireFull()){
+           std::cout << "Il faut vider ton inventaire" << std::endl;
+       }
+
        //Check les cartesnobles
-       //CHeck victory
-       //Passer au joueur suivant
+        for (size_t i = 0; i < nbJoueurs + 1; i++){
+            if (getPlateau().getNiveauNobles().getCartes()[i]->canBeBougth(j))
+                j.addCartesRemportees(*getPlateau().getNiveauNobles().getCartes()[i]);
+        }
+
+        //Check victory
+        if (j.hasVictoryCondition())
+            std::cout << "Last lap !" << std::endl;
+
+        //Passer au joueur suivant
+        nextPlayer();
    }
 
 

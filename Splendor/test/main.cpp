@@ -90,9 +90,11 @@ int main(){
 
     //c.getPlateau().printPlateau();
     //c.getJoueur(0).afficherInventaire();
-    c.prendreRessource(c.getJoueur(0), 0, c.getPlateau());
-    c.prendreRessource(c.getJoueur(0), 1, c.getPlateau());
-    c.prendreRessource(c.getJoueur(0), 2, c.getPlateau());
+    c.prendreRessource(c.getJoueur(c.getCurrentPlayer()), 0, c.getPlateau());
+    c.prendreRessource(c.getJoueur(c.getCurrentPlayer()), 1, c.getPlateau());
+    c.prendreRessource(c.getJoueur(c.getCurrentPlayer()), 2, c.getPlateau());
+    std::cout << c.getCurrentPlayer() << std::endl;
+    std::cout << "Hahaha" << std::endl;
     c.getPlateau().printBanque();
     c.getJoueur(0).setInventaire(0,10);
     c.getJoueur(0).setInventaire(1,10);
@@ -116,7 +118,8 @@ int main(){
     //c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]->afficherCarte();
     try{
         
-        //c.selectCarte(c.getJoueur(0), c.getPlateau().getNiveauDeveloppement(0).retirerCarte(*c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]), c.getPlateau());
+        c.selectCarte(c.getJoueur(c.getCurrentPlayer()), c.getPlateau().getNiveauDeveloppement(0).retirerCarte(*c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]), c.getPlateau());
+        std::cout << c.getCurrentPlayer() << std::endl;
         // std::cout << "CartesRemportees:" << std::endl;
         // c.getJoueur(0).afficherCartesRemportees();
         // std::cout << "Reserve:" << std::endl;
