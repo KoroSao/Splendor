@@ -17,6 +17,12 @@ namespace Splendor {
         return bonus[i]; 
     }
 
+    int Joueur::getJetonsPris(unsigned int i) const {
+        if (i > 4)
+            throw SplendorException("Splendor::Joueur::getJetonsPris() : indice i invalide");
+        return jetonsPris[i]; 
+    }
+
     /*
             =========================== SETTERS ===========================
     */
@@ -37,7 +43,14 @@ namespace Splendor {
         }
         bonus[i] = val;
         return true;
-    }; 
+    };
+
+    void Joueur::setJetonsPris(unsigned int i, unsigned int val){
+        if(i > 4)
+            throw SplendorException("Splendor::Joueur::setJetonsPris() : indice i invalide");
+        jetonsPris[i] = val;
+    }
+
 
     /*
             =========================== FONCTIONS ==========================
@@ -116,4 +129,6 @@ namespace Splendor {
 
         return nbJetons>10;
     }
+
+    
 } 

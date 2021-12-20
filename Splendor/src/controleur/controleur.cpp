@@ -12,6 +12,7 @@ namespace Splendor{
             std::cin >> playerName;
             joueurs.push_back(new Joueur(i, playerName));
         }
+        currentJoueur = joueurs[0];
     }
 
 
@@ -46,6 +47,7 @@ namespace Splendor{
                 j.setBonus(i, j.getBonus(i) + cab->getBonus(i) );
             }        
         }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
+        endOfTurn(j);
     }
 
     void Controleur::prendreRessource(Joueur& j, unsigned int i, Plateau& p) {
@@ -53,21 +55,55 @@ namespace Splendor{
             throw SplendorException("Splendor::Joueur::prendreRessource() : indice i invalide");
         if (!p.getBanque(i))
             throw SplendorException("Splendor::Joueur::prendreRessource() : Banque vide");
+        if (p.getBanque(i) <= 3 && j.getJetonsPris(i) > 0)
+            throw SplendorException("Splendor::Joueur::prendreRessources() : Impossible de prendre 2 jetons d'une pile de moins de 4 de haut");
+
+        int nbJetons = 0;
+        for (size_t i = 0; i < 5; i++)
+            nbJetons+=j.getJetonsPris(i);
+        if(nbJetons == 2 && j.getJetonsPris(i) == 1)
+            throw SplendorException("Splendor::Joueur::prendreRessources() : Impossible de prendre 3 jetons non tous différents");
+
+        
         p.setBanque(i, p.getBanque(i) - 1); //Retirer un jeton de la banque
         j.setInventaire(i, j.getInventaire(i) + 1); //Ajouter un jeton au joueur
+        j.setJetonsPris(i, j.getJetonsPris(i) + 1); //Ajout du jeton à l'historique de jetons du tour
+        isTurnFinished(j);
     }
 
     void Controleur::selectCarte(Joueur& j, const Carte& c, Plateau& p) {
         if (c.canBeBougth(j)){
             acheterCarte(j,c,p);
         } else {
-        j.ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
+            j.ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
+            endOfTurn(j);
         }
     }
 
     /*
             =========================== CONTROLE DES TOURS ==========================
     */
+
+   void Controleur::isTurnFinished(Joueur& j) {
+        int nbJetons = 0;
+        for (size_t i = 0; i < 5; i++) {
+            int x = j.getJetonsPris(i);
+            if (x == 2) 
+                endOfTurn(j);
+            nbJetons += x;
+        }
+        if (nbJetons == 3)
+            endOfTurn(j);
+   }
+
+   void Controleur::endOfTurn(Joueur& j) {
+       std::cout << "Fin de ton tour !" << std::endl;
+       //RESET tableau jetonspris
+       //Check si trop de ressources (demander d'en surppirmer)
+       //Check les cartesnobles
+       //CHeck victory
+       //Passer au joueur suivant
+   }
 
 
 

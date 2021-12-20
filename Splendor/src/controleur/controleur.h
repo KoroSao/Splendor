@@ -24,6 +24,7 @@ namespace Splendor{
             unsigned int nbJoueurs;
             Plateau plateau;
             vector<Joueur*> joueurs;
+            Joueur* currentJoueur;
 
         public:
             Controleur(unsigned int nbj);
@@ -42,9 +43,11 @@ namespace Splendor{
             void selectCarte(Joueur& j, const Carte&c, Plateau &p);
 
             // ------------ Controle des tours --------------
-            
+            void isTurnFinished(Joueur& j);      //Fonction controlant la quantité de jetons pris par le joueur
+            void endOfTurn(Joueur& j);
 
     };
+    
 }
 
 

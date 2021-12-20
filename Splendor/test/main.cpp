@@ -88,16 +88,18 @@ int main(){
     }
 
 
-    c.getPlateau().printPlateau();
-    c.getJoueur(0).afficherInventaire();
+    //c.getPlateau().printPlateau();
+    //c.getJoueur(0).afficherInventaire();
     c.prendreRessource(c.getJoueur(0), 0, c.getPlateau());
+    c.prendreRessource(c.getJoueur(0), 1, c.getPlateau());
+    c.prendreRessource(c.getJoueur(0), 2, c.getPlateau());
     c.getPlateau().printBanque();
     c.getJoueur(0).setInventaire(0,10);
     c.getJoueur(0).setInventaire(1,10);
     c.getJoueur(0).setInventaire(2,10);
     c.getJoueur(0).setInventaire(3,10);
     c.getJoueur(0).setInventaire(4,10);
-    c.getJoueur(0).afficherInventaire();
+    //c.getJoueur(0).afficherInventaire();
 
     /*
     typedef array<int, 5> ressources;
@@ -111,16 +113,15 @@ int main(){
         std::cout << "Achetable" << std::endl;
     std::cout << "Non Achetable" << std::endl;*/
     
-    c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]->afficherCarte();
+    //c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]->afficherCarte();
     try{
-        if (c.getJoueur(0).inventaireFull())
-            std::cout << "Inventaire Fullllll" << std::endl;
-        c.selectCarte(c.getJoueur(0), c.getPlateau().getNiveauDeveloppement(0).retirerCarte(*c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]), c.getPlateau());
-        std::cout << "CartesRemportees:" << std::endl;
-        c.getJoueur(0).afficherCartesRemportees();
-        std::cout << "Reserve:" << std::endl;
-        c.getJoueur(0).afficherReserve();
-        c.getJoueur(0).afficherBonus();
+        
+        //c.selectCarte(c.getJoueur(0), c.getPlateau().getNiveauDeveloppement(0).retirerCarte(*c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]), c.getPlateau());
+        // std::cout << "CartesRemportees:" << std::endl;
+        // c.getJoueur(0).afficherCartesRemportees();
+        // std::cout << "Reserve:" << std::endl;
+        // c.getJoueur(0).afficherReserve();
+        // c.getJoueur(0).afficherBonus();
     }
     catch(SplendorException& e) { std::cout << e.getInfo() << std::endl;}
 
