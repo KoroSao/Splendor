@@ -40,6 +40,10 @@ namespace Splendor{
             void acheterCarte(Joueur& j, const Carte& c, Plateau& p);
             void prendreRessource(Joueur& j, unsigned int i, Plateau& p);
             void selectCarte(Joueur& j, const Carte&c, Plateau &p);
+
+            // ------------ Controle des tours --------------
+            
+
     };
 }
 

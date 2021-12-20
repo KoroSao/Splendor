@@ -74,6 +74,9 @@ namespace Splendor{
             void afficherReserve() ;
             void afficherCartesRemportees();
 
+            // -----------Controle de tours-------
+            bool inventaireFull() const;
+            bool hasVictoryCondition() const { return getPDV() > 14; }
 
 
     };
