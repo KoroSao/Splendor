@@ -105,49 +105,4 @@ namespace Splendor {
             i->afficherCarte();
     }
 
-    /*
-            =========================== ACTION DU JOUEUR ==========================
-    */
-
-    void Joueur::acheterCarte(const Carte& c, Plateau& p) {
-        if (!c.canBeBougth(*this))
-            throw SplendorException("Splendor::Joueur::acheterCarte() : ressources insuffisantes");
-
-        addCartesRemportees(c);
-        //TODO: traitement sur l'inventaire du joueur
-        int jetons_manquants = 0;
-        
-        for (size_t i = 0; i<5;i++){
-            jetons_manquants += max(0, c.getCouts(i)-getBonus(i)-getInventaire(i));
-            setInventaire(i, max(0,getBonus(i)+getInventaire(i) - c.getCouts(i))); //Soustrait les jetons
-        }
-
-        if(jetons_manquants)
-            setInventaire(5, getInventaire(5) - jetons_manquants);  //soustrait les jokers
-    
-        //TODO: Dynamic Cast pour convertir en carte avec bonus...
-        try{
-            Carte_avec_bonus* cab = dynamic_cast<Carte_avec_bonus*>(const_cast<Carte*>(&c));
-            for (size_t i = 0; i<5;i++){
-                setBonus(i, getBonus(i) + cab->getBonus(i) ); // TODO: UPDATE AVEC GETBONUS;
-            }        
-        }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
-    }
-
-    void Joueur::prendreRessource(unsigned int i, Plateau& p) {
-        if(i > 5 || i < 0)
-            throw SplendorException("Splendor::Joueur::prendreRessource() : indice i invalide");
-        if (!p.getBanque(i))
-            throw SplendorException("Splendor::Joueur::prendreRessource() : Banque vide");
-        p.setBanque(i, p.getBanque(i) - 1); //Retirer un jeton de la banque
-        setInventaire(i, getInventaire(i) + 1); //Ajouter un jeton au joueur
-    }
-
-    void Joueur::selectCarte(const Carte& c, Plateau& p) {
-        if (c.canBeBougth(*this)){
-            acheterCarte(c, p);
-        } else {
-        ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
-        }
-    }
 } 

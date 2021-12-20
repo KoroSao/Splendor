@@ -87,7 +87,7 @@ int main(){
         std::cout << c.getJoueur(i).getId() << std::endl;
     }
 
-    //c.getPlateau().printPlateau();
+    /*c.getPlateau().printPlateau();
     c.getJoueur(0).afficherInventaire();
     c.getJoueur(0).prendreRessource(0, c.getPlateau());
     c.getPlateau().printBanque();
@@ -96,7 +96,7 @@ int main(){
     c.getJoueur(0).setInventaire(2,10);
     c.getJoueur(0).setInventaire(3,10);
     c.getJoueur(0).setInventaire(4,10);
-    c.getJoueur(0).afficherInventaire();
+    c.getJoueur(0).afficherInventaire();*/
 
     /*
     typedef array<int, 5> ressources;
@@ -109,7 +109,7 @@ int main(){
     if(cartetest->canBeBougth(c.getJoueur(0)))
         std::cout << "Achetable" << std::endl;
     std::cout << "Non Achetable" << std::endl;
-    */
+    
     c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]->afficherCarte();
     try{
         c.getJoueur(0).selectCarte(c.getPlateau().getNiveauDeveloppement(0).retirerCarte(*c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]), c.getPlateau());
@@ -120,7 +120,7 @@ int main(){
         c.getJoueur(0).afficherBonus();
     }
     catch(SplendorException& e) { std::cout << e.getInfo() << std::endl;}
-    
+    */
 
     return 0;
 }

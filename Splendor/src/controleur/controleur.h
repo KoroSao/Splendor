@@ -35,6 +35,11 @@ namespace Splendor{
             int getNbJoueurs() const { return nbJoueurs; }
             Plateau& getPlateau() { return plateau; }
             Joueur& getJoueur(unsigned int i);
+
+            // ------------ Action du joueur --------------
+            void acheterCarte(Joueur& j, const Carte& c, Plateau& p);
+            void prendreRessource(Joueur& j, unsigned int i, Plateau& p);
+            void selectCarte(Joueur& j, const Carte&c, Plateau &p);
     };
 }
 
