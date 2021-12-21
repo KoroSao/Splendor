@@ -58,15 +58,13 @@ namespace Splendor{
 
 
             // ----------- Setters -----------
-                //pas besoin de setters pour l'id et le nom car fait à la création
-                //TODO: voir l'utilité du bool ou du void
-            bool setInventaire(unsigned int i, unsigned int val);        
-            bool setBonus(unsigned int i, unsigned int val); 
+            void setInventaire(unsigned int i, unsigned int val);        
+            void setBonus(unsigned int i, unsigned int val); 
             void setJetonsPris(unsigned int i, unsigned int val);
 
-            bool addCartesRemportees(const Carte &c);
+            void addCartesRemportees(const Carte &c);
 
-            bool ajouterCarteReserve(const Carte &c);
+            void ajouterCarteReserve(const Carte &c);
             const Carte& retirerCarteReserve(const Carte &c);
         
             void addPDV(unsigned int i);

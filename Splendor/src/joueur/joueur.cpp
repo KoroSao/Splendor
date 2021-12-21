@@ -27,22 +27,18 @@ namespace Splendor {
             =========================== SETTERS ===========================
     */
 
-    bool Joueur::setInventaire(unsigned int i, unsigned int val){
+    void Joueur::setInventaire(unsigned int i, unsigned int val){
         if(i > 5){
             throw SplendorException("Splendor::Joueur::setInventaire() : indice i invalide");
-            return false;
         }
         inventaire[i] = val;
-        return true;
     };  
 
-    bool Joueur::setBonus(unsigned int i, unsigned int val){
+    void Joueur::setBonus(unsigned int i, unsigned int val){
         if(i > 4){
             throw SplendorException("Splendor::Joueur::setBonus() : indice i invalide");
-            return false;
         }
         bonus[i] = val;
-        return true;
     };
 
     void Joueur::setJetonsPris(unsigned int i, unsigned int val){
@@ -57,13 +53,11 @@ namespace Splendor {
     */
 
 
-    bool Joueur::ajouterCarteReserve(const Carte &c){
+    void Joueur::ajouterCarteReserve(const Carte &c){
         if (reserve.size() > 3){
             throw SplendorException("Splendor::Joueur::ajouterCarteReserve() : reserve pleine");
-            return false;
         }
         reserve.push_back(&c);
-        return true;
     };
 
     const Carte& Joueur::retirerCarteReserve(const Carte &c){
@@ -79,9 +73,8 @@ namespace Splendor {
         return c;
     };
 
-    bool Joueur::addCartesRemportees(const Carte &c){
+    void Joueur::addCartesRemportees(const Carte &c){
         cartesRemportees.push_back(&c);
-        return 0;
     };
 
     void Joueur::addPDV(unsigned int i) {

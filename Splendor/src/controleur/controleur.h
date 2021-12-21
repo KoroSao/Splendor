@@ -49,7 +49,7 @@ namespace Splendor{
             void endOfTurn(Joueur& j);
             void nextPlayer();
             int getCurrentPlayer() const { return currentPlayer; }
-            void Controleur::endOfGame();
+            void endOfGame();
 
     };
 

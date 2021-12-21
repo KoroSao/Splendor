@@ -5,7 +5,6 @@ using namespace std;
 
 namespace Splendor{
 
-    //TODO: Revoir les méthodes canBeBought: ne fonctionne pas correctement !
 
     bool CarteDeveloppement::canBeBougth(Joueur &j) const {
         /*Pour pouvoir acheter un carte le joueur doit avoir les ressources
