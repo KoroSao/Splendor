@@ -25,6 +25,8 @@ namespace Splendor{
             Plateau plateau;
             vector<Joueur*> joueurs;
             int currentPlayer;
+            bool lastLap;
+
         public:
             Controleur(unsigned int nbj);
 
@@ -46,6 +48,7 @@ namespace Splendor{
             void endOfTurn(Joueur& j);
             void nextPlayer();
             int getCurrentPlayer() const { return currentPlayer; }
+            void Controleur::endOfGame();
 
     };
 

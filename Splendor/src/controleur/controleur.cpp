@@ -3,7 +3,7 @@
 namespace Splendor{
 
 
-    Controleur::Controleur(unsigned int nbj): nbJoueurs(nbj), plateau(nbj), currentPlayer(0) {
+    Controleur::Controleur(unsigned int nbj): nbJoueurs(nbj), plateau(nbj), currentPlayer(0), lastLap(false) {
         //Init joueurs vector
         //TODO: appeler à la place de la loop le menu de création d'une partie
         for (size_t i = 0; i < nbj; i++) {
@@ -121,10 +121,25 @@ namespace Splendor{
 
         //Check victory
         if (j.hasVictoryCondition())
-            std::cout << "Last lap !" << std::endl;
+            lastLap = true;
 
         //Passer au joueur suivant
-        nextPlayer();
+        if (lastLap && currentPlayer != nbJoueurs - 1)
+            nextPlayer();
+        else
+            endOfGame();
+   }
+
+   void Controleur::endOfGame(){
+       int joueurGagnant = 0;
+       for (unsigned int i = 0; i < nbJoueurs; i++) {
+            if (getJoueur(i).getPDV() > getJoueur(i).getPDV()){
+                joueurGagnant = i;
+            }
+       }
+       std::cout << "Le joueur gagnant est " << getJoueur(joueurGagnant).getNom() <<std::endl;
+       std::cout << "Il remporte la partie avec " << getJoueur(joueurGagnant).getPDV() << "Points de victoire !" << std::endl;
+
    }
 
 
