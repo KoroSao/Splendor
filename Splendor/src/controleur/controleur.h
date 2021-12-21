@@ -41,6 +41,7 @@ namespace Splendor{
             // ------------ Action du joueur --------------
             void acheterCarte(Joueur& j, const Carte& c, Plateau& p);
             void prendreRessource(Joueur& j, unsigned int i, Plateau& p);
+            void rendreRessource(Joueur&j, unsigned int i, Plateau &p);
             void selectCarte(Joueur& j, const Carte&c, Plateau &p);
 
             // ------------ Controle des tours --------------

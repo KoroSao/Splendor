@@ -70,6 +70,17 @@ namespace Splendor{
         isTurnFinished(j);
     }
 
+    void Controleur::rendreRessource(Joueur&j, unsigned int i, Plateau &p) {
+        if(i > 5 || i < 0)
+            throw SplendorException("Splendor::Joueur::prendreRessource() : indice i invalide");
+        if (!j.getInventaire(i))
+            throw SplendorException("Splendor::Joueur::prendreRessource() : Ressource inexistante");
+        j.setInventaire(i, j.getInventaire(i) - 1);       //Retire le jeton de l'inventaire du joueur
+        p.setBanque(i, p.getBanque(i) + 1);                 //Ajoute le jeton de l'inventaire du joueur dans la banque
+        endOfTurn(j);                   //Rappelle EndOfTurn pour voir si assez de jetons rendus
+    }
+
+
     void Controleur::selectCarte(Joueur& j, const Carte& c, Plateau& p) {
         if (c.canBeBougth(j)){
             acheterCarte(j,c,p);
