@@ -46,7 +46,6 @@ namespace Splendor{
                 j.setBonus(i, j.getBonus(i) + cab->getBonus(i) );
             }        
         }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
-        endOfTurn(j);
     }
 
     void Controleur::prendreRessource(Joueur& j, unsigned int i, Plateau& p) {
@@ -67,7 +66,7 @@ namespace Splendor{
         p.setBanque(i, p.getBanque(i) - 1); //Retirer un jeton de la banque
         j.setInventaire(i, j.getInventaire(i) + 1); //Ajouter un jeton au joueur
         j.setJetonsPris(i, j.getJetonsPris(i) + 1); //Ajout du jeton à l'historique de jetons du tour
-        isTurnFinished(j);
+        isTurnWithJetonsFinished(j);
     }
 
     void Controleur::rendreRessource(Joueur&j, unsigned int i, Plateau &p) {
@@ -77,16 +76,20 @@ namespace Splendor{
             throw SplendorException("Splendor::Joueur::prendreRessource() : Ressource inexistante");
         j.setInventaire(i, j.getInventaire(i) - 1);       //Retire le jeton de l'inventaire du joueur
         p.setBanque(i, p.getBanque(i) + 1);                 //Ajoute le jeton de l'inventaire du joueur dans la banque
-        endOfTurn(j);                   //Rappelle EndOfTurn pour voir si assez de jetons rendus
     }
 
 
     void Controleur::selectCarte(Joueur& j, const Carte& c, Plateau& p) {
         if (c.canBeBougth(j)){
-            acheterCarte(j,c,p);
+            if (confirmTurn(j)){
+                acheterCarte(j,c,p);
+                endOfTurn(j);
+            }
         } else {
-            j.ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
-            endOfTurn(j);
+            if (confirmTurn(j)){
+                j.ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
+                endOfTurn(j);
+            }
         }
     }
 
@@ -94,17 +97,53 @@ namespace Splendor{
             =========================== CONTROLE DES TOURS ==========================
     */
 
-   void Controleur::isTurnFinished(Joueur& j) {
+    
+   void Controleur::isTurnWithJetonsFinished(Joueur& j) {
         int nbJetons = 0;
         for (size_t i = 0; i < 5; i++) {
             int x = j.getJetonsPris(i);
-            if (x == 2) 
-                endOfTurn(j);
+            if (x == 2) {
+                if (confirmTurn(j))
+                    endOfTurn(j);
+                else
+                    cancelTurn(j);
+                break;
+            }
             nbJetons += x;
         }
-        if (nbJetons == 3)
-            endOfTurn(j);
+        if (nbJetons == 3){
+            if (confirmTurn(j))
+                endOfTurn(j);
+            else   
+                cancelTurn(j);
+        }
+            
    }
+
+   bool Controleur::confirmTurn(Joueur& j) {
+        std::cout << "Confirmez-vous votre action ?" << std::endl;
+        int answer;
+        std::cin >> answer;
+        if (answer == 1)
+            return true;
+        else
+            return false;  
+    }
+
+    void Controleur::cancelTurn(Joueur& j) {
+        //Méthode permettant de rendre les jetons pris par le joueur
+        //quand il cancel son tour
+        for (size_t i = 0; i < 5; i++){
+            int x = j.getJetonsPris(i);
+            for(size_t k = 0; k < x; k++) {
+                rendreRessource(j,i,getPlateau());
+            }
+        }
+        //RESET tableau jetonspris
+        for (size_t i = 0; i < 5; i++)
+            j.setJetonsPris(i,0);
+    }
+    
 
    void Controleur::nextPlayer() {
         currentPlayer++;
@@ -113,8 +152,8 @@ namespace Splendor{
    }
 
    void Controleur::endOfTurn(Joueur& j) {
+       
        std::cout << "Fin de ton tour !" << std::endl;
-
        //RESET tableau jetonspris
        for (size_t i = 0; i < 5; i++)
            j.setJetonsPris(i,0);
@@ -132,10 +171,12 @@ namespace Splendor{
 
         //Check victory
         if (j.hasVictoryCondition())
+            std::cout << "Last lap" << std::endl;
             lastLap = true;
 
         //Passer au joueur suivant
-        if (lastLap && currentPlayer != nbJoueurs - 1)
+
+        if ((lastLap && currentPlayer != nbJoueurs - 1) || !lastLap)
             nextPlayer();
         else
             endOfGame();
@@ -150,7 +191,6 @@ namespace Splendor{
        }
        std::cout << "Le joueur gagnant est " << getJoueur(joueurGagnant).getNom() <<std::endl;
        std::cout << "Il remporte la partie avec " << getJoueur(joueurGagnant).getPDV() << "Points de victoire !" << std::endl;
-
    }
 
 

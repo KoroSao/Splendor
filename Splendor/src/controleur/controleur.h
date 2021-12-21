@@ -37,6 +37,7 @@ namespace Splendor{
             int getNbJoueurs() const { return nbJoueurs; }
             Plateau& getPlateau() { return plateau; }
             Joueur& getJoueur(unsigned int i);
+            int getCurrentPlayer() const { return currentPlayer; }
 
             // ------------ Action du joueur --------------
             void acheterCarte(Joueur& j, const Carte& c, Plateau& p);
@@ -45,11 +46,13 @@ namespace Splendor{
             void selectCarte(Joueur& j, const Carte&c, Plateau &p);
 
             // ------------ Controle des tours --------------
-            void isTurnFinished(Joueur& j);      //Fonction controlant la quantité de jetons pris par le joueur
+            void isTurnWithJetonsFinished(Joueur& j);      //Fonction controlant la quantité de jetons pris par le joueur
+            bool confirmTurn(Joueur& j);
+            void cancelTurn(Joueur& j);
             void endOfTurn(Joueur& j);
             void nextPlayer();
-            int getCurrentPlayer() const { return currentPlayer; }
             void endOfGame();
+
 
     };
 

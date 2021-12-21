@@ -80,7 +80,7 @@ int main(){
     // std::cout << j.getNom() << std::endl;
 
     // p.printPlateau();
-
+    try{
     Controleur c(4);
     for (size_t i = 0; i < c.getNbJoueurs(); i++){
         std::cout << c.getJoueur(i).getNom() ;
@@ -96,11 +96,17 @@ int main(){
     std::cout << c.getCurrentPlayer() << std::endl;
     std::cout << "Hahaha" << std::endl;
     c.getPlateau().printBanque();
-    c.getJoueur(0).setInventaire(0,10);
-    c.getJoueur(0).setInventaire(1,10);
-    c.getJoueur(0).setInventaire(2,10);
-    c.getJoueur(0).setInventaire(3,10);
-    c.getJoueur(0).setInventaire(4,10);
+    c.getJoueur(c.getCurrentPlayer()).setInventaire(0,10);
+    c.getJoueur(c.getCurrentPlayer()).setInventaire(1,10);
+    c.getJoueur(c.getCurrentPlayer()).setInventaire(2,10);
+    c.getJoueur(c.getCurrentPlayer()).setInventaire(3,10);
+    c.getJoueur(c.getCurrentPlayer()).setInventaire(4,10);
+
+    std::cout << "Cartes avant achat:" << std::endl;
+    c.getJoueur(1).afficherCartesRemportees();
+    c.selectCarte(c.getJoueur(c.getCurrentPlayer()), c.getPlateau().getNiveauDeveloppement(0).retirerCarte(*c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]), c.getPlateau());
+    c.getJoueur(1).afficherCartesRemportees();
+    std::cout << c.getCurrentPlayer() << std::endl;
     //c.getJoueur(0).afficherInventaire();
 
     /*
@@ -116,10 +122,9 @@ int main(){
     std::cout << "Non Achetable" << std::endl;*/
     
     //c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]->afficherCarte();
-    try{
+    
         
-        c.selectCarte(c.getJoueur(c.getCurrentPlayer()), c.getPlateau().getNiveauDeveloppement(0).retirerCarte(*c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]), c.getPlateau());
-        std::cout << c.getCurrentPlayer() << std::endl;
+        
         // std::cout << "CartesRemportees:" << std::endl;
         // c.getJoueur(0).afficherCartesRemportees();
         // std::cout << "Reserve:" << std::endl;
