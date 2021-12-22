@@ -26,7 +26,7 @@ namespace Splendor{
             vector<Joueur*> joueurs;
 
         public:
-            Controleur(unsigned int nbj);
+            Controleur();
 
             ~Controleur() = default;
             Controleur(const Controleur&) = default;
