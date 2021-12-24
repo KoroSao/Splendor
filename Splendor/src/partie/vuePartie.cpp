@@ -6,35 +6,70 @@
 #include <QLCDNumber>
 #include <QString>
 #include <QMessageBox>
+#include <QDebug>
 #include "./vuePartie.h"
 //#include "vuecarte.h"
 
 VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), vuecartesNobles(5,nullptr)
 {
     setWindowTitle("Splendor !"); // modifier le titre de la fenêtre
-
-    banque = new QLabel("Banque:(émeraude/saphir/rubis/diamant/onyx/joker)");
+    banque = new QLabel("Banque:"); //(émeraude/saphir/rubis/diamant/onyx/joker)
 
     carteNobles = new QLabel("Carte Nobles : ");
+
+    QGroupBox *emeraudeBox = new QGroupBox(tr("Emeraude :"));
+    QHBoxLayout *emeraudeLayout = new QHBoxLayout;
+    QGroupBox *saphirBox = new QGroupBox(tr("Saphir :"));
+    QHBoxLayout *saphirLayout = new QHBoxLayout;
+    QGroupBox *rubisBox = new QGroupBox(tr("Rubis :"));
+    QHBoxLayout *rubisLayout = new QHBoxLayout;
+    QGroupBox *diamantBox = new QGroupBox(tr("Diamant :"));
+    QHBoxLayout *diamantLayout = new QHBoxLayout;
+    QGroupBox *onyxBox = new QGroupBox(tr("Onyx :"));
+    QHBoxLayout *onyxLayout = new QHBoxLayout;
+    QGroupBox *jokerBox = new QGroupBox(tr("Joker :"));
+    QHBoxLayout *jokerLayout = new QHBoxLayout;
 
     emeraudeBanque=new QLCDNumber;
     emeraudeBanque->display(QString::number(controleur.getPlateau().getBanque(0)));
     emeraudeBanque->setFixedHeight(30);
+    emeraudeLayout->addWidget(emeraudeBanque);
     saphirBanque=new QLCDNumber;
     saphirBanque->display(QString::number(controleur.getPlateau().getBanque(1)));
     saphirBanque->setFixedHeight(30);
+    saphirLayout->addWidget(saphirBanque);
     rubisBanque=new QLCDNumber;
     rubisBanque->display(QString::number(controleur.getPlateau().getBanque(2)));
     rubisBanque->setFixedHeight(30);
+    rubisLayout->addWidget(rubisBanque);
     diamantBanque=new QLCDNumber;
     diamantBanque->display(QString::number(controleur.getPlateau().getBanque(3)));
     diamantBanque->setFixedHeight(30);
+    diamantLayout->addWidget(diamantBanque);
     onyxBanque=new QLCDNumber;
     onyxBanque->display(QString::number(controleur.getPlateau().getBanque(4)));
     onyxBanque->setFixedHeight(30);
+    onyxLayout->addWidget(onyxBanque);
     jokerBanque=new QLCDNumber;
     jokerBanque->display(QString::number(controleur.getPlateau().getBanque(5)));
     jokerBanque->setFixedHeight(30);
+    jokerLayout->addWidget(jokerBanque);
+
+    emeraudeBouton = new QPushButton("Prendre", this);
+    emeraudeBouton->setFixedSize(QSize(75, 42));
+    emeraudeLayout->addWidget(emeraudeBouton);
+    saphirBouton = new QPushButton("Prendre", this);
+    saphirBouton->setFixedSize(QSize(75, 42));
+    saphirLayout->addWidget(saphirBouton);
+    rubisBouton = new QPushButton("Prendre", this);
+    rubisBouton->setFixedSize(QSize(75, 42));
+    rubisLayout->addWidget(rubisBouton);
+    diamantBouton = new QPushButton("Prendre", this);
+    diamantBouton->setFixedSize(QSize(75, 42));
+    diamantLayout->addWidget(diamantBouton);
+    onyxBouton = new QPushButton("Prendre", this);
+    onyxBouton->setFixedSize(QSize(75, 42));
+    onyxLayout->addWidget(onyxBouton);
 
     layoutInformations=new QHBoxLayout;
     layoutCartes = new QGridLayout;
@@ -43,19 +78,26 @@ VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), 
 
     //Informations
     layoutInformations->addWidget(banque);
-    layoutInformations->addWidget(emeraudeBanque);
 
-    layoutInformations->addWidget(saphirBanque);
-    layoutInformations->addWidget(rubisBanque);
-    layoutInformations->addWidget(diamantBanque);
-    layoutInformations->addWidget(onyxBanque);
-    layoutInformations->addWidget(jokerBanque);
+    emeraudeBox->setLayout(emeraudeLayout);
+    layoutInformations->addWidget(emeraudeBox);
+    saphirBox->setLayout(saphirLayout);
+    layoutInformations->addWidget(saphirBox);
+    rubisBox->setLayout(rubisLayout);
+    layoutInformations->addWidget(rubisBox);
+    diamantBox->setLayout(diamantLayout);
+    layoutInformations->addWidget(diamantBox);
+    onyxBox->setLayout(onyxLayout);
+    layoutInformations->addWidget(onyxBox);
+    jokerBox->setLayout(jokerLayout);
+    layoutInformations->addWidget(jokerBox);
 
-
-//    // Create the button, make "this" the parent
-//    m_button = new QPushButton("My Button", this);
-//      // set size and location of the button
-//   m_button->setGeometry(QRect(QPoint(100, 100), QSize(200, 50)));
+    //Gestion des Slots des boutons :
+    connect(emeraudeBouton, &QPushButton::released, this, &VuePartie::emeraudeBoutonClique);
+    connect(saphirBouton, &QPushButton::released, this, &VuePartie::saphirBoutonClique);
+    connect(rubisBouton, &QPushButton::released, this, &VuePartie::rubisBoutonClique);
+    connect(diamantBouton, &QPushButton::released, this, &VuePartie::diamantBoutonClique);
+    connect(onyxBouton, &QPushButton::released, this, &VuePartie::onyxBoutonClique);
 
     //création des vues des cartesDeveloppement
     for(size_t i=0; i<12;i++)
@@ -133,6 +175,27 @@ VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), 
     couche->addWidget(playersData);
     setLayout(couche);
 }
+
+void VuePartie::emeraudeBoutonClique(){
+    //emeraudeBouton->setText("click!");
+    qInfo("L'utilisateur x souhaite prendre un jeton émeraude !");
+};
+
+void VuePartie::saphirBoutonClique(){
+    qInfo("L'utilisateur x souhaite prendre un jeton saphir !");
+};
+
+void VuePartie::rubisBoutonClique(){
+    qInfo("L'utilisateur x souhaite prendre un jeton rubis !");
+};
+
+void VuePartie::diamantBoutonClique(){
+    qInfo("L'utilisateur x souhaite prendre un jeton diamant !");
+};
+
+void VuePartie::onyxBoutonClique(){
+    qInfo("L'utilisateur x souhaite prendre un jeton onyx !");
+};
 
 void VuePartie::carteClique(VueCarte* vc){
    return;

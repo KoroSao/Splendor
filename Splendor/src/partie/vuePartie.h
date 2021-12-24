@@ -2,6 +2,8 @@
 #define VUEPARTIE_H
 
 #include <QWidget>
+#include <QPushButton>
+#include <QGroupBox>
 #include <vector>
 #include <set>
 #include "../controleur/controleur.h"
@@ -24,12 +26,30 @@ public:
 private:
     Splendor::Controleur controleur; // controleur de la partie //TODO: fixé à 4 joueurs
 
+    // - - - - Jeton - - - -
+    QGroupBox *emeraudeBox();
     QLCDNumber* emeraudeBanque;
+    QPushButton *emeraudeBouton;
+
+    QGroupBox *saphirBox();
     QLCDNumber* saphirBanque;
+    QPushButton *saphirBouton;
+
+    QGroupBox *rubisBox();
     QLCDNumber* rubisBanque;
+    QPushButton *rubisBouton;
+
+    QGroupBox *diamantBox();
     QLCDNumber* diamantBanque;
+    QPushButton *diamantBouton;
+
+    QGroupBox *onyxBox();
     QLCDNumber* onyxBanque;
+    QPushButton *onyxBouton;
+
+    QGroupBox *jokerBox();
     QLCDNumber* jokerBanque;
+     // - - - - end Jeton - - - -
 
     QLabel* banque; // texte
     QLabel* carteNobles; // texte
@@ -48,11 +68,16 @@ private:
 
     std::set<const Splendor::Carte*> selectionCartes; // ensemble des cartes sélectionnées
 
-    QPushButton *m_button;
 
     private slots:
         // slots qui gère les clics sur les cartes
         void carteClique(VueCarte* vc);
+        void emeraudeBoutonClique();
+
+        void saphirBoutonClique();
+        void rubisBoutonClique();
+        void diamantBoutonClique();
+        void onyxBoutonClique();
 
 };
 
