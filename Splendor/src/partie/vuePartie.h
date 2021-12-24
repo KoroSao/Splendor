@@ -53,7 +53,6 @@ private:
 
     QLabel* banque; // texte
     QLabel* carteNobles; // texte
-
     QLabel* playersData; // texte
 
     QHBoxLayout* layoutInformations;
@@ -61,23 +60,27 @@ private:
     QGridLayout* layoutCartesNobles;
     QVBoxLayout* couche;
 
+    QPushButton *pioche1Bouton;
+    QPushButton *pioche2Bouton;
+    QPushButton *pioche3Bouton;
+
     vector<VueCarte*> vuecartes; // adresses des objets VueCarte
     vector<VueCarte*> vuecartesNobles; // adresses des objets VueCarteNobles
-
-    vector<VueJoueur*> vueJoueur; // adresses des objets VueCarteNobles
 
     std::set<const Splendor::Carte*> selectionCartes; // ensemble des cartes sélectionnées
 
 
     private slots:
-        // slots qui gère les clics sur les cartes
+        // slots qui gère les clics sur les cartes et boutons
         void carteClique(VueCarte* vc);
         void emeraudeBoutonClique();
-
         void saphirBoutonClique();
         void rubisBoutonClique();
         void diamantBoutonClique();
         void onyxBoutonClique();
+        void pioche1BoutonClique();
+        void pioche2BoutonClique();
+        void pioche3BoutonClique();
 
 };
 

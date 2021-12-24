@@ -92,6 +92,20 @@ VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), 
     jokerBox->setLayout(jokerLayout);
     layoutInformations->addWidget(jokerBox);
 
+    //Gestion des Pioches 1 2 et 3
+    pioche1Bouton = new QPushButton("Pioche1", this);
+    pioche1Bouton->setFixedSize(QSize(60, 100));
+
+    pioche2Bouton = new QPushButton("Pioche2", this);
+    pioche2Bouton->setFixedSize(QSize(60, 100));
+
+    pioche3Bouton = new QPushButton("Pioche3", this);
+    pioche3Bouton->setFixedSize(QSize(60, 100));
+
+    layoutCartes->addWidget(pioche1Bouton,0,0);
+    layoutCartes->addWidget(pioche2Bouton,1,0);
+    layoutCartes->addWidget(pioche3Bouton,2,0);
+
     //Gestion des Slots des boutons :
     connect(emeraudeBouton, &QPushButton::released, this, &VuePartie::emeraudeBoutonClique);
     connect(saphirBouton, &QPushButton::released, this, &VuePartie::saphirBoutonClique);
@@ -99,11 +113,15 @@ VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), 
     connect(diamantBouton, &QPushButton::released, this, &VuePartie::diamantBoutonClique);
     connect(onyxBouton, &QPushButton::released, this, &VuePartie::onyxBoutonClique);
 
+    connect(pioche1Bouton, &QPushButton::released, this, &VuePartie::pioche1BoutonClique);
+    connect(pioche2Bouton, &QPushButton::released, this, &VuePartie::pioche2BoutonClique);
+    connect(pioche3Bouton, &QPushButton::released, this, &VuePartie::pioche3BoutonClique);
+
     //création des vues des cartesDeveloppement
     for(size_t i=0; i<12;i++)
         vuecartes[i] = new VueCarte;
     for(size_t i=0; i<12;i++){
-        layoutCartes->addWidget(vuecartes[i],i/4,i%4);//ajout de la carte sur la grille
+        layoutCartes->addWidget(vuecartes[i],((i)/4),((i)%4)+1);//ajout de la carte sur la grille
         connect(vuecartes[i],SIGNAL(carteClicked(VueCarte*)),this,SLOT(carteClique(VueCarte*)));
     }
 
@@ -180,22 +198,14 @@ void VuePartie::emeraudeBoutonClique(){
     //emeraudeBouton->setText("click!");
     qInfo("L'utilisateur x souhaite prendre un jeton émeraude !");
 };
+void VuePartie::saphirBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton saphir !"); };
+void VuePartie::rubisBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton rubis !"); };
+void VuePartie::diamantBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton diamant !"); };
+void VuePartie::onyxBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton onyx !"); };
 
-void VuePartie::saphirBoutonClique(){
-    qInfo("L'utilisateur x souhaite prendre un jeton saphir !");
-};
-
-void VuePartie::rubisBoutonClique(){
-    qInfo("L'utilisateur x souhaite prendre un jeton rubis !");
-};
-
-void VuePartie::diamantBoutonClique(){
-    qInfo("L'utilisateur x souhaite prendre un jeton diamant !");
-};
-
-void VuePartie::onyxBoutonClique(){
-    qInfo("L'utilisateur x souhaite prendre un jeton onyx !");
-};
+void VuePartie::pioche1BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 1 !"); };
+void VuePartie::pioche2BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 2 !"); };
+void VuePartie::pioche3BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 3 !"); };
 
 void VuePartie::carteClique(VueCarte* vc){
    return;
