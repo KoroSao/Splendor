@@ -154,12 +154,16 @@ VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), 
         j++;
     }
 
-    playersData = new QLabel("Player Data : ");
-    QString str;
+
+    QVBoxLayout *playerLayout = new QVBoxLayout();
+
     for (int i = 0; i < controleur.getNbJoueurs(); ++i){
-        if (i > 0) {
-            str += "\n";
-        }
+        playersData = new QLabel();
+        QString str;
+        QHBoxLayout *playerBox = new QHBoxLayout;
+        QGroupBox *playersDataBox = new QGroupBox();
+        playersDataBox->setStyleSheet("QGroupBox {""padding: 1 1 1 1;} ");
+
         str += "id :" + QString::number(controleur.getJoueur(i).getId()) + "   ";
         str += QString::fromStdString(controleur.getJoueur(i).getNom()) + "   ";
         str += "PDV:" + QString::number(controleur.getJoueur(i).getPDV()) + "   ";
@@ -176,21 +180,23 @@ VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), 
         }
         str += QString::number(controleur.getJoueur(i).getInventaire()[4]) + "]   ";
 
+        playersData->setText(str);
+        playerBox->addWidget(playersData);
+        playersDataBox->setLayout(playerBox);
+        playerLayout->addWidget(playersDataBox);
 
         //Manque affichage des cartes Reserve et CarteRemportées ? (pas besoin carteRemporté?)
         //controleur.getJoueur(i).getReserve();
         //controleur.getJoueur(i).getCartesRemportees();
     }
-    playersData->setText(str);
 
     couche->addLayout(layoutInformations);
     couche->addLayout(layoutCartes);
 
     //affiche juste CarteNobles :
     couche->addWidget(carteNobles);
-
     couche->addLayout(layoutCartesNobles);
-    couche->addWidget(playersData);
+    couche->addLayout(playerLayout);
     setLayout(couche);
 }
 

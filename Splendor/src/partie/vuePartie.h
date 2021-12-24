@@ -55,6 +55,10 @@ private:
     QLabel* carteNobles; // texte
     QLabel* playersData; // texte
 
+    QVBoxLayout* playersBox;
+    QVBoxLayout* playerLayout;
+    QGroupBox* playersDataBox();
+
     QHBoxLayout* layoutInformations;
     QGridLayout* layoutCartes; // grille des cartes
     QGridLayout* layoutCartesNobles;
