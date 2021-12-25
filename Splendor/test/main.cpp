@@ -80,23 +80,34 @@ int main(){
     // std::cout << j.getNom() << std::endl;
 
     // p.printPlateau();
-
+    try{
     Controleur c(4);
     for (size_t i = 0; i < c.getNbJoueurs(); i++){
         std::cout << c.getJoueur(i).getNom() ;
         std::cout << c.getJoueur(i).getId() << std::endl;
     }
 
+
     //c.getPlateau().printPlateau();
-    c.getJoueur(0).afficherInventaire();
-    c.getJoueur(0).prendreRessource(0, c.getPlateau());
+    //c.getJoueur(0).afficherInventaire();
+    c.prendreRessource(c.getJoueur(c.getCurrentPlayer()), 0, c.getPlateau());
+    c.prendreRessource(c.getJoueur(c.getCurrentPlayer()), 1, c.getPlateau());
+    c.prendreRessource(c.getJoueur(c.getCurrentPlayer()), 2, c.getPlateau());
+    std::cout << c.getCurrentPlayer() << std::endl;
+    std::cout << "Hahaha" << std::endl;
     c.getPlateau().printBanque();
-    c.getJoueur(0).setInventaire(0,10);
-    c.getJoueur(0).setInventaire(1,10);
-    c.getJoueur(0).setInventaire(2,10);
-    c.getJoueur(0).setInventaire(3,10);
-    c.getJoueur(0).setInventaire(4,10);
-    c.getJoueur(0).afficherInventaire();
+    c.getJoueur(c.getCurrentPlayer()).setInventaire(0,10);
+    c.getJoueur(c.getCurrentPlayer()).setInventaire(1,10);
+    c.getJoueur(c.getCurrentPlayer()).setInventaire(2,10);
+    c.getJoueur(c.getCurrentPlayer()).setInventaire(3,10);
+    c.getJoueur(c.getCurrentPlayer()).setInventaire(4,10);
+
+    std::cout << "Cartes avant achat:" << std::endl;
+    c.getJoueur(1).afficherCartesRemportees();
+    c.selectCarte(c.getJoueur(c.getCurrentPlayer()), c.getPlateau().getNiveauDeveloppement(0).retirerCarte(*c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]), c.getPlateau());
+    c.getJoueur(1).afficherCartesRemportees();
+    std::cout << c.getCurrentPlayer() << std::endl;
+    //c.getJoueur(0).afficherInventaire();
 
     /*
     typedef array<int, 5> ressources;
@@ -108,19 +119,19 @@ int main(){
     CarteDeveloppement* cartetest = new CarteDeveloppement(cst, bns, Type::un, 2);
     if(cartetest->canBeBougth(c.getJoueur(0)))
         std::cout << "Achetable" << std::endl;
-    std::cout << "Non Achetable" << std::endl;
-    */
-    c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]->afficherCarte();
-    try{
-        c.getJoueur(0).selectCarte(c.getPlateau().getNiveauDeveloppement(0).retirerCarte(*c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]), c.getPlateau());
-        std::cout << "CartesRemportees:" << std::endl;
-        c.getJoueur(0).afficherCartesRemportees();
-        std::cout << "Reserve:" << std::endl;
-        c.getJoueur(0).afficherReserve();
-        c.getJoueur(0).afficherBonus();
+    std::cout << "Non Achetable" << std::endl;*/
+    
+    //c.getPlateau().getNiveauDeveloppement(0).getCartes()[0]->afficherCarte();
+    
+        
+        
+        // std::cout << "CartesRemportees:" << std::endl;
+        // c.getJoueur(0).afficherCartesRemportees();
+        // std::cout << "Reserve:" << std::endl;
+        // c.getJoueur(0).afficherReserve();
+        // c.getJoueur(0).afficherBonus();
     }
     catch(SplendorException& e) { std::cout << e.getInfo() << std::endl;}
-    
 
     return 0;
 }

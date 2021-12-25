@@ -5,7 +5,6 @@ using namespace std;
 
 namespace Splendor{
 
-    //TODO: Revoir les méthodes canBeBought: ne fonctionne pas correctement !
 
     bool CarteDeveloppement::canBeBougth(Joueur &j) const {
         /*Pour pouvoir acheter un carte le joueur doit avoir les ressources
@@ -35,7 +34,11 @@ namespace Splendor{
     }
 
     void CarteDeveloppement::afficherCarte(std::ostream& f) const {
+<<<<<<< HEAD
         f << "Carte Developement, Niveau"<< toString(getType())<<std::endl;
+=======
+        f << "Type: Carte Dévelopement"<< std::endl;
+>>>>>>> fbe206bf302379aee5d83230b4c61bf3c9e0bfdb
         f << "PDV : " << getPDV() << std::endl;
         f << "cout : " << getCouts(0) << " " << getCouts(1) << " " << getCouts(2) << " " << getCouts(3) << " " << getCouts(4) << std::endl;
         f << "bonus : " << getBonus(0) << " " << getBonus(1) << " " << getBonus(2) << " " << getBonus(3) << " " << getBonus(4) << std::endl;
@@ -43,6 +46,7 @@ namespace Splendor{
     }
 
     void CarteNoble::afficherCarte(std::ostream& f) const {
+        f << "Type: Noble"<< std::endl;
         f << "PDV : " << getPDV() << std::endl;
         f << "cout : " << getCouts(0) << " " << getCouts(1) << " " << getCouts(2) << " " << getCouts(3) << " " << getCouts(4) << std::endl;
         f << " - - -" << std::endl;
