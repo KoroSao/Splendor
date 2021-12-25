@@ -74,10 +74,10 @@ Jeu::Jeu(){
     ressources bonus;
     int pdv;
     map<Type, string> noms_files= {
-        {Type::un, "Niveau1.csv"},
-        {Type::deux , "Niveau2.csv"},
-        {Type::trois, "Niveau3.csv"},
-        {Type::nobles, "Nobles.csv"}};
+        {Type::un, "Deck_cartes/Niveau1.csv"},
+        {Type::deux , "Deck_cartes/Niveau2.csv"},
+        {Type::trois, "Deck_cartes/Niveau3.csv"},
+        {Type::nobles, "Deck_cartes/Nobles.csv"}};
 
     for (auto pair_type_nom : noms_files){
         file_contents = readFileIntoString(pair_type_nom.second);
