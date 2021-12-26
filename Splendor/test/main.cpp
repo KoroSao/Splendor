@@ -1,12 +1,3 @@
-#include <iostream>
-
-//#include "../src/controleur/controleur.h"
-#include "../src/carte/carte.h"
-#include "../src/jeu/jeu.h"
-#include "../src/pioche/pioche.h"
-#include "../src/niveau/niveau.h"
-#include "../src/plateau/plateau.h"
-#include "../src/joueur/joueur.h"
 #include "../src/controleur/controleur.h"
 
 using namespace Splendor;

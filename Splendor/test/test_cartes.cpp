@@ -1,4 +1,4 @@
-#include   "src/controleur/controleur.h"
+#include   "../src/controleur/controleur.h"
 
 using namespace Splendor;
 int main(){
@@ -12,4 +12,6 @@ int main(){
     catch(SplendorException& e){
         cout<< e.getInfo();
     }
-    return 0;}
+    return 0;
+    
+}

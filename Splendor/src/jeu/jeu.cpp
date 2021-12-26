@@ -52,9 +52,9 @@ void read_line_carteC_pdv(std::istringstream& line,Type type, ressources& couts,
     std::getline(line, record, delimiter);
     if (record != toString(type)) {
             std::stringstream infos;
-            infos <<"Fichier mal formé."<<endl;
-            infos <<"Type de carte demandé :"<<toString(type)<<endl;
-            infos <<"Type donné dans le fichier : "<<record<<endl;
+            infos <<"Fichier mal formï¿½."<<endl;
+            infos <<"Type de carte demandï¿½ :"<<toString(type)<<endl;
+            infos <<"Type donnï¿½ dans le fichier : "<<record<<endl;
             throw SplendorException(infos.str());
     }
     for (size_t i = 0; i<5; i++){
@@ -74,10 +74,10 @@ Jeu::Jeu(){
     ressources bonus;
     int pdv;
     map<Type, string> noms_files= {
-        {Type::un, "Deck_cartes/Niveau1.csv"},
-        {Type::deux , "Deck_cartes/Niveau2.csv"},
-        {Type::trois, "Deck_cartes/Niveau3.csv"},
-        {Type::nobles, "Deck_cartes/Nobles.csv"}};
+        {Type::un, "../Deck_cartes/Niveau1.csv"},
+        {Type::deux , "../Deck_cartes/Niveau2.csv"},
+        {Type::trois, "../Deck_cartes/Niveau3.csv"},
+        {Type::nobles, "../Deck_cartes/Nobles.csv"}};
 
     for (auto pair_type_nom : noms_files){
         file_contents = readFileIntoString(pair_type_nom.second);
