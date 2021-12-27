@@ -17,40 +17,47 @@ namespace Splendor {
         return bonus[i]; 
     }
 
+    int Joueur::getJetonsPris(unsigned int i) const {
+        if (i > 4)
+            throw SplendorException("Splendor::Joueur::getJetonsPris() : indice i invalide");
+        return jetonsPris[i]; 
+    }
+
     /*
             =========================== SETTERS ===========================
     */
 
-    bool Joueur::setInventaire(unsigned int i, unsigned int val){
+    void Joueur::setInventaire(unsigned int i, unsigned int val){
         if(i > 5){
             throw SplendorException("Splendor::Joueur::setInventaire() : indice i invalide");
-            return false;
         }
         inventaire[i] = val;
-        return true;
     };  
 
-    bool Joueur::setBonus(unsigned int i, unsigned int val){
+    void Joueur::setBonus(unsigned int i, unsigned int val){
         if(i > 4){
             throw SplendorException("Splendor::Joueur::setBonus() : indice i invalide");
-            return false;
         }
         bonus[i] = val;
-        return true;
-    }; 
+    };
+
+    void Joueur::setJetonsPris(unsigned int i, unsigned int val){
+        if(i > 4)
+            throw SplendorException("Splendor::Joueur::setJetonsPris() : indice i invalide");
+        jetonsPris[i] = val;
+    }
+
 
     /*
             =========================== FONCTIONS ==========================
     */
 
 
-    bool Joueur::ajouterCarteReserve(const Carte &c){
+    void Joueur::ajouterCarteReserve(const Carte &c){
         if (reserve.size() > 3){
             throw SplendorException("Splendor::Joueur::ajouterCarteReserve() : reserve pleine");
-            return false;
         }
         reserve.push_back(&c);
-        return true;
     };
 
     const Carte& Joueur::retirerCarteReserve(const Carte &c){
@@ -66,9 +73,8 @@ namespace Splendor {
         return c;
     };
 
-    bool Joueur::addCartesRemportees(const Carte &c){
+    void Joueur::addCartesRemportees(const Carte &c){
         cartesRemportees.push_back(&c);
-        return 0;
     };
 
     void Joueur::addPDV(unsigned int i) {
@@ -105,49 +111,17 @@ namespace Splendor {
             i->afficherCarte();
     }
 
-    /*
-            =========================== ACTION DU JOUEUR ==========================
-    */
+    // -----------Controle de tours-------
 
-    void Joueur::acheterCarte(const Carte& c, Plateau& p) {
-        if (!c.canBeBougth(*this))
-            throw SplendorException("Splendor::Joueur::acheterCarte() : ressources insuffisantes");
+     bool Joueur::inventaireFull() const{
+        //Retourne vrai si l'inventaire du joueur est plein (faux sinon)
+        unsigned int nbJetons = 0;
 
-        addCartesRemportees(c);
-        //TODO: traitement sur l'inventaire du joueur
-        int jetons_manquants = 0;
-        
-        for (size_t i = 0; i<5;i++){
-            jetons_manquants += max(0, c.getCouts(i)-getBonus(i)-getInventaire(i));
-            setInventaire(i, max(0,getBonus(i)+getInventaire(i) - c.getCouts(i))); //Soustrait les jetons
-        }
+        for (size_t i = 0; i < 5; i++)
+            nbJetons += getInventaire(i);
 
-        if(jetons_manquants)
-            setInventaire(5, getInventaire(5) - jetons_manquants);  //soustrait les jokers
+        return nbJetons>10;
+    }
+
     
-        //TODO: Dynamic Cast pour convertir en carte avec bonus...
-        try{
-            Carte_avec_bonus* cab = dynamic_cast<Carte_avec_bonus*>(const_cast<Carte*>(&c));
-            for (size_t i = 0; i<5;i++){
-                setBonus(i, getBonus(i) + cab->getBonus(i) ); // TODO: UPDATE AVEC GETBONUS;
-            }        
-        }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
-    }
-
-    void Joueur::prendreRessource(unsigned int i, Plateau& p) {
-        if(i > 5 || i < 0)
-            throw SplendorException("Splendor::Joueur::prendreRessource() : indice i invalide");
-        if (!p.getBanque(i))
-            throw SplendorException("Splendor::Joueur::prendreRessource() : Banque vide");
-        p.setBanque(i, p.getBanque(i) - 1); //Retirer un jeton de la banque
-        setInventaire(i, getInventaire(i) + 1); //Ajouter un jeton au joueur
-    }
-
-    void Joueur::selectCarte(const Carte& c, Plateau& p) {
-        if (c.canBeBougth(*this)){
-            acheterCarte(c, p);
-        } else {
-        ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
-        }
-    }
 } 
