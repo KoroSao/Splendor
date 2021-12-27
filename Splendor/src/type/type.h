@@ -13,19 +13,12 @@
 namespace Splendor{
 
     //enum class Type {I = 1, II = 2, III = 3, Noble = 4};
-<<<<<<< HEAD
-    enum class Type {nobles=1, cite=2, un=3, deux=4, trois=5 };
-    std::string toString(Type c);
-=======
     enum class Type {nobles, cite, un, deux, trois};
->>>>>>> cf5867aed5cbec5cb1edc3b8438aedd92fbca79f
+    std::string toString(Type c);
+
     extern std::initializer_list<Type> Types;
 
     std::string toString(Type type);
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> cf5867aed5cbec5cb1edc3b8438aedd92fbca79f
 #endif

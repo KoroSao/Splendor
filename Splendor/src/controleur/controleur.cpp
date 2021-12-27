@@ -3,7 +3,7 @@
 namespace Splendor{
 
 
-    Controleur::Controleur(unsigned int nbj): nbJoueurs(nbj), plateau(nbj), currentPlayer(0), lastLap(false) {
+    Controleur::Controleur(): nbJoueurs(4), plateau(4), currentPlayer(0), lastLap(false) {
         //Init joueurs vector
         //TODO: appeler à la place de la loop le menu de création d'une partie
         joueurs.push_back(new Joueur(0, "player1"));

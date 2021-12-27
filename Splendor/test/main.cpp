@@ -1,7 +1,6 @@
 #include "../src/controleur/controleur.h"
-
 #include "../src/partie/vuePartie.h"
-
+#include <QApplication>
     // //n.ajouterCarte(n.getPioche().piocher());
 
     // std::cout << "###### Carte dans le niveau après piocher : #######" << std::endl;
@@ -36,7 +35,7 @@
     // std::cout << j.getNom() << std::endl;
 
     // p.printPlateau();
-    try{
+    /*try{
     Controleur c(4);
     for (size_t i = 0; i < c.getNbJoueurs(); i++){
         std::cout << c.getJoueur(i).getNom() ;
@@ -86,8 +85,8 @@
         // std::cout << "Reserve:" << std::endl;
         // c.getJoueur(0).afficherReserve();
         // c.getJoueur(0).afficherBonus();
-    }
-    catch(SplendorException& e) { std::cout << e.getInfo() << std::endl;}
+    //}
+    /*catch(SplendorException& e) { std::cout << e.getInfo() << std::endl;}*/
 
 int main(int argc, char* argv[]){
     QApplication app(argc, argv);
