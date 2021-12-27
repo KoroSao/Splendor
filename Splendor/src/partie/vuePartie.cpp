@@ -71,6 +71,14 @@ VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), 
     onyxBouton->setFixedSize(QSize(75, 42));
     onyxLayout->addWidget(onyxBouton);
 
+    //colorisation des ressources
+    emeraudeBox->setStyleSheet("border : 1px solid green");
+    saphirBox->setStyleSheet("border : 1px solid blue");
+    rubisBox->setStyleSheet("border : 1px solid red");
+    diamantBox->setStyleSheet("border : 1px solid white");
+    onyxBox->setStyleSheet("border : 1px solid black");
+    jokerBox->setStyleSheet("border : 1px solid gold");
+
     layoutInformations=new QHBoxLayout;
     layoutCartes = new QGridLayout;
     layoutCartesNobles = new QGridLayout;
@@ -299,61 +307,4 @@ void VuePartie::carteClique(VueCarte* vc){
 
 
 
-#include <QPainter>
-#include <QString>
-#include <QStaticText>
-
-VueCarte::VueCarte(const Splendor::Carte& c, QWidget *parent) : QPushButton(parent),carte(&c)
-{
-    setBackgroundRole(QPalette::Base);
-    setAutoFillBackground(true);
-    setFixedSize(60,100);
-    connect(this,SIGNAL(clicked()),this,SLOT(clickedEvent()));
-    setCheckable(true);
-}
-
-VueCarte::VueCarte(QWidget *parent): QPushButton(parent)
-{
-    setBackgroundRole(QPalette::Base);
-    setAutoFillBackground(true);
-    setFixedSize(60,100);
-    connect(this,SIGNAL(clicked()),this,SLOT(clickedEvent()));
-    setCheckable(false);
-}
-
-void VueCarte::paintEvent(QPaintEvent * /* event */)
-{
-
-    QPainter painter(this);
-
-    // rectangle autour de la carte
-    pen.setColor(QColor("gray"));
-    pen.setStyle(Qt::SolidLine);
-    pen.setWidth(3);
-    painter.setPen(pen);
-    painter.drawRect(QRect(2, 2, width() - 2, height() - 2));
-
-    if (carte==nullptr) { // si la vue de carte n'a pas de carte on affiche un message
-        painter.drawText(QRect(7,25,50,30), Qt::AlignCenter, tr("vide"));
-        //pen.setColor(QColor("dark green")); brush.setColor(QColor("dark green")); break;
-        //Set::Remplissage::vide: brush.setStyle(Qt::NoBrush);
-        return;
-    }
-
-    painter.drawText(QRect(7,25,50,30), Qt::AlignCenter, tr("ceci \n carte"));
-
-    pen.setWidth(2);
-    painter.setPen(pen);
-    painter.setBrush(brush);
-    painter.setRenderHint(QPainter::Antialiasing, true);
-
-
-    if (isChecked()) { // si la carte est sélectionnée, on ajoute une croix noire
-        pen.setColor(QColor("black"));
-        painter.setPen(pen);
-        painter.drawLine(QPoint(0,0), QPoint(width(),height()));
-        painter.drawLine(QPoint(width(),0), QPoint(0,height()));
-    }
-
-}
 
