@@ -1,41 +1,6 @@
 #include "../src/controleur/controleur.h"
 
-using namespace Splendor;
-
-int main(){
-    std::cout << "Hello World !" << std::endl;
-
-    /*
-    array<int, 5> cArray = {3, 4, 5, 3, 1};
-    array<int, 5> bArray = {0, 0, 0, 1, 0};
-    CarteDeveloppement c(cArray, bArray, Type::un, 4);
-
-    std::cout << "c : " << c.getPDV() << std::endl;
-
-    std::cout << Jeu::getInstance().getNbCartes(Type::un) << std::endl;
-
-    Jeu::getInstance().getCartes(Type::un)[0]->getCouts(4);
-
-    Jeu::getInstance().getCartes(Type::un)[0]->afficherCarte();
-
-    Pioche p(Type::un);
-    std::cout << "nbr de carte dans la pioche : "<< p.getNbCartes() << std::endl;
-
-    p.piocher().afficherCarte();
-
-    std::cout << "nbr de carte dans la pioche : "<< p.getNbCartes() << std::endl;
-    */
-
-    //Création d'un niveau de cartes de type un.
-    // Niveau n(4,Type::un);
-    // std::cout << n.getTaille() << std::endl;
-
-    // std::cout << "###### Carte dans le niveau initial : ######" << std::endl;
-    // n.afficherNiveau();
-
-    // n.retirerCarte(*n.getCartes()[3]);
-
-    // //n.ajouterCarte(n.getPioche().piocher());
+#include "../src/partie/vuePartie.h"
 
     // //n.ajouterCarte(n.getPioche().piocher());
 
@@ -124,7 +89,11 @@ int main(){
     }
     catch(SplendorException& e) { std::cout << e.getInfo() << std::endl;}
 
-    return 0;
+int main(int argc, char* argv[]){
+    QApplication app(argc, argv);
+    VuePartie partie;
+    partie.show();
+    return app.exec();
 }
 
 

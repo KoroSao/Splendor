@@ -28,7 +28,7 @@ namespace Splendor{
             bool lastLap;
 
         public:
-            Controleur(unsigned int nbj);
+            Controleur();
 
             ~Controleur() = default;
             Controleur(const Controleur&) = default;
