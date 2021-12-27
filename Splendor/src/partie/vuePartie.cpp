@@ -10,7 +10,7 @@
 #include "./vuePartie.h"
 //#include "vuecarte.h"
 
-VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), vuecartesNobles(5,nullptr)
+VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), vuecartesNobles(5,nullptr), vuecartesReserve(3,nullptr)
 {
     setWindowTitle("Splendor !"); // modifier le titre de la fenêtre
     banque = new QLabel("Banque:"); //(émeraude/saphir/rubis/diamant/onyx/joker)
@@ -74,6 +74,7 @@ VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), 
     layoutInformations=new QHBoxLayout;
     layoutCartes = new QGridLayout;
     layoutCartesNobles = new QGridLayout;
+    layoutCartesReserve = new QGridLayout;
     couche = new QVBoxLayout;
 
     //Informations
@@ -154,15 +155,130 @@ VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), 
         j++;
     }
 
-
     QVBoxLayout *playerLayout = new QVBoxLayout();
 
+    /*
+    QGroupBox* currentPlayerBox();
+    QHBoxLayout* currentPlayerLayout;
+    QGroupBox* currentPlayerRessourceBox;
+    QVBoxLayout* currentPlayerRessourceLayout;
+    QGroupBox* inventaireCurrentPlayerBox();
+    QGroupBox* bonusCurrentPlayerBox();
+    QGroupBox* pdvCurrentPlayerBox();
+    QGroupBox* reserveCurrentPlayerBox();
+
+
+    */
+
+    QGroupBox *currentPlayerBox = new QGroupBox(tr("Current Player : player xx")); //TODO:: add name current player
+    QHBoxLayout* currentPlayerLayout = new QHBoxLayout();
+    QGroupBox* currentPlayerRessourceBox = new QGroupBox();
+    QVBoxLayout* currentPlayerRessourceLayout = new QVBoxLayout();
+
+    QGroupBox* inventaireCurrentPlayerBox = new QGroupBox(tr("inventaire"));
+    QGroupBox* bonusCurrentPlayerBox = new QGroupBox(tr("bonus"));
+
+    QHBoxLayout *inventaireCurrentPlayerLayout = new QHBoxLayout;
+    QHBoxLayout *bonusCurrentPlayerLayout = new QHBoxLayout;
+////// START QLCD
+    emeraudeCurrentPlayer=new QLCDNumber;
+    emeraudeCurrentPlayer->display(QString::number(0));
+    emeraudeCurrentPlayer->setFixedHeight(30);
+    inventaireCurrentPlayerLayout->addWidget(emeraudeCurrentPlayer);
+    saphirCurrentPlayer=new QLCDNumber;
+    saphirCurrentPlayer->display(QString::number(0));
+    saphirCurrentPlayer->setFixedHeight(30);
+    inventaireCurrentPlayerLayout->addWidget(saphirCurrentPlayer);
+    rubisCurrentPlayer=new QLCDNumber;
+    rubisCurrentPlayer->display(QString::number(0));
+    rubisCurrentPlayer->setFixedHeight(30);
+    inventaireCurrentPlayerLayout->addWidget(rubisCurrentPlayer);
+    diamantCurrentPlayer=new QLCDNumber;
+    diamantCurrentPlayer->display(QString::number(0));
+    diamantCurrentPlayer->setFixedHeight(30);
+    inventaireCurrentPlayerLayout->addWidget(diamantCurrentPlayer);
+    onyxCurrentPlayer=new QLCDNumber;
+    onyxCurrentPlayer->display(QString::number(0));
+    onyxCurrentPlayer->setFixedHeight(30);
+    inventaireCurrentPlayerLayout->addWidget(onyxCurrentPlayer);
+
+    //BONUS
+    emeraudeCurrentBonusPlayer=new QLCDNumber;
+    emeraudeCurrentBonusPlayer->display(QString::number(0));
+    emeraudeCurrentBonusPlayer->setFixedHeight(30);
+    bonusCurrentPlayerLayout->addWidget(emeraudeCurrentBonusPlayer);
+    saphirCurrentBonusPlayer=new QLCDNumber;
+    saphirCurrentBonusPlayer->display(QString::number(0));
+    saphirCurrentBonusPlayer->setFixedHeight(30);
+    bonusCurrentPlayerLayout->addWidget(saphirCurrentBonusPlayer);
+    rubisCurrentBonusPlayer=new QLCDNumber;
+    rubisCurrentBonusPlayer->display(QString::number(0));
+    rubisCurrentBonusPlayer->setFixedHeight(30);
+    bonusCurrentPlayerLayout->addWidget(rubisCurrentBonusPlayer);
+    diamantCurrentBonusPlayer=new QLCDNumber;
+    diamantCurrentBonusPlayer->display(QString::number(0));
+    diamantCurrentBonusPlayer->setFixedHeight(30);
+    bonusCurrentPlayerLayout->addWidget(diamantCurrentBonusPlayer);
+    onyxCurrentBonusPlayer=new QLCDNumber;
+    onyxCurrentBonusPlayer->display(QString::number(0));
+    onyxCurrentBonusPlayer->setFixedHeight(30);
+    bonusCurrentPlayerLayout->addWidget(onyxCurrentBonusPlayer);
+///// END QLCD
+
+    //PDV
+    QGroupBox* pdvCurrentPlayerBox = new QGroupBox(tr("PDV"));
+    QHBoxLayout* pdvCurrentPlayerLayout = new QHBoxLayout();
+    pdvCurrentPlayer=new QLCDNumber;
+    pdvCurrentPlayer->display(QString::number(10));
+    pdvCurrentPlayer->setFixedHeight(30);
+    pdvCurrentPlayerLayout->addWidget(pdvCurrentPlayer);
+    pdvCurrentPlayerBox->setLayout(pdvCurrentPlayerLayout);
+
+    //Reserve
+    QGroupBox* reserveCurrentPlayerBox = new QGroupBox(tr("reserve"));
+
+
+
+    for(size_t i=0; i<3;i++)
+        vuecartesReserve[i] = new VueCarte;
+    for(size_t i=0; i<3;i++){
+        layoutCartesReserve->addWidget(vuecartesReserve[i], 0, i);//ajout de la carte sur la grille
+        connect(vuecartesReserve[i],SIGNAL(carteClicked(VueCarte*)),this,SLOT(carteClique(VueCarte*)));
+    }
+
+    //Carte Nobles test pour reserve
+    size_t k = 0;
+    for(auto it: controleur.getPlateau().getNiveauNobles().getCartes()){ //TODO:: à update
+        if(k<3){
+            vuecartesReserve[k]->setCarte(*it);
+        }
+        k++;
+    }
+
+    reserveCurrentPlayerBox->setLayout(layoutCartesReserve);
+
+    // STATS DE TOUS LES JOUEURS
+    QString str;
+    QHBoxLayout *playerBox = new QHBoxLayout;
+    QGroupBox *playersDataBox = new QGroupBox();
+    playersDataBox->setStyleSheet("QGroupBox {""padding: 1 1 1 1;} ");
+    playersData = new QLabel();
+
+    inventaireCurrentPlayerBox->setLayout(inventaireCurrentPlayerLayout);
+    bonusCurrentPlayerBox->setLayout(bonusCurrentPlayerLayout);
+
+    currentPlayerRessourceLayout->addWidget(inventaireCurrentPlayerBox);
+    currentPlayerRessourceLayout->addWidget(bonusCurrentPlayerBox);
+
+    currentPlayerRessourceBox->setLayout(currentPlayerRessourceLayout);
+    currentPlayerLayout->addWidget(currentPlayerRessourceBox);
+    currentPlayerLayout->addWidget(pdvCurrentPlayerBox);
+    currentPlayerLayout->addWidget(reserveCurrentPlayerBox);
+
+    currentPlayerBox->setLayout(currentPlayerLayout);
+    playerLayout->addWidget(currentPlayerBox);
+
     for (int i = 0; i < controleur.getNbJoueurs(); ++i){
-        playersData = new QLabel();
-        QString str;
-        QHBoxLayout *playerBox = new QHBoxLayout;
-        QGroupBox *playersDataBox = new QGroupBox();
-        playersDataBox->setStyleSheet("QGroupBox {""padding: 1 1 1 1;} ");
 
         str += "id :" + QString::number(controleur.getJoueur(i).getId()) + "   ";
         str += QString::fromStdString(controleur.getJoueur(i).getNom()) + "   ";
@@ -180,15 +296,22 @@ VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), 
         }
         str += QString::number(controleur.getJoueur(i).getInventaire()[4]) + "]   ";
 
+        if (i != controleur.getNbJoueurs() - 1){
+            str += "\n";
+        }
+
         playersData->setText(str);
         playerBox->addWidget(playersData);
         playersDataBox->setLayout(playerBox);
-        playerLayout->addWidget(playersDataBox);
+
 
         //Manque affichage des cartes Reserve et CarteRemportées ? (pas besoin carteRemporté?)
         //controleur.getJoueur(i).getReserve();
         //controleur.getJoueur(i).getCartesRemportees();
     }
+
+
+    playerLayout->addWidget(playersDataBox);
 
     couche->addLayout(layoutInformations);
     couche->addLayout(layoutCartes);
