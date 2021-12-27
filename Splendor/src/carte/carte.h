@@ -42,30 +42,33 @@ namespace Splendor{
 
 
     class CarteDeveloppement : public Carte_avec_bonus{
+        friend class Jeu;
         private:
             const int PDV;
             const Type type;
-        public:
-            /* //TODO:: à remettre en privé un jour et friend de la classe Jeu*/ 
             CarteDeveloppement(ressources c, ressources b, Type t,  int pdv): Carte_avec_bonus(c, b), type(t), PDV(pdv) {};
+        public:
             const Type getType() const { return type; }
             const int getPDV() const { return PDV; }
             bool canBeBougth(Joueur& j) const override;
             void afficherCarte(std::ostream& f = std::cout) const override;
     };
 
-    class CarteNoble : public Carte_avec_bonus{
+    class CarteNoble : public Carte{
+        friend class Jeu;
         private:
             const int PDV;
+            CarteNoble(ressources c, int pdv):Carte(c), PDV(pdv){};
         public:
-            /* //TODO:: à remettre en privé un jour*/ 
-            CarteNoble(ressources c,ressources b, int pdv):Carte_avec_bonus(c, b), PDV(pdv){};
+            /* //TODO:: à remettre en privé un jour*/
+
             const int getPDV() const {return PDV;};
             bool canBeBougth(Joueur& j) const override;
             void afficherCarte(std::ostream& f = std::cout) const override;
     };
 
     class CarteCite : public Carte{
+        friend class Jeu;
         private:
             const int pdv_requis;
             CarteCite(ressources c, int pdv_r): Carte(c), pdv_requis(pdv_r){};
