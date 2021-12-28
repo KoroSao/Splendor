@@ -82,6 +82,7 @@ VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), 
     layoutInformations=new QHBoxLayout;
     layoutCartes = new QGridLayout;
     layoutCartesNobles = new QGridLayout;
+    layoutCartesReserve = new QGridLayout;
     couche = new QVBoxLayout;
 
     //Informations

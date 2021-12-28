@@ -46,11 +46,14 @@ void VueCarte::paintEvent(QPaintEvent * /* event */)
     pen.setWidth(3);
     brush.setStyle(Qt::SolidPattern);
 
+    //changement de couleur de fond pour une carte selectionné
     if (isChecked()) brush.setColor("gold");
     else brush.setColor(QColor("#CF8532"));
     painter.setPen(pen);
     painter.setBrush(brush);
     painter.drawRect(QRect(2, 2, width() - 2, height() - 2));
+
+    //suppression de la brush
     brush.setStyle(Qt::NoBrush);
     painter.setBrush(brush);
 
@@ -60,6 +63,8 @@ void VueCarte::paintEvent(QPaintEvent * /* event */)
     }
 
     else{
+
+        //on affiche les infos en fonction du type de carte
         QString infos = "";
         const Splendor::CarteDeveloppement* c = dynamic_cast<const Splendor::CarteDeveloppement*>(carte);
         if (c){
@@ -78,6 +83,12 @@ void VueCarte::paintEvent(QPaintEvent * /* event */)
             infos+= "\nPDV : ";
             infos+= to_string(c_n->getPDV()).c_str();
         }
+        pen.setColor(QColor("black"));
+        painter.setPen(pen);
+        painter.drawText(QRect(7,25,50,50), Qt::AlignCenter, infos);
+
+
+        //on affiche le couts de la carte
         size_t nb_cout = 0;
         vector<std::string> couleur_ressources = {"green", "blue", "red", "white", "black"};
         for (size_t i = 0; i <5; i++){
@@ -92,10 +103,6 @@ void VueCarte::paintEvent(QPaintEvent * /* event */)
 
             }
         }
-
-        pen.setColor(QColor("black"));
-        painter.setPen(pen);
-        painter.drawText(QRect(7,25,50,50), Qt::AlignCenter, infos);
 
         }
 
