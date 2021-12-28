@@ -7,14 +7,8 @@
 
 using namespace std;
 
-
 namespace Splendor{
 
-void read_line_carteC_pdv(std::istringstream& line,Type type, ressources& couts, int& pdv);
-void read_line_carteDev(std::istringstream& line,Type type,
-                        ressources& couts,ressources& bonus, int& pdv);
-
-string readFileIntoString(const string& path);
 
 class Jeu{
     protected:
@@ -30,7 +24,7 @@ class Jeu{
         ~Jeu() = default;
         Jeu(const Jeu&) = delete;
         Jeu& operator=(const Jeu&) = delete;
-
+        
     public:
         static Jeu& getInstance();
         static void freeInstance();
