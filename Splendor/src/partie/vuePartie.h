@@ -125,6 +125,8 @@ private:
     private slots:
         // slots qui gère les clics sur les cartes et boutons
         void carteClique(VueCarte* vc);
+        void carteNobleClique(VueCarte* vc);
+
         void emeraudeBoutonClique();
         void saphirBoutonClique();
         void rubisBoutonClique();

@@ -134,7 +134,7 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
         vuecartesNobles[i] = new VueCarte;
     for(size_t i=0; i<nb_joueur + 1;i++){
         layoutCartesNobles->addWidget(vuecartesNobles[i],i/(nb_joueur+1),i%(nb_joueur+1));//ajout de la carte sur la grille
-        connect(vuecartesNobles[i],SIGNAL(carteClicked(VueCarte*)),this,SLOT(carteClique(VueCarte*)));
+        connect(vuecartesNobles[i],SIGNAL(carteClicked(VueCarte*)),this,SLOT(carteNobleClique(VueCarte*)));
     }
 
     //affectation des cartes du plateau aux vues des cartes
@@ -160,12 +160,14 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
 
 
     currentPlayerBox = new QGroupBox(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom())); //TODO:: add name current player
+    currentPlayerBox->setStyleSheet("QGroupBox{ font-weight: bold }");
+
     QHBoxLayout* currentPlayerLayout = new QHBoxLayout();
     QGroupBox* currentPlayerRessourceBox = new QGroupBox();
     QVBoxLayout* currentPlayerRessourceLayout = new QVBoxLayout();
 
-    QGroupBox* inventaireCurrentPlayerBox = new QGroupBox(tr("inventaire"));
-    QGroupBox* bonusCurrentPlayerBox = new QGroupBox(tr("bonus"));
+    QGroupBox* inventaireCurrentPlayerBox = new QGroupBox(tr("Inventaire"));
+    QGroupBox* bonusCurrentPlayerBox = new QGroupBox(tr("Bonus"));
 
     QHBoxLayout *inventaireCurrentPlayerLayout = new QHBoxLayout;
     QHBoxLayout *bonusCurrentPlayerLayout = new QHBoxLayout;
@@ -240,7 +242,7 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     pdvCurrentPlayerBox->setLayout(pdvCurrentPlayerLayout);
 
     //Reserve
-    QGroupBox* reserveCurrentPlayerBox = new QGroupBox(tr("reserve"));
+    QGroupBox* reserveCurrentPlayerBox = new QGroupBox(tr("Reserve"));
 
     for(size_t i=0; i<3;i++)
         vuecartesReserve[i] = new VueCarte;
@@ -497,6 +499,12 @@ void VuePartie::carteClique(VueCarte* vc){
         }
     }
     return;
+}
+
+void VuePartie::carteNobleClique(VueCarte* vc){
+    for (size_t i=0; i<controleur.getNbJoueurs() + 1; i++) {
+        vuecartesNobles[i]->setChecked(false);
+    }
 }
 
 void VuePartie::updateJoueurInfo() {
