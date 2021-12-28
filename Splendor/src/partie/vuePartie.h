@@ -29,7 +29,15 @@ public:
     explicit VuePartie(unsigned int nbj, vector<std::string> names, QWidget *parent = nullptr);
 
 private:
+
     Splendor::Controleur controleur; // controleur de la partie //TODO: fixé à 4 joueurs
+    int nbJetonsPris = 0;
+    int jetonsPris[5] = {0,0,0,0,0};
+    bool cartePrise = false;
+
+
+
+
     // - - - - Jeton - - - -
     QGroupBox *emeraudeBox();
     QLCDNumber* emeraudeBanque;
@@ -123,6 +131,7 @@ private:
         void pioche1BoutonClique();
         void pioche2BoutonClique();
         void pioche3BoutonClique();
+        void cancelTurnClique();
 
 };
 

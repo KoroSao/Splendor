@@ -245,7 +245,7 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     QGroupBox* pdvCurrentPlayerBox = new QGroupBox(tr("PDV"));
     QHBoxLayout* pdvCurrentPlayerLayout = new QHBoxLayout();
     pdvCurrentPlayer=new QLCDNumber;
-    pdvCurrentPlayer->display(QString::number(10));
+    pdvCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getPDV()));
     pdvCurrentPlayer->setFixedHeight(30);
     pdvCurrentPlayerLayout->addWidget(pdvCurrentPlayer);
     pdvCurrentPlayerBox->setLayout(pdvCurrentPlayerLayout);
@@ -300,8 +300,8 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     QVBoxLayout* playerActionLayout = new QVBoxLayout();
     playerActionBox->setLayout(playerActionLayout);
 
-    QPushButton* endTurnBouton = new QPushButton("Annuler action", this);
-    QPushButton* cancelTurnBouton = new QPushButton("Terminer tour", this);
+    QPushButton* endTurnBouton = new QPushButton("Terminer tour", this);
+    QPushButton* cancelTurnBouton = new QPushButton("Annuler action", this);
 
     playerActionLayout->addWidget(endTurnBouton);
     playerActionLayout->addWidget(cancelTurnBouton);
@@ -370,13 +370,24 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     connect(pioche1Bouton, &QPushButton::released, this, &VuePartie::pioche1BoutonClique);
     connect(pioche2Bouton, &QPushButton::released, this, &VuePartie::pioche2BoutonClique);
     connect(pioche3Bouton, &QPushButton::released, this, &VuePartie::pioche3BoutonClique);
+    connect(cancelTurnBouton, &QPushButton::released, this, &VuePartie::cancelTurnClique);
+}
+
+void VuePartie::cancelTurnClique() {
+    std::cout << "Action cancelled" << std::endl;
+    nbJetonsPris = 0;
+    cartePrise = false;
+    for(size_t i=0; i < 5; i++)
+        jetonsPris[i] = 0;
 }
 
 void VuePartie::emeraudeBoutonClique(){
-   if (!controleur.getTourCarte() && !controleur.getStopJetons() && controleur.getPlateau().getBanque(0) > 0){
+   if ( (nbJetonsPris == 1 && jetonsPris[0] == 1) || (nbJetonsPris <= 2 && jetonsPris[0] == 0) ){
 
        //Le tour qui suit est un tour à Jeton
-       std::cout << " Il prend une ressource" << std::endl;
+       nbJetonsPris++;
+       jetonsPris[0]++;
+       std::cout << "Jetons pris" << nbJetonsPris << std::endl;
        //La méthode prendreRessource met a jour le booléen tourJeton
        controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 0);
        emeraudeCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(0));
