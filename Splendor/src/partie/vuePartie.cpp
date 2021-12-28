@@ -336,9 +336,6 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
 
 
         playersData->setText(str);
-        playerBox->addWidget(playersData);
-        playersDataBox->setLayout(playerBox);
-        playerLayout->addWidget(playersDataBox);
 
 
 
@@ -347,7 +344,9 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
         //controleur.getJoueur(i).getCartesRemportees();
     }
 
-
+    playerBox->addWidget(playersData);
+    playersDataBox->setLayout(playerBox);
+    playerLayout->addWidget(playersDataBox);
     playerLayout->addWidget(playersDataBox);
 
     couche->addLayout(layoutInformations);
