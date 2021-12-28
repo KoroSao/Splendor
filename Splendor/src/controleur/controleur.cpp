@@ -41,8 +41,17 @@ namespace Splendor{
             Carte_avec_bonus* cab = dynamic_cast<Carte_avec_bonus*>(const_cast<Carte*>(&c));
             for (size_t i = 0; i<5;i++){
                 j.setBonus(i, j.getBonus(i) + cab->getBonus(i) );
-            }        
+            }
         }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
+
+        try{
+            CarteDeveloppement* cab = dynamic_cast<CarteDeveloppement*>(const_cast<Carte*>(&c));
+            for (size_t i = 0; i<5;i++){
+                j.setBonus(i, j.getBonus(i) + cab->getBonus(i) );
+            }
+            j.addPDV(cab->getPDV());
+        }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
+
     }
 
     void Controleur::prendreRessource(Joueur& j, unsigned int i) {

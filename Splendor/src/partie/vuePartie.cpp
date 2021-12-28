@@ -233,7 +233,7 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     //PDV
     QGroupBox* pdvCurrentPlayerBox = new QGroupBox(tr("PDV"));
     QVBoxLayout* pdvCurrentPlayerLayout = new QVBoxLayout();
-    pdvCurrentPlayer=new QLCDNumber;
+    pdvCurrentPlayer =new QLCDNumber();
     pdvCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getPDV()));
     pdvCurrentPlayer->setFixedHeight(30);
     pdvCurrentPlayerLayout->addWidget(pdvCurrentPlayer);
@@ -467,7 +467,9 @@ void VuePartie::pioche2BoutonClique(){ qInfo("L'utilisateur x souhaite réserver
 void VuePartie::pioche3BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 3 !"); };
 
 void VuePartie::carteClique(VueCarte* vc){
-    if (nbJetonsPris==0 && !cartePrise) {
+    if ( (nbJetonsPris==0 && !cartePrise) &&
+         ((vc->getCarte().canBeBougth(controleur.getJoueur(controleur.getCurrentPlayer())) && controleur.getJoueur(controleur.getCurrentPlayer()).getReserve().size() >= 3 )
+          || controleur.getJoueur(controleur.getCurrentPlayer()).getReserve().size() < 3 )) {
         if(vc->isChecked()){
             //Si il n'y a pas déjà des jetons de pris
             cartePrise = true;
@@ -484,7 +486,9 @@ void VuePartie::carteClique(VueCarte* vc){
             for (size_t i=0; i<12; i++) {
                 vuecartes[i]->setChecked(false);
             }
-            if(nbJetonsPris==0){
+            if(nbJetonsPris==0  &&
+                    ((vc->getCarte().canBeBougth(controleur.getJoueur(controleur.getCurrentPlayer())) && controleur.getJoueur(controleur.getCurrentPlayer()).getReserve().size() >= 3 )
+                     || controleur.getJoueur(controleur.getCurrentPlayer()).getReserve().size() < 3 ) ){
                 cartePrise = true;
                 vc->setChecked(true);
                 std::cout << "Il prend la carte !" << std::endl;
@@ -508,6 +512,8 @@ void VuePartie::updateJoueurInfo() {
     rubisCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(2));
     diamantCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(3));
     onyxCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(4));
+
+    pdvCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getPDV()));
 
     for(size_t i=0; i<3; i++){
         vuecartesReserve[i]->setNoCarte();
