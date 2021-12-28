@@ -326,7 +326,7 @@ VuePartie::VuePartie(QWidget *parent) : QWidget(parent), vuecartes(20,nullptr), 
         playersData->setText(str);
         playerBox->addWidget(playersData);
         playersDataBox->setLayout(playerBox);
-
+        playerLayout->addWidget(playersDataBox);
 
 
         //Manque affichage des cartes Reserve et CarteRemportées ? (pas besoin carteRemporté?)
