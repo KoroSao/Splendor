@@ -50,7 +50,7 @@ namespace Splendor{
     }
 
     void Plateau::setBanque(int pos, int val) { 
-        if(pos < 0 || pos > 4){
+        if(pos < 0 || pos > 5){
             throw SplendorException("Splendor::Plateau::setBanque() : indice i invalide");
         }
         banque[pos] = val;

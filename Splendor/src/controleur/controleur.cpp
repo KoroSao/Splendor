@@ -90,6 +90,11 @@ namespace Splendor{
         } else {
             //if (confirmTurn(j)){
                 j.ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
+                
+                if(getPlateau().getBanque(5) > 0){
+                    getPlateau().setBanque(5,getPlateau().getBanque(5));
+                    j.setInventaire(5,j.getInventaire(5) +1);
+                }
                 //endOfTurn(j);
             //}
         }
