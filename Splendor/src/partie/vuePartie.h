@@ -35,6 +35,7 @@ private:
     Splendor::Controleur controleur; // controleur de la partie //TODO: fixé à 4 joueurs
     int nbJetonsPris = 0;
     int jetonsPris[5] = {0,0,0,0,0};
+    bool sameJetonPris = false;
     bool cartePrise = false;
 
 

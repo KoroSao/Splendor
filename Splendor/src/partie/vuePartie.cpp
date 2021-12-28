@@ -378,6 +378,7 @@ void VuePartie::cancelTurnClique() {
     std::cout << "Action cancelled" << std::endl;
     nbJetonsPris = 0;
     cartePrise = false;
+    sameJetonPris = false;
     for (size_t i = 0; i < 5; i++){
         int x = jetonsPris[i];
         for(size_t k = 0; k < x; k++) {
@@ -385,8 +386,8 @@ void VuePartie::cancelTurnClique() {
         }
         jetonsPris[i] = 0;
     }
-    emeraudeCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(0));
-    emeraudeBanque->display(controleur.getPlateau().getBanque(0));
+    updateJoueurInfo();
+    updatePlateauInfo();
 }
 
 void VuePartie::endTurnClique() {
@@ -395,6 +396,7 @@ void VuePartie::endTurnClique() {
     for(size_t i = 0; i < 5; i++)
         jetonsPris[i] = 0;
     nbJetonsPris = 0;
+    sameJetonPris = false;
 
     controleur.nextPlayer();
     updateJoueurInfo();
@@ -402,23 +404,68 @@ void VuePartie::endTurnClique() {
 }
 
 void VuePartie::emeraudeBoutonClique(){
-   if ( (nbJetonsPris == 1 && jetonsPris[0] == 1) || (nbJetonsPris <= 2 && jetonsPris[0] == 0) ){
-
-       //Le tour qui suit est un tour à Jeton
+   if ( (nbJetonsPris == 1 && jetonsPris[0] == 1) || (nbJetonsPris <= 2 && jetonsPris[0] == 0 && sameJetonPris == false) ){
        nbJetonsPris++;
        jetonsPris[0]++;
-       std::cout << "Jetons pris" << nbJetonsPris << std::endl;
-       //La méthode prendreRessource met a jour le booléen tourJeton
+       if (jetonsPris[0] == 2)
+           sameJetonPris = true;
        controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 0);
        updateJoueurInfo();
        updatePlateauInfo();
    }
+}
 
-};
-void VuePartie::saphirBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton saphir !"); };
-void VuePartie::rubisBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton rubis !"); };
-void VuePartie::diamantBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton diamant !"); };
-void VuePartie::onyxBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton onyx !"); };
+void VuePartie::saphirBoutonClique(){
+    if ( (nbJetonsPris == 1 && jetonsPris[1] == 1) || (nbJetonsPris <= 2 && jetonsPris[1] == 0 && sameJetonPris == false) ){
+        nbJetonsPris++;
+        jetonsPris[1]++;
+        if (jetonsPris[1] == 2)
+            sameJetonPris = true;
+
+        controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 1);
+        updateJoueurInfo();
+        updatePlateauInfo();
+    }
+}
+
+void VuePartie::rubisBoutonClique(){
+    if ( (nbJetonsPris == 1 && jetonsPris[2] == 1) || (nbJetonsPris <= 2 && jetonsPris[2] == 0 && sameJetonPris == false) ){
+        nbJetonsPris++;
+        jetonsPris[2]++;
+        if (jetonsPris[2] == 2)
+            sameJetonPris = true;
+
+        controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 2);
+        updateJoueurInfo();
+        updatePlateauInfo();
+    }
+}
+
+void VuePartie::diamantBoutonClique(){
+    if ( (nbJetonsPris == 1 && jetonsPris[3] == 1) || (nbJetonsPris <= 2 && jetonsPris[3] == 0  && sameJetonPris == false) ){
+        nbJetonsPris++;
+        jetonsPris[3]++;
+        if (jetonsPris[3] == 2)
+            sameJetonPris = true;
+
+        controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 3);
+        updateJoueurInfo();
+        updatePlateauInfo();
+    }
+}
+
+void VuePartie::onyxBoutonClique(){
+    if ( (nbJetonsPris == 1 && jetonsPris[4] == 1) || (nbJetonsPris <= 2 && jetonsPris[4] == 0 && sameJetonPris == false) ){
+        nbJetonsPris++;
+        jetonsPris[4]++;
+        if (jetonsPris[4] == 2)
+            sameJetonPris = true;
+
+        controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 4);
+        updateJoueurInfo();
+        updatePlateauInfo();
+    }
+}
 
 void VuePartie::pioche1BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 1 !"); };
 void VuePartie::pioche2BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 2 !"); };
