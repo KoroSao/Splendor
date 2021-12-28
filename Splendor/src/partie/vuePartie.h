@@ -60,9 +60,36 @@ private:
     QVBoxLayout* playerLayout;
     QGroupBox* playersDataBox();
 
+    QGroupBox* currentPlayerBox();
+    QHBoxLayout* currentPlayerLayout;
+    QGroupBox* currentPlayerRessourceBox;
+    QVBoxLayout* currentPlayerRessourceLayout;
+    QGroupBox* inventaireCurrentPlayerBox();
+    QGroupBox* bonusCurrentPlayerBox();
+    QGroupBox* pdvCurrentPlayerBox();
+    QHBoxLayout *pdvCurrentPlayerLayout;
+    QLCDNumber *pdvCurrentPlayer;
+    QGroupBox* reserveCurrentPlayerBox();
+
+    QHBoxLayout *inventaireCurrentPlayerLayout;
+    QLCDNumber *emeraudeCurrentPlayer;
+    QLCDNumber *saphirCurrentPlayer;
+    QLCDNumber *rubisCurrentPlayer;
+    QLCDNumber *diamantCurrentPlayer;
+    QLCDNumber *onyxCurrentPlayer;
+    QLCDNumber *jokerCurrentPlayer;
+
+    QHBoxLayout *bonusCurrentPlayerLayout;
+    QLCDNumber *emeraudeCurrentBonusPlayer;
+    QLCDNumber *saphirCurrentBonusPlayer;
+    QLCDNumber *rubisCurrentBonusPlayer;
+    QLCDNumber *diamantCurrentBonusPlayer;
+    QLCDNumber *onyxCurrentBonusPlayer;
+
     QHBoxLayout* layoutInformations;
     QGridLayout* layoutCartes; // grille des cartes
     QGridLayout* layoutCartesNobles;
+    QGridLayout* layoutCartesReserve;
     QVBoxLayout* couche;
 
     QPushButton *pioche1Bouton;
@@ -71,6 +98,8 @@ private:
 
     vector<VueCarte*> vuecartes; // adresses des objets VueCarte
     vector<VueCarte*> vuecartesNobles; // adresses des objets VueCarteNobles
+
+    vector<VueCarte*> vuecartesReserve; //adresses des cartes reserver par le joueur
 
     std::set<const Splendor::Carte*> selectionCartes; // ensemble des cartes sélectionnées
 

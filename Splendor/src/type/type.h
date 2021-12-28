@@ -17,8 +17,7 @@ namespace Splendor{
     std::string toString(Type c);
 
     extern std::initializer_list<Type> Types;
-
-    std::string toString(Type type);
+    
 }
 
 #endif
