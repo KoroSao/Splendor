@@ -388,6 +388,7 @@ void VuePartie::endTurnClique() {
         jetonsPris[i] = 0;
     nbJetonsPris = 0;
     sameJetonPris = false;
+    cartePrise = false;
     selectionCarte = nullptr;
     for (size_t i=0; i<12; i++) {
         vuecartes[i]->setChecked(false);
@@ -398,7 +399,7 @@ void VuePartie::endTurnClique() {
 }
 
 void VuePartie::emeraudeBoutonClique(){
-   if ( ((nbJetonsPris == 1 && jetonsPris[0] == 1) || (nbJetonsPris <= 2 && jetonsPris[0] == 0 && sameJetonPris == false)) && !controleur.getTourCarte() ){
+   if ( ((nbJetonsPris == 1 && jetonsPris[0] == 1) || (nbJetonsPris <= 2 && jetonsPris[0] == 0 && sameJetonPris == false)) && !cartePrise ){
        nbJetonsPris++;
        jetonsPris[0]++;
        if (jetonsPris[0] == 2)
@@ -410,7 +411,7 @@ void VuePartie::emeraudeBoutonClique(){
 }
 
 void VuePartie::saphirBoutonClique(){
-    if ( ((nbJetonsPris == 1 && jetonsPris[1] == 1) || (nbJetonsPris <= 2 && jetonsPris[1] == 0 && sameJetonPris == false)) && !controleur.getTourCarte() ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[1] == 1) || (nbJetonsPris <= 2 && jetonsPris[1] == 0 && sameJetonPris == false)) && !cartePrise ){
         nbJetonsPris++;
         jetonsPris[1]++;
         if (jetonsPris[1] == 2)
@@ -423,7 +424,7 @@ void VuePartie::saphirBoutonClique(){
 }
 
 void VuePartie::rubisBoutonClique(){
-    if ( ((nbJetonsPris == 1 && jetonsPris[2] == 1) || (nbJetonsPris <= 2 && jetonsPris[2] == 0 && sameJetonPris == false)) && !controleur.getTourCarte() ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[2] == 1) || (nbJetonsPris <= 2 && jetonsPris[2] == 0 && sameJetonPris == false)) && !cartePrise ){
         nbJetonsPris++;
         jetonsPris[2]++;
         if (jetonsPris[2] == 2)
@@ -436,7 +437,7 @@ void VuePartie::rubisBoutonClique(){
 }
 
 void VuePartie::diamantBoutonClique(){
-    if ( ((nbJetonsPris == 1 && jetonsPris[3] == 1) || (nbJetonsPris <= 2 && jetonsPris[3] == 0  && sameJetonPris == false)) && !controleur.getTourCarte() ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[3] == 1) || (nbJetonsPris <= 2 && jetonsPris[3] == 0  && sameJetonPris == false)) && !cartePrise ){
         nbJetonsPris++;
         jetonsPris[3]++;
         if (jetonsPris[3] == 2)
@@ -449,7 +450,7 @@ void VuePartie::diamantBoutonClique(){
 }
 
 void VuePartie::onyxBoutonClique(){
-    if ( ((nbJetonsPris == 1 && jetonsPris[4] == 1) || (nbJetonsPris <= 2 && jetonsPris[4] == 0 && sameJetonPris == false)) && !controleur.getTourCarte() ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[4] == 1) || (nbJetonsPris <= 2 && jetonsPris[4] == 0 && sameJetonPris == false)) && !cartePrise ){
         nbJetonsPris++;
         jetonsPris[4]++;
         if (jetonsPris[4] == 2)
@@ -466,10 +467,10 @@ void VuePartie::pioche2BoutonClique(){ qInfo("L'utilisateur x souhaite réserver
 void VuePartie::pioche3BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 3 !"); };
 
 void VuePartie::carteClique(VueCarte* vc){
-    if (nbJetonsPris==0 && !controleur.getTourCarte()) {
+    if (nbJetonsPris==0 && !cartePrise) {
         if(vc->isChecked()){
             //Si il n'y a pas déjà des jetons de pris
-            controleur.setTourCarte(true);
+            cartePrise = true;
             selectionCarte = &vc->getCarte();
             std::cout << "Il prend la carte !" << std::endl;
             //Suite du traitement dans le endTOUR
@@ -477,14 +478,14 @@ void VuePartie::carteClique(VueCarte* vc){
     } else {
         if(!vc->isChecked()){
             vc->setChecked(false);
-            controleur.setTourCarte(false);
+            cartePrise = false;
             selectionCarte = nullptr;
          } else {
             for (size_t i=0; i<12; i++) {
                 vuecartes[i]->setChecked(false);
             }
             if(nbJetonsPris==0){
-                controleur.setTourCarte(true);
+                cartePrise = true;
                 vc->setChecked(true);
                 std::cout << "Il prend la carte !" << std::endl;
                 selectionCarte = &vc->getCarte();
@@ -507,6 +508,10 @@ void VuePartie::updateJoueurInfo() {
     rubisCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(2));
     diamantCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(3));
     onyxCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(4));
+
+    for(size_t i=0; i<3; i++){
+        vuecartesReserve[i]->setNoCarte();
+    }
 
     size_t k = 0;
     for(auto it: controleur.getJoueur(controleur.getCurrentPlayer()).getReserve()){ //TODO:: à update
