@@ -6,7 +6,6 @@ namespace Splendor{
 
     Controleur::Controleur(unsigned int nbj, vector<std::string> names): nbJoueurs(nbj), plateau(nbj), currentPlayer(0), lastLap(false) {
         //Init joueurs vector
-        //TODO: appeler à la place de la loop le menu de création d'une partie
         for (size_t i = 0; i < nbj; i++)
             joueurs.push_back(new Joueur(i, names[i]));
     }
@@ -31,11 +30,23 @@ namespace Splendor{
         
         for (size_t i = 0; i<5;i++){
             jetons_manquants += max(0, c.getCouts(i)-j.getBonus(i)-j.getInventaire(i));
+            //int temp = j.getInventaire(i);
+            if (c.getCouts(i) > j.getBonus(i)) {
+                getPlateau().setBanque(i, getPlateau().getBanque(i) + max(j.getInventaire(i), j.getInventaire(i) - (c.getCouts(i) - j.getBonus(i))) );
+            }
             j.setInventaire(i, max(0,j.getBonus(i)+j.getInventaire(i) - c.getCouts(i))); //Soustrait les jetons
+            if (c.getCouts(i) > j.getBonus(i)) {
+                //getPlateau().setBanque(i, getPlateau().getBanque(i) + max(temp, temp - (c.getCouts(i) - j.getBonus(i))) );
+            }
+            //getPlateau().setBanque(i, getPlateau().getBanque(i) + min(j.getInventaire(i),(c.getCouts(i) - j.getBonus(i))));
         }
 
-        if(jetons_manquants)
-            j.setInventaire(5, j.getInventaire(5) - jetons_manquants);  //soustrait les jokers
+        if(jetons_manquants){
+            for (auto i = 0; i < jetons_manquants; i++)
+                rendreRessource(j,5);
+                //j.setInventaire(5, j.getInventaire(5) - jetons_manquants);  //soustrait les jokers
+        }
+            
 
         try{
             CarteDeveloppement* cab = dynamic_cast<CarteDeveloppement*>(const_cast<Carte*>(&c));
@@ -94,7 +105,7 @@ namespace Splendor{
                 j.ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
                 
                 if(getPlateau().getBanque(5) > 0){
-                    getPlateau().setBanque(5,getPlateau().getBanque(5));
+                    getPlateau().setBanque(5,getPlateau().getBanque(5) - 1);
                     j.setInventaire(5,j.getInventaire(5) +1);
                 }
                 //endOfTurn(j);

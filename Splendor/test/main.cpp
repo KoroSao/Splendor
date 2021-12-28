@@ -1,6 +1,7 @@
 #include <iostream>
-
+#include <QStyleFactory>
 #include <QApplication>
+#include <QDebug>
 
 //#include "../src/controleur/controleur.h"
 #include "../src/carte/carte.h"
@@ -18,6 +19,7 @@ using namespace Splendor;
 
 int main(int argc, char* argv[]){
     QApplication app(argc, argv);
+    QApplication::setStyle("Fusion");
 
     unsigned int nbj = 4;
     vector<std::string>names;
