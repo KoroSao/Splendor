@@ -158,20 +158,8 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
 
     QVBoxLayout *playerLayout = new QVBoxLayout();
 
-    /*
-    QGroupBox* currentPlayerBox();
-    QHBoxLayout* currentPlayerLayout;
-    QGroupBox* currentPlayerRessourceBox;
-    QVBoxLayout* currentPlayerRessourceLayout;
-    QGroupBox* inventaireCurrentPlayerBox();
-    QGroupBox* bonusCurrentPlayerBox();
-    QGroupBox* pdvCurrentPlayerBox();
-    QGroupBox* reserveCurrentPlayerBox();
 
-
-    */
-
-    QGroupBox* currentPlayerBox = new QGroupBox(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom())); //TODO:: add name current player
+    currentPlayerBox = new QGroupBox(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom())); //TODO:: add name current player
     QHBoxLayout* currentPlayerLayout = new QHBoxLayout();
     QGroupBox* currentPlayerRessourceBox = new QGroupBox();
     QVBoxLayout* currentPlayerRessourceLayout = new QVBoxLayout();
@@ -241,7 +229,7 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     bonusCurrentPlayerLayout->addWidget(onyxCurrentBonusPlayer);
 ///// END QLCD
 
-    QLabel* currentPlayerName = new QLabel(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
+
     //PDV
     QGroupBox* pdvCurrentPlayerBox = new QGroupBox(tr("PDV"));
     QVBoxLayout* pdvCurrentPlayerLayout = new QVBoxLayout();
@@ -249,7 +237,6 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     pdvCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getPDV()));
     pdvCurrentPlayer->setFixedHeight(30);
     pdvCurrentPlayerLayout->addWidget(pdvCurrentPlayer);
-    pdvCurrentPlayerLayout->addWidget(currentPlayerName);
     pdvCurrentPlayerBox->setLayout(pdvCurrentPlayerLayout);
 
     //Reserve
@@ -265,8 +252,9 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     }
 
     //Carte Nobles test pour reserve
+
     size_t k = 0;
-    for(auto it: controleur.getPlateau().getNiveauNobles().getCartes()){ //TODO:: à update
+    for(auto it: controleur.getJoueur(controleur.getCurrentPlayer()).getReserve()){ //TODO:: à update
         if(k<3){
             vuecartesReserve[k]->setCarte(*it);
         }
@@ -497,7 +485,15 @@ void VuePartie::updateJoueurInfo() {
     diamantCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(3));
     onyxCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(4));
 
-    //currentPlayerName->setText(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
+    size_t k = 0;
+    for(auto it: controleur.getJoueur(controleur.getCurrentPlayer()).getReserve()){ //TODO:: à update
+        if(k<3){
+            vuecartesReserve[k]->setCarte(*it);
+        }
+        k++;
+    }
+
+    currentPlayerBox->setTitle(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
 
 }
 
