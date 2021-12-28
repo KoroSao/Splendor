@@ -12,13 +12,26 @@
 #include "../src/controleur/controleur.h"
 
 #include "../src/partie/vuePartie.h"
+#include "../src/menu/vueNumberOfPlayers.h"
 
 using namespace Splendor;
 
 int main(int argc, char* argv[]){
+
+    /*
+    unsigned int nbj = 4;
+    vector<std::string>names;
+    names.push_back("Arthur");
+    names.push_back("Emma");
+    names.push_back("Francois");
+    names.push_back("Romain"); */
     QApplication app(argc, argv);
-    VuePartie partie;
-    partie.show();
+
+    //VuePartie partie(nbj,names);
+    //partie.show();
+    vueNumberOfPlayers menu;
+    menu.show();
+
     return app.exec();
 }
 

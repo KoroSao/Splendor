@@ -73,7 +73,7 @@ Jeu::Jeu(){
     ressources couts;
     ressources bonus;
     int pdv;
-    std::string path = "C:/Users/33651/Documents/Cours/LO21/splendorlo21/splendor/Deck_cartes/";
+    std::string path = "/home/romain/Documents/GI01/LO21/Projet/splendorlo21/Splendor/Deck_cartes/";
     map<Type, string> noms_files= {
         {Type::un, path+"Niveau1.csv"},
         {Type::deux , path+"Niveau2.csv"},

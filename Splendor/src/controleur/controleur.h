@@ -5,6 +5,7 @@
 #include <string.h>
 #include <cstdlib>
 #include <stdlib.h>
+#include <vector>
 
 #include "../carte/carte.h"
 #include "../jeu/jeu.h"
@@ -28,8 +29,7 @@ namespace Splendor{
             bool lastLap;
 
         public:
-            //Controleur(unsigned int nbj);
-            Controleur();
+            Controleur(unsigned int nbj, vector<std::string> names);
 
             ~Controleur() = default;
             Controleur(const Controleur&) = default;
@@ -41,10 +41,10 @@ namespace Splendor{
             int getCurrentPlayer() const { return currentPlayer; }
 
             // ------------ Action du joueur --------------
-            void acheterCarte(Joueur& j, const Carte& c, Plateau& p);
-            void prendreRessource(Joueur& j, unsigned int i, Plateau& p);
-            void rendreRessource(Joueur&j, unsigned int i, Plateau &p);
-            void selectCarte(Joueur& j, const Carte&c, Plateau &p);
+            void acheterCarte(Joueur& j, const Carte& c);
+            void prendreRessource(Joueur& j, unsigned int i);
+            void rendreRessource(Joueur&j, unsigned int i);
+            void selectCarte(Joueur& j, const Carte&c);
 
             // ------------ Controle des tours --------------
             void isTurnWithJetonsFinished(Joueur& j);      //Fonction controlant la quantité de jetons pris par le joueur

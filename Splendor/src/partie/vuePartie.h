@@ -6,6 +6,7 @@
 #include <QGroupBox>
 #include <vector>
 #include <set>
+#include <string.h>
 #include "../controleur/controleur.h"
 #include "vueCarte.h"
 
@@ -20,10 +21,13 @@ class QLCDNumber;
 class VueCarte;
 class VueJoueur;
 
+using namespace Splendor;
+
 class VuePartie : public QWidget {
     Q_OBJECT
 public:
-    explicit VuePartie(QWidget *parent = nullptr);
+    explicit VuePartie(unsigned int nbj, vector<std::string> names, QWidget *parent = nullptr);
+
 private:
     Splendor::Controleur controleur; // controleur de la partie //TODO: fixé à 4 joueurs
 
