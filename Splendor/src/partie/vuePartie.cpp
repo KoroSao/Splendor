@@ -158,20 +158,8 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
 
     QVBoxLayout *playerLayout = new QVBoxLayout();
 
-    /*
-    QGroupBox* currentPlayerBox();
-    QHBoxLayout* currentPlayerLayout;
-    QGroupBox* currentPlayerRessourceBox;
-    QVBoxLayout* currentPlayerRessourceLayout;
-    QGroupBox* inventaireCurrentPlayerBox();
-    QGroupBox* bonusCurrentPlayerBox();
-    QGroupBox* pdvCurrentPlayerBox();
-    QGroupBox* reserveCurrentPlayerBox();
 
-
-    */
-
-    QGroupBox* currentPlayerBox = new QGroupBox(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom())); //TODO:: add name current player
+    currentPlayerBox = new QGroupBox(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom())); //TODO:: add name current player
     QHBoxLayout* currentPlayerLayout = new QHBoxLayout();
     QGroupBox* currentPlayerRessourceBox = new QGroupBox();
     QVBoxLayout* currentPlayerRessourceLayout = new QVBoxLayout();
@@ -241,7 +229,7 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     bonusCurrentPlayerLayout->addWidget(onyxCurrentBonusPlayer);
 ///// END QLCD
 
-    QLabel* currentPlayerName = new QLabel(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
+
     //PDV
     QGroupBox* pdvCurrentPlayerBox = new QGroupBox(tr("PDV"));
     QVBoxLayout* pdvCurrentPlayerLayout = new QVBoxLayout();
@@ -249,7 +237,6 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     pdvCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getPDV()));
     pdvCurrentPlayer->setFixedHeight(30);
     pdvCurrentPlayerLayout->addWidget(pdvCurrentPlayer);
-    pdvCurrentPlayerLayout->addWidget(currentPlayerName);
     pdvCurrentPlayerBox->setLayout(pdvCurrentPlayerLayout);
 
     //Reserve
@@ -265,8 +252,9 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     }
 
     //Carte Nobles test pour reserve
+
     size_t k = 0;
-    for(auto it: controleur.getPlateau().getNiveauNobles().getCartes()){ //TODO:: à update
+    for(auto it: controleur.getJoueur(controleur.getCurrentPlayer()).getReserve()){ //TODO:: à update
         if(k<3){
             vuecartesReserve[k]->setCarte(*it);
         }
@@ -378,6 +366,7 @@ void VuePartie::cancelTurnClique() {
     std::cout << "Action cancelled" << std::endl;
     nbJetonsPris = 0;
     cartePrise = false;
+    sameJetonPris = false;
     for (size_t i = 0; i < 5; i++){
         int x = jetonsPris[i];
         for(size_t k = 0; k < x; k++) {
@@ -385,8 +374,8 @@ void VuePartie::cancelTurnClique() {
         }
         jetonsPris[i] = 0;
     }
-    emeraudeCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(0));
-    emeraudeBanque->display(controleur.getPlateau().getBanque(0));
+    updateJoueurInfo();
+    updatePlateauInfo();
 }
 
 void VuePartie::endTurnClique() {
@@ -395,6 +384,7 @@ void VuePartie::endTurnClique() {
     for(size_t i = 0; i < 5; i++)
         jetonsPris[i] = 0;
     nbJetonsPris = 0;
+    sameJetonPris = false;
 
     controleur.nextPlayer();
     updateJoueurInfo();
@@ -402,23 +392,68 @@ void VuePartie::endTurnClique() {
 }
 
 void VuePartie::emeraudeBoutonClique(){
-   if ( (nbJetonsPris == 1 && jetonsPris[0] == 1) || (nbJetonsPris <= 2 && jetonsPris[0] == 0) ){
-
-       //Le tour qui suit est un tour à Jeton
+   if ( (nbJetonsPris == 1 && jetonsPris[0] == 1) || (nbJetonsPris <= 2 && jetonsPris[0] == 0 && sameJetonPris == false) ){
        nbJetonsPris++;
        jetonsPris[0]++;
-       std::cout << "Jetons pris" << nbJetonsPris << std::endl;
-       //La méthode prendreRessource met a jour le booléen tourJeton
+       if (jetonsPris[0] == 2)
+           sameJetonPris = true;
        controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 0);
        updateJoueurInfo();
        updatePlateauInfo();
    }
+}
 
-};
-void VuePartie::saphirBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton saphir !"); };
-void VuePartie::rubisBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton rubis !"); };
-void VuePartie::diamantBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton diamant !"); };
-void VuePartie::onyxBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton onyx !"); };
+void VuePartie::saphirBoutonClique(){
+    if ( (nbJetonsPris == 1 && jetonsPris[1] == 1) || (nbJetonsPris <= 2 && jetonsPris[1] == 0 && sameJetonPris == false) ){
+        nbJetonsPris++;
+        jetonsPris[1]++;
+        if (jetonsPris[1] == 2)
+            sameJetonPris = true;
+
+        controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 1);
+        updateJoueurInfo();
+        updatePlateauInfo();
+    }
+}
+
+void VuePartie::rubisBoutonClique(){
+    if ( (nbJetonsPris == 1 && jetonsPris[2] == 1) || (nbJetonsPris <= 2 && jetonsPris[2] == 0 && sameJetonPris == false) ){
+        nbJetonsPris++;
+        jetonsPris[2]++;
+        if (jetonsPris[2] == 2)
+            sameJetonPris = true;
+
+        controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 2);
+        updateJoueurInfo();
+        updatePlateauInfo();
+    }
+}
+
+void VuePartie::diamantBoutonClique(){
+    if ( (nbJetonsPris == 1 && jetonsPris[3] == 1) || (nbJetonsPris <= 2 && jetonsPris[3] == 0  && sameJetonPris == false) ){
+        nbJetonsPris++;
+        jetonsPris[3]++;
+        if (jetonsPris[3] == 2)
+            sameJetonPris = true;
+
+        controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 3);
+        updateJoueurInfo();
+        updatePlateauInfo();
+    }
+}
+
+void VuePartie::onyxBoutonClique(){
+    if ( (nbJetonsPris == 1 && jetonsPris[4] == 1) || (nbJetonsPris <= 2 && jetonsPris[4] == 0 && sameJetonPris == false) ){
+        nbJetonsPris++;
+        jetonsPris[4]++;
+        if (jetonsPris[4] == 2)
+            sameJetonPris = true;
+
+        controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 4);
+        updateJoueurInfo();
+        updatePlateauInfo();
+    }
+}
 
 void VuePartie::pioche1BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 1 !"); };
 void VuePartie::pioche2BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 2 !"); };
@@ -450,7 +485,15 @@ void VuePartie::updateJoueurInfo() {
     diamantCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(3));
     onyxCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(4));
 
-    //currentPlayerName->setText(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
+    size_t k = 0;
+    for(auto it: controleur.getJoueur(controleur.getCurrentPlayer()).getReserve()){ //TODO:: à update
+        if(k<3){
+            vuecartesReserve[k]->setCarte(*it);
+        }
+        k++;
+    }
+
+    currentPlayerBox->setTitle(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
 
 }
 
