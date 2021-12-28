@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <array>
-
+#include <map>
 #include "../type/type.h"
 
 
@@ -15,7 +15,7 @@ namespace Splendor{
     class Joueur;
     //pour alléger
     typedef array<int, 5> ressources;
-
+    static map<int, std::string> ressources_name = {{0,"Emeraude"},{1, "Saphir"}, {2, "Rubis"}, {3, "Diamant"}, {4, "Onix"}};
     //classe abstraite
     class Carte{
         private:
@@ -23,7 +23,7 @@ namespace Splendor{
         protected:
             Carte(ressources c):couts(c){}
         public:
-            const int getCouts(size_t i) const {return couts[i];}
+            int getCouts(size_t i) const {return couts[i];}
             friend class Jeu; //Jeu est le seul constructeur de la classe Carte
             virtual bool canBeBougth(Joueur& j) const = 0;
             virtual void afficherCarte(std::ostream& f = std::cout) const =  0;
@@ -36,7 +36,7 @@ namespace Splendor{
         protected:
             Carte_avec_bonus(ressources c, ressources b) : Carte(c), bonus(b) {};
         public:
-            const int getBonus(size_t i) const { return bonus[i]; }
+            int getBonus(size_t i) const { return bonus[i]; }
             void afficherCarte(std::ostream& f = std::cout) const override {}
     };
 
@@ -48,9 +48,7 @@ namespace Splendor{
             const Type type;
             CarteDeveloppement(ressources c, ressources b, Type t,  int pdv): Carte_avec_bonus(c, b), type(t), PDV(pdv) {};
         public:
-            /* //TODO:: à remettre en privé un jour et friend de la classe Jeu*/
-
-            const Type getType() const /* si on rajoute const ici ça bug de ouf (masse d'erreurs) */ { return type; }
+            const Type getType() const { return type; }
             const int getPDV() const { return PDV; }
             bool canBeBougth(Joueur& j) const override;
             void afficherCarte(std::ostream& f = std::cout) const override;

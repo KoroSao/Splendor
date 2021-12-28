@@ -37,40 +37,26 @@ namespace Splendor{
             
             ~Joueur() = default;
 
-
             //----------- Getters -----------
             unsigned int getId() const { return id; }
             const string getNom() const { return nom; }
-
             int getInventaire(unsigned int i) const;
             int* getInventaire() { return inventaire; }
-
             int getBonus(unsigned int i) const;
             int* getBonus() { return bonus; }
-
-            int getJetonsPris(unsigned int i) const;
-
-
+            int getJetonsPris(unsigned int i);
             vector<const Carte*> getReserve() { return reserve; }
-
             vector<const Carte*> getCartesRemportees() { return cartesRemportees; }
-
             unsigned int getPDV() const { return PDV; }
-
-
 
             // ----------- Setters -----------
             void setInventaire(unsigned int i, unsigned int val);        
             void setBonus(unsigned int i, unsigned int val); 
             void setJetonsPris(unsigned int i, unsigned int val);
-
             void addCartesRemportees(const Carte &c);
-
             void ajouterCarteReserve(const Carte &c);
             const Carte& retirerCarteReserve(const Carte &c);
-        
             void addPDV(unsigned int i);
-
 
             // ----------- Affichage -----------
             void afficherInventaire(std::ostream& f = std::cout) const;

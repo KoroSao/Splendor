@@ -17,7 +17,7 @@ namespace Splendor {
         return bonus[i]; 
     }
 
-    int Joueur::getJetonsPris(unsigned int i) const {
+    int Joueur::getJetonsPris(unsigned int i) {
         if (i > 4)
             throw SplendorException("Splendor::Joueur::getJetonsPris() : indice i invalide");
         return jetonsPris[i]; 

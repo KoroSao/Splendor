@@ -1,17 +1,14 @@
 #include "controleur.h"
 
+
 namespace Splendor{
 
 
-    Controleur::Controleur(unsigned int nbj): nbJoueurs(nbj), plateau(nbj), currentPlayer(0), lastLap(false) {
+    Controleur::Controleur(unsigned int nbj, vector<std::string> names): nbJoueurs(nbj), plateau(nbj), currentPlayer(0), lastLap(false) {
         //Init joueurs vector
         //TODO: appeler à la place de la loop le menu de création d'une partie
-        for (size_t i = 0; i < nbj; i++) {
-            string playerName;
-            cout << "Please enter player number " << i << " name :";
-            std::cin >> playerName;
-            joueurs.push_back(new Joueur(i, playerName));
-        }
+        for (size_t i = 0; i < nbj; i++)
+            joueurs.push_back(new Joueur(i, names[i]));
     }
 
 
@@ -25,7 +22,7 @@ namespace Splendor{
             =========================== ACTION DU JOUEUR ==========================
     */
 
-    void Controleur::acheterCarte(Joueur& j, const Carte& c, Plateau& p) {
+    void Controleur::acheterCarte(Joueur& j, const Carte& c) {
         if (!c.canBeBougth(j))
             throw SplendorException("Splendor::Joueur::acheterCarte() : ressources insuffisantes");
 
@@ -48,12 +45,12 @@ namespace Splendor{
         }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
     }
 
-    void Controleur::prendreRessource(Joueur& j, unsigned int i, Plateau& p) {
+    void Controleur::prendreRessource(Joueur& j, unsigned int i) {
         if(i > 5 || i < 0)
-            throw SplendorException("Splendor::Joueur::prendreRessource() : indice i invalide");
-        if (!p.getBanque(i))
+            throw SplendorException("Splendor::Joueur::prendreRessource() : indice i, Plateau& p invalide");
+        if (!getPlateau().getBanque(i))
             throw SplendorException("Splendor::Joueur::prendreRessource() : Banque vide");
-        if (p.getBanque(i) <= 3 && j.getJetonsPris(i) > 0)
+        if (getPlateau().getBanque(i) <= 3 && j.getJetonsPris(i) > 0)
             throw SplendorException("Splendor::Joueur::prendreRessources() : Impossible de prendre 2 jetons d'une pile de moins de 4 de haut");
 
         int nbJetons = 0;
@@ -63,26 +60,26 @@ namespace Splendor{
             throw SplendorException("Splendor::Joueur::prendreRessources() : Impossible de prendre 3 jetons non tous différents");
 
         
-        p.setBanque(i, p.getBanque(i) - 1); //Retirer un jeton de la banque
+        getPlateau().setBanque(i, getPlateau().getBanque(i) - 1); //Retirer un jeton de la banque
         j.setInventaire(i, j.getInventaire(i) + 1); //Ajouter un jeton au joueur
         j.setJetonsPris(i, j.getJetonsPris(i) + 1); //Ajout du jeton à l'historique de jetons du tour
         isTurnWithJetonsFinished(j);
     }
 
-    void Controleur::rendreRessource(Joueur&j, unsigned int i, Plateau &p) {
+    void Controleur::rendreRessource(Joueur&j, unsigned int i) {
         if(i > 5 || i < 0)
             throw SplendorException("Splendor::Joueur::prendreRessource() : indice i invalide");
         if (!j.getInventaire(i))
             throw SplendorException("Splendor::Joueur::prendreRessource() : Ressource inexistante");
         j.setInventaire(i, j.getInventaire(i) - 1);       //Retire le jeton de l'inventaire du joueur
-        p.setBanque(i, p.getBanque(i) + 1);                 //Ajoute le jeton de l'inventaire du joueur dans la banque
+        getPlateau().setBanque(i, getPlateau().getBanque(i) + 1);                 //Ajoute le jeton de l'inventaire du joueur dans la banque
     }
 
 
-    void Controleur::selectCarte(Joueur& j, const Carte& c, Plateau& p) {
+    void Controleur::selectCarte(Joueur& j, const Carte& c) {
         if (c.canBeBougth(j)){
             if (confirmTurn(j)){
-                acheterCarte(j,c,p);
+                acheterCarte(j,c);
                 endOfTurn(j);
             }
         } else {
@@ -136,7 +133,7 @@ namespace Splendor{
         for (size_t i = 0; i < 5; i++){
             int x = j.getJetonsPris(i);
             for(size_t k = 0; k < x; k++) {
-                rendreRessource(j,i,getPlateau());
+                rendreRessource(j,i);
             }
         }
         //RESET tableau jetonspris

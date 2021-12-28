@@ -73,11 +73,12 @@ Jeu::Jeu(){
     ressources couts;
     ressources bonus;
     int pdv;
+    std::string path = "/home/romain/Documents/GI01/LO21/Projet/splendorlo21/Splendor/Deck_cartes/";
     map<Type, string> noms_files= {
-        {Type::un, "../Deck_cartes/Niveau1.csv"},
-        {Type::deux , "../Deck_cartes/Niveau2.csv"},
-        {Type::trois, "../Deck_cartes/Niveau3.csv"},
-        {Type::nobles, "../Deck_cartes/Nobles.csv"}};
+        {Type::un, path+"Niveau1.csv"},
+        {Type::deux , path+"Niveau2.csv"},
+        {Type::trois, path+"Niveau3.csv"},
+        {Type::nobles, path+"Nobles.csv"}};
 
     for (auto pair_type_nom : noms_files){
         file_contents = readFileIntoString(pair_type_nom.second);
@@ -109,7 +110,6 @@ Jeu::Jeu(){
             }
         }
     }
-
 }
 
 }
