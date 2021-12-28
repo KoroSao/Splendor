@@ -27,6 +27,8 @@ class VuePartie : public QWidget {
     Q_OBJECT
 public:
     explicit VuePartie(unsigned int nbj, vector<std::string> names, QWidget *parent = nullptr);
+    void updateJoueurInfo();
+    void updatePlateauInfo();
 
 private:
 
@@ -71,14 +73,15 @@ private:
     QVBoxLayout* playerLayout;
     QGroupBox* playersDataBox();
 
-    QGroupBox* currentPlayerBox();
+    QGroupBox* currentPlayerBox;
     QHBoxLayout* currentPlayerLayout;
     QGroupBox* currentPlayerRessourceBox;
     QVBoxLayout* currentPlayerRessourceLayout;
     QGroupBox* inventaireCurrentPlayerBox();
     QGroupBox* bonusCurrentPlayerBox();
     QGroupBox* pdvCurrentPlayerBox();
-    QHBoxLayout *pdvCurrentPlayerLayout;
+    QLabel* currentPlayerName;
+    QVBoxLayout *pdvCurrentPlayerLayout;
     QLCDNumber *pdvCurrentPlayer;
     QGroupBox* reserveCurrentPlayerBox();
 
@@ -132,6 +135,7 @@ private:
         void pioche2BoutonClique();
         void pioche3BoutonClique();
         void cancelTurnClique();
+        void endTurnClique();
 
 };
 

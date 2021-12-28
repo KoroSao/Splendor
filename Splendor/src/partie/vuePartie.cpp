@@ -171,7 +171,7 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
 
     */
 
-    QGroupBox *currentPlayerBox = new QGroupBox(tr("Current Player : player xx")); //TODO:: add name current player
+    QGroupBox* currentPlayerBox = new QGroupBox(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom())); //TODO:: add name current player
     QHBoxLayout* currentPlayerLayout = new QHBoxLayout();
     QGroupBox* currentPlayerRessourceBox = new QGroupBox();
     QVBoxLayout* currentPlayerRessourceLayout = new QVBoxLayout();
@@ -241,13 +241,15 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     bonusCurrentPlayerLayout->addWidget(onyxCurrentBonusPlayer);
 ///// END QLCD
 
+    QLabel* currentPlayerName = new QLabel(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
     //PDV
     QGroupBox* pdvCurrentPlayerBox = new QGroupBox(tr("PDV"));
-    QHBoxLayout* pdvCurrentPlayerLayout = new QHBoxLayout();
+    QVBoxLayout* pdvCurrentPlayerLayout = new QVBoxLayout();
     pdvCurrentPlayer=new QLCDNumber;
     pdvCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getPDV()));
     pdvCurrentPlayer->setFixedHeight(30);
     pdvCurrentPlayerLayout->addWidget(pdvCurrentPlayer);
+    pdvCurrentPlayerLayout->addWidget(currentPlayerName);
     pdvCurrentPlayerBox->setLayout(pdvCurrentPlayerLayout);
 
     //Reserve
@@ -273,6 +275,20 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
 
     reserveCurrentPlayerBox->setLayout(layoutCartesReserve);
 
+    //Boutons de controle de tour
+    QGroupBox* playerActionBox = new QGroupBox(tr("Actions"));
+    QVBoxLayout* playerActionLayout = new QVBoxLayout();
+
+    QPushButton* endTurnBouton = new QPushButton("Terminer tour", this);
+    QPushButton* cancelTurnBouton = new QPushButton("Annuler action", this);
+
+    playerActionLayout->addWidget(endTurnBouton);
+    playerActionLayout->addWidget(cancelTurnBouton);
+
+    playerActionBox->setLayout(playerActionLayout);
+
+    //Fin des boutons de controle de tour
+
     // STATS DE TOUS LES JOUEURS
     QString str;
     QHBoxLayout *playerBox = new QHBoxLayout;
@@ -291,24 +307,10 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     currentPlayerLayout->addWidget(pdvCurrentPlayerBox);
     currentPlayerLayout->addWidget(reserveCurrentPlayerBox);
 
+    currentPlayerLayout->addWidget(playerActionBox);
+
     currentPlayerBox->setLayout(currentPlayerLayout);
     playerLayout->addWidget(currentPlayerBox);
-
-
-    //Boutons de controle de tour
-    QGroupBox* playerActionBox = new QGroupBox(tr("Actions"));
-    QVBoxLayout* playerActionLayout = new QVBoxLayout();
-    playerActionBox->setLayout(playerActionLayout);
-
-    QPushButton* endTurnBouton = new QPushButton("Terminer tour", this);
-    QPushButton* cancelTurnBouton = new QPushButton("Annuler action", this);
-
-    playerActionLayout->addWidget(endTurnBouton);
-    playerActionLayout->addWidget(cancelTurnBouton);
-
-    currentPlayerLayout->addWidget(playerActionBox);
-    //Fin des boutons de controle de tour
-
 
 
     for (int i = 0; i < controleur.getNbJoueurs(); ++i){
@@ -347,7 +349,6 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     playerBox->addWidget(playersData);
     playersDataBox->setLayout(playerBox);
     playerLayout->addWidget(playersDataBox);
-    playerLayout->addWidget(playersDataBox);
 
     couche->addLayout(layoutInformations);
     couche->addLayout(layoutCartes);
@@ -370,14 +371,34 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     connect(pioche2Bouton, &QPushButton::released, this, &VuePartie::pioche2BoutonClique);
     connect(pioche3Bouton, &QPushButton::released, this, &VuePartie::pioche3BoutonClique);
     connect(cancelTurnBouton, &QPushButton::released, this, &VuePartie::cancelTurnClique);
+    connect(endTurnBouton, &QPushButton::released, this, &VuePartie::endTurnClique);
 }
 
 void VuePartie::cancelTurnClique() {
     std::cout << "Action cancelled" << std::endl;
     nbJetonsPris = 0;
     cartePrise = false;
-    for(size_t i=0; i < 5; i++)
+    for (size_t i = 0; i < 5; i++){
+        int x = jetonsPris[i];
+        for(size_t k = 0; k < x; k++) {
+            controleur.rendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()),i);
+        }
         jetonsPris[i] = 0;
+    }
+    emeraudeCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(0));
+    emeraudeBanque->display(controleur.getPlateau().getBanque(0));
+}
+
+void VuePartie::endTurnClique() {
+    std::cout << "Fin du tour" << std::endl;
+    //Clear local var
+    for(size_t i = 0; i < 5; i++)
+        jetonsPris[i] = 0;
+    nbJetonsPris = 0;
+
+    controleur.nextPlayer();
+    updateJoueurInfo();
+    updatePlateauInfo();
 }
 
 void VuePartie::emeraudeBoutonClique(){
@@ -389,8 +410,8 @@ void VuePartie::emeraudeBoutonClique(){
        std::cout << "Jetons pris" << nbJetonsPris << std::endl;
        //La méthode prendreRessource met a jour le booléen tourJeton
        controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 0);
-       emeraudeCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(0));
-       emeraudeBanque->display(controleur.getPlateau().getBanque(0));
+       updateJoueurInfo();
+       updatePlateauInfo();
    }
 
 };
@@ -415,6 +436,33 @@ void VuePartie::carteClique(VueCarte* vc){
     return;
 }
 
+void VuePartie::updateJoueurInfo() {
+    emeraudeCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(0));
+    saphirCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(1));
+    rubisCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(2));
+    diamantCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(3));
+    onyxCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(4));
+    jokerCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(5));
+
+    emeraudeCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(0));
+    saphirCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(1));
+    rubisCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(2));
+    diamantCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(3));
+    onyxCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(4));
+
+    //currentPlayerName->setText(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
+
+}
+
+void VuePartie::updatePlateauInfo(){
+    emeraudeBanque->display(controleur.getPlateau().getBanque(0));
+    saphirBanque->display(controleur.getPlateau().getBanque(1));
+    rubisBanque->display(controleur.getPlateau().getBanque(2));
+    diamantBanque->display(controleur.getPlateau().getBanque(3));
+    onyxBanque->display(controleur.getPlateau().getBanque(4));
+    jokerBanque->display(controleur.getPlateau().getBanque(5));
+
+}
 
 
 
