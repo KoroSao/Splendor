@@ -37,7 +37,7 @@ private:
     bool sameJetonPris = false;
     bool cartePrise = false;
 
-
+    const Splendor::Carte* selectionCarte = nullptr;
 
 
     // - - - - Jeton - - - -

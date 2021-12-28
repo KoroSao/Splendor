@@ -242,8 +242,6 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     //Reserve
     QGroupBox* reserveCurrentPlayerBox = new QGroupBox(tr("reserve"));
 
-
-
     for(size_t i=0; i<3;i++)
         vuecartesReserve[i] = new VueCarte;
     for(size_t i=0; i<3;i++){
@@ -251,10 +249,9 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
         connect(vuecartesReserve[i],SIGNAL(carteClicked(VueCarte*)),this,SLOT(carteClique(VueCarte*)));
     }
 
-    //Carte Nobles test pour reserve
-
+    //Carte Reserve
     size_t k = 0;
-    for(auto it: controleur.getJoueur(controleur.getCurrentPlayer()).getReserve()){ //TODO:: à update
+    for(auto it: controleur.getJoueur(controleur.getCurrentPlayer()).getReserve()){
         if(k<3){
             vuecartesReserve[k]->setCarte(*it);
         }
@@ -323,10 +320,7 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
             str += "\n";
         }
 
-
-
         playersData->setText(str);
-
 
 
         //Manque affichage des cartes Reserve et CarteRemportées ? (pas besoin carteRemporté?)
@@ -374,25 +368,37 @@ void VuePartie::cancelTurnClique() {
         }
         jetonsPris[i] = 0;
     }
+    selectionCarte = nullptr;
+    for (size_t i=0; i<12; i++) {
+        vuecartes[i]->setChecked(false);
+    }
     updateJoueurInfo();
     updatePlateauInfo();
 }
 
 void VuePartie::endTurnClique() {
     std::cout << "Fin du tour" << std::endl;
+
+    //fonctionne mais crash si pas assez de ressource :
+    if(selectionCarte != nullptr && nbJetonsPris == 0)
+        controleur.selectCarte(controleur.getJoueur(controleur.getCurrentPlayer()), *selectionCarte);
+
     //Clear local var
     for(size_t i = 0; i < 5; i++)
         jetonsPris[i] = 0;
     nbJetonsPris = 0;
     sameJetonPris = false;
-
+    selectionCarte = nullptr;
+    for (size_t i=0; i<12; i++) {
+        vuecartes[i]->setChecked(false);
+    }
     controleur.nextPlayer();
     updateJoueurInfo();
     updatePlateauInfo();
 }
 
 void VuePartie::emeraudeBoutonClique(){
-   if ( (nbJetonsPris == 1 && jetonsPris[0] == 1) || (nbJetonsPris <= 2 && jetonsPris[0] == 0 && sameJetonPris == false) ){
+   if ( ((nbJetonsPris == 1 && jetonsPris[0] == 1) || (nbJetonsPris <= 2 && jetonsPris[0] == 0 && sameJetonPris == false)) && !controleur.getTourCarte() ){
        nbJetonsPris++;
        jetonsPris[0]++;
        if (jetonsPris[0] == 2)
@@ -404,7 +410,7 @@ void VuePartie::emeraudeBoutonClique(){
 }
 
 void VuePartie::saphirBoutonClique(){
-    if ( (nbJetonsPris == 1 && jetonsPris[1] == 1) || (nbJetonsPris <= 2 && jetonsPris[1] == 0 && sameJetonPris == false) ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[1] == 1) || (nbJetonsPris <= 2 && jetonsPris[1] == 0 && sameJetonPris == false)) && !controleur.getTourCarte() ){
         nbJetonsPris++;
         jetonsPris[1]++;
         if (jetonsPris[1] == 2)
@@ -417,7 +423,7 @@ void VuePartie::saphirBoutonClique(){
 }
 
 void VuePartie::rubisBoutonClique(){
-    if ( (nbJetonsPris == 1 && jetonsPris[2] == 1) || (nbJetonsPris <= 2 && jetonsPris[2] == 0 && sameJetonPris == false) ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[2] == 1) || (nbJetonsPris <= 2 && jetonsPris[2] == 0 && sameJetonPris == false)) && !controleur.getTourCarte() ){
         nbJetonsPris++;
         jetonsPris[2]++;
         if (jetonsPris[2] == 2)
@@ -430,7 +436,7 @@ void VuePartie::rubisBoutonClique(){
 }
 
 void VuePartie::diamantBoutonClique(){
-    if ( (nbJetonsPris == 1 && jetonsPris[3] == 1) || (nbJetonsPris <= 2 && jetonsPris[3] == 0  && sameJetonPris == false) ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[3] == 1) || (nbJetonsPris <= 2 && jetonsPris[3] == 0  && sameJetonPris == false)) && !controleur.getTourCarte() ){
         nbJetonsPris++;
         jetonsPris[3]++;
         if (jetonsPris[3] == 2)
@@ -443,7 +449,7 @@ void VuePartie::diamantBoutonClique(){
 }
 
 void VuePartie::onyxBoutonClique(){
-    if ( (nbJetonsPris == 1 && jetonsPris[4] == 1) || (nbJetonsPris <= 2 && jetonsPris[4] == 0 && sameJetonPris == false) ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[4] == 1) || (nbJetonsPris <= 2 && jetonsPris[4] == 0 && sameJetonPris == false)) && !controleur.getTourCarte() ){
         nbJetonsPris++;
         jetonsPris[4]++;
         if (jetonsPris[4] == 2)
@@ -460,14 +466,31 @@ void VuePartie::pioche2BoutonClique(){ qInfo("L'utilisateur x souhaite réserver
 void VuePartie::pioche3BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 3 !"); };
 
 void VuePartie::carteClique(VueCarte* vc){
-    if (!controleur.getTourJeton() && !controleur.getTourCarte()) {
-        //Si il n'y a pas déjà des jetons de pris
-        controleur.setTourCarte(true);
-        std::cout << "Il prend la carte !" << std::endl;
-
-        //Suite du traitement
+    if (nbJetonsPris==0 && !controleur.getTourCarte()) {
+        if(vc->isChecked()){
+            //Si il n'y a pas déjà des jetons de pris
+            controleur.setTourCarte(true);
+            selectionCarte = &vc->getCarte();
+            std::cout << "Il prend la carte !" << std::endl;
+            //Suite du traitement dans le endTOUR
+        }
+    } else {
+        if(!vc->isChecked()){
+            vc->setChecked(false);
+            controleur.setTourCarte(false);
+            selectionCarte = nullptr;
+         } else {
+            for (size_t i=0; i<12; i++) {
+                vuecartes[i]->setChecked(false);
+            }
+            if(nbJetonsPris==0){
+                controleur.setTourCarte(true);
+                vc->setChecked(true);
+                std::cout << "Il prend la carte !" << std::endl;
+                selectionCarte = &vc->getCarte();
+            }
+        }
     }
-
     return;
 }
 
@@ -494,6 +517,32 @@ void VuePartie::updateJoueurInfo() {
     }
 
     currentPlayerBox->setTitle(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
+
+     QString str;
+     for (int i = 0; i < controleur.getNbJoueurs(); ++i) {
+
+         str += "id :" + QString::number(controleur.getJoueur(i).getId()) + "   ";
+         str += QString::fromStdString(controleur.getJoueur(i).getNom()) + "   ";
+         str += "PDV:" + QString::number(controleur.getJoueur(i).getPDV()) + "   ";
+
+         str += "Inventaire: [";
+         for (size_t j = 0; j < 5; j++) {
+             str += QString::number(controleur.getJoueur(i).getInventaire()[j]) + ",";
+         }
+         str += QString::number(controleur.getJoueur(i).getInventaire()[5]) + "]   ";
+
+         str += "Bonus: [";
+         for (size_t j = 0; j < 4; j++) {
+             str += QString::number(controleur.getJoueur(i).getBonus()[j]) + ",";
+         }
+         str += QString::number(controleur.getJoueur(i).getInventaire()[4]) + "]   ";
+
+         if (i != controleur.getNbJoueurs() - 1){
+             str += "\n";
+         }
+
+         playersData->setText(str);
+    }
 
 }
 
