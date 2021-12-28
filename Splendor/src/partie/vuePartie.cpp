@@ -119,17 +119,6 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     layoutCartes->addWidget(pioche2Bouton,1,0);
     layoutCartes->addWidget(pioche3Bouton,2,0);
 
-    //Gestion des Slots des boutons :
-    connect(emeraudeBouton, &QPushButton::released, this, &VuePartie::emeraudeBoutonClique);
-    connect(saphirBouton, &QPushButton::released, this, &VuePartie::saphirBoutonClique);
-    connect(rubisBouton, &QPushButton::released, this, &VuePartie::rubisBoutonClique);
-    connect(diamantBouton, &QPushButton::released, this, &VuePartie::diamantBoutonClique);
-    connect(onyxBouton, &QPushButton::released, this, &VuePartie::onyxBoutonClique);
-
-    connect(pioche1Bouton, &QPushButton::released, this, &VuePartie::pioche1BoutonClique);
-    connect(pioche2Bouton, &QPushButton::released, this, &VuePartie::pioche2BoutonClique);
-    connect(pioche3Bouton, &QPushButton::released, this, &VuePartie::pioche3BoutonClique);
-
     //création des vues des cartesDeveloppement
     for(size_t i=0; i<12;i++)
         vuecartes[i] = new VueCarte;
@@ -194,59 +183,59 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     QHBoxLayout *bonusCurrentPlayerLayout = new QHBoxLayout;
 ////// START QLCD
     emeraudeCurrentPlayer=new QLCDNumber;
-    emeraudeCurrentPlayer->display(QString::number(0));
+    emeraudeCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(0)));
     emeraudeCurrentPlayer->setFixedHeight(30);
     emeraudeCurrentPlayer->setStyleSheet("background-color : green");
     inventaireCurrentPlayerLayout->addWidget(emeraudeCurrentPlayer);
     saphirCurrentPlayer=new QLCDNumber;
-    saphirCurrentPlayer->display(QString::number(0));
+    saphirCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(1)));
     saphirCurrentPlayer->setFixedHeight(30);
     saphirCurrentPlayer->setStyleSheet("background-color : blue");
     inventaireCurrentPlayerLayout->addWidget(saphirCurrentPlayer);
     rubisCurrentPlayer=new QLCDNumber;
-    rubisCurrentPlayer->display(QString::number(0));
+    rubisCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(2)));
     rubisCurrentPlayer->setFixedHeight(30);
     rubisCurrentPlayer->setStyleSheet("background-color : red");
     inventaireCurrentPlayerLayout->addWidget(rubisCurrentPlayer);
     diamantCurrentPlayer=new QLCDNumber;
-    diamantCurrentPlayer->display(QString::number(0));
+    diamantCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(3)));
     diamantCurrentPlayer->setFixedHeight(30);
     diamantCurrentPlayer->setStyleSheet("background-color : white");
     inventaireCurrentPlayerLayout->addWidget(diamantCurrentPlayer);
     onyxCurrentPlayer=new QLCDNumber;
-    onyxCurrentPlayer->display(QString::number(0));
+    onyxCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(4)));
     onyxCurrentPlayer->setFixedHeight(30);
     onyxCurrentPlayer->setStyleSheet("background-color : gray");
     inventaireCurrentPlayerLayout->addWidget(onyxCurrentPlayer);
     jokerCurrentPlayer=new QLCDNumber;
-    jokerCurrentPlayer->display(QString::number(0));
+    jokerCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(5)));
     jokerCurrentPlayer->setFixedHeight(30);
     jokerCurrentPlayer->setStyleSheet("background-color : gold");
     inventaireCurrentPlayerLayout->addWidget(jokerCurrentPlayer);
 
     //BONUS
     emeraudeCurrentBonusPlayer=new QLCDNumber;
-    emeraudeCurrentBonusPlayer->display(QString::number(0));
+    emeraudeCurrentBonusPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(0)));
     emeraudeCurrentBonusPlayer->setFixedHeight(30);
     emeraudeCurrentBonusPlayer->setStyleSheet("background-color : green");
     bonusCurrentPlayerLayout->addWidget(emeraudeCurrentBonusPlayer);
     saphirCurrentBonusPlayer=new QLCDNumber;
-    saphirCurrentBonusPlayer->display(QString::number(0));
+    saphirCurrentBonusPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(1)));
     saphirCurrentBonusPlayer->setFixedHeight(30);
     saphirCurrentBonusPlayer->setStyleSheet("background-color : blue");
     bonusCurrentPlayerLayout->addWidget(saphirCurrentBonusPlayer);
     rubisCurrentBonusPlayer=new QLCDNumber;
-    rubisCurrentBonusPlayer->display(QString::number(0));
+    rubisCurrentBonusPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(2)));
     rubisCurrentBonusPlayer->setFixedHeight(30);
     rubisCurrentBonusPlayer->setStyleSheet("background-color : red");
     bonusCurrentPlayerLayout->addWidget(rubisCurrentBonusPlayer);
     diamantCurrentBonusPlayer=new QLCDNumber;
-    diamantCurrentBonusPlayer->display(QString::number(0));
+    diamantCurrentBonusPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(3)));
     diamantCurrentBonusPlayer->setFixedHeight(30);
     diamantCurrentBonusPlayer->setStyleSheet("background-color : white");
     bonusCurrentPlayerLayout->addWidget(diamantCurrentBonusPlayer);
     onyxCurrentBonusPlayer=new QLCDNumber;
-    onyxCurrentBonusPlayer->display(QString::number(0));
+    onyxCurrentBonusPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(4)));
     onyxCurrentBonusPlayer->setFixedHeight(30);
     onyxCurrentBonusPlayer->setStyleSheet("background-color : black");
     bonusCurrentPlayerLayout->addWidget(onyxCurrentBonusPlayer);
@@ -305,6 +294,23 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     currentPlayerBox->setLayout(currentPlayerLayout);
     playerLayout->addWidget(currentPlayerBox);
 
+
+    //Boutons de controle de tour
+    QGroupBox* playerActionBox = new QGroupBox(tr("Actions"));
+    QVBoxLayout* playerActionLayout = new QVBoxLayout();
+    playerActionBox->setLayout(playerActionLayout);
+
+    QPushButton* endTurnBouton = new QPushButton("Annuler action", this);
+    QPushButton* cancelTurnBouton = new QPushButton("Terminer tour", this);
+
+    playerActionLayout->addWidget(endTurnBouton);
+    playerActionLayout->addWidget(cancelTurnBouton);
+
+    currentPlayerLayout->addWidget(playerActionBox);
+    //Fin des boutons de controle de tour
+
+
+
     for (int i = 0; i < controleur.getNbJoueurs(); ++i){
 
         str += "id :" + QString::number(controleur.getJoueur(i).getId()) + "   ";
@@ -327,10 +333,13 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
             str += "\n";
         }
 
+
+
         playersData->setText(str);
         playerBox->addWidget(playersData);
         playersDataBox->setLayout(playerBox);
         playerLayout->addWidget(playersDataBox);
+
 
 
         //Manque affichage des cartes Reserve et CarteRemportées ? (pas besoin carteRemporté?)
@@ -349,11 +358,31 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     couche->addLayout(layoutCartesNobles);
     couche->addLayout(playerLayout);
     setLayout(couche);
+
+
+    //Gestion des Slots des boutons :
+    connect(emeraudeBouton, &QPushButton::released, this, &VuePartie::emeraudeBoutonClique);
+    connect(saphirBouton, &QPushButton::released, this, &VuePartie::saphirBoutonClique);
+    connect(rubisBouton, &QPushButton::released, this, &VuePartie::rubisBoutonClique);
+    connect(diamantBouton, &QPushButton::released, this, &VuePartie::diamantBoutonClique);
+    connect(onyxBouton, &QPushButton::released, this, &VuePartie::onyxBoutonClique);
+
+    connect(pioche1Bouton, &QPushButton::released, this, &VuePartie::pioche1BoutonClique);
+    connect(pioche2Bouton, &QPushButton::released, this, &VuePartie::pioche2BoutonClique);
+    connect(pioche3Bouton, &QPushButton::released, this, &VuePartie::pioche3BoutonClique);
 }
 
 void VuePartie::emeraudeBoutonClique(){
-    //emeraudeBouton->setText("click!");
-    qInfo("L'utilisateur x souhaite prendre un jeton émeraude !");
+   if (!controleur.getTourCarte() && !controleur.getStopJetons() && controleur.getPlateau().getBanque(0) > 0){
+
+       //Le tour qui suit est un tour à Jeton
+       std::cout << " Il prend une ressource" << std::endl;
+       //La méthode prendreRessource met a jour le booléen tourJeton
+       controleur.prendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()), 0);
+       emeraudeCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(0));
+       emeraudeBanque->display(controleur.getPlateau().getBanque(0));
+   }
+
 };
 void VuePartie::saphirBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton saphir !"); };
 void VuePartie::rubisBoutonClique(){ qInfo("L'utilisateur x souhaite prendre un jeton rubis !"); };
@@ -365,88 +394,17 @@ void VuePartie::pioche2BoutonClique(){ qInfo("L'utilisateur x souhaite réserver
 void VuePartie::pioche3BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 3 !"); };
 
 void VuePartie::carteClique(VueCarte* vc){
-   return;
+    if (!controleur.getTourJeton() && !controleur.getTourCarte()) {
+        //Si il n'y a pas déjà des jetons de pris
+        controleur.setTourCarte(true);
+        std::cout << "Il prend la carte !" << std::endl;
+
+        //Suite du traitement
+    }
+
+    return;
 }
 
-//void VuePartie::carteClique(VueCarte* vc){
-//    if(!vc->cartePresente()){
-//        //qDebug("ajouter carte !\n");
-//        if(controleur.getPioche().estVide()/*.getNbCartes() == 0*/){
-//            QMessageBox message(QMessageBox::Icon::Warning, "Attention", "La pioche est vide");
-//            message.exec();
-//        }
-//        controleur.distribuer(); //ajout d'une carte
-//        //mise à jour des affectations des cartes aux vues des cartes
-//        size_t i = 0;
-//        for(auto it=controleur.getPlateau().begin();it!=controleur.getPlateau().end();++it){
-//            vuecartes[i]->setCarte(*it);
-//            i++;
-//        }
-//        nbCartesPioche->setValue(controleur.getPioche().getNbCartes());
-//    } else {
-//        if(vc->isChecked()){ //une nouvelle carte a été selectionnée
-//            selectionCartes.insert(&vc->getCarte()); //on insere la carte dans l'ensemble des cartes sélectionnées
-
-//            if(selectionCartes.size() == 3){ //on a une combinaison qui peut être un SET
-//                //on crée et teste une combinaison
-//                vector<const Set::Carte*> c(selectionCartes.begin() , selectionCartes.end());
-//                Set::Combinaison comb(*c[0], *c[1], *c[2]);
-
-//                if(comb.estUnSET()){ //c'est un SET ! Il faut mettre à jour le plateau
-//                    //Retirer les cartes du plateau
-//                    controleur.getPlateau().retirer(*c[0]);
-//                    controleur.getPlateau().retirer(*c[1]);
-//                    controleur.getPlateau()..retirer(*c[2]);
-//                    selectionCartes.clear(); //il n'y a plus de cartes sélectionnées
-
-//                    //s'il n'y a pas au moins 12 cartes sur le plateau, on le complète
-//                    if(controleur.getPlateau().getNbCartes() < 12){
-//                        controleur.distribuer();
-//                    }
-//                    //mise à jour du score
-//                    scoreValue++;
-//                    scoreJoueur->display(scoreValue);
-//                    //mise à jour de la vue du plateau
-//                    //-> nettoyage du plateau et mise à jour de la vue des cartes
-//                    for (size_t i=0; i<vuecartes.size(); i++) {
-//                        vuecartes[i]->setNoCarte();
-//                    }
-
-//                    size_t i = 0;
-//                    for(auto it=controleur.getPlateau().begin();it!=controleur.getPlateau().end();++it){
-//                        vuecartes[i]->setCarte(*it);
-//                        i++;
-//                    }
-
-//                    //mise à jour de la vue de la pioche
-//                    nbCartesPioche->setValue(controleur.getPioche().getNbCartes());
-
-//                } else {
-//                    QMessageBox message(QMessageBox::Icon::Warning, "Attention", "Ce n'est pas un set");
-//                    message.exec();
-//                    //déselection des cartes
-//                    for (size_t i=0; i<vuecartes.size(); i++) {
-//                        vuecartes[i]->setChecked(false);
-//                    }
-//                    selectionCartes.clear(); //l'ensemble des cartes sélectionnées est vide
-//                }
-//            }
-
-//        } else {
-//            //la carte est désélectionnéee
-//            selectionCartes.erase(&vc->getCarte());
-//        }
-//    }
-
-//    update(); //mise à jour de la vue
-//}
-
-
-//#################################################################
-//#################################################################
-// //TODO: TO DELETE :
-//#################################################################
-//#################################################################
 
 
 

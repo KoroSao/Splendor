@@ -30,7 +30,6 @@ public:
 
 private:
     Splendor::Controleur controleur; // controleur de la partie //TODO: fixé à 4 joueurs
-
     // - - - - Jeton - - - -
     QGroupBox *emeraudeBox();
     QLCDNumber* emeraudeBanque;
@@ -99,6 +98,11 @@ private:
     QPushButton *pioche1Bouton;
     QPushButton *pioche2Bouton;
     QPushButton *pioche3Bouton;
+
+    QGroupBox* playerActionBox();
+    QVBoxLayout* playerActionLayout();
+    QPushButton* endTurnBouton;
+    QPushButton* cancelTurnBouton;
 
     vector<VueCarte*> vuecartes; // adresses des objets VueCarte
     vector<VueCarte*> vuecartesNobles; // adresses des objets VueCarteNobles

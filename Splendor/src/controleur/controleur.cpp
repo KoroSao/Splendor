@@ -51,19 +51,24 @@ namespace Splendor{
         if (!getPlateau().getBanque(i))
             throw SplendorException("Splendor::Joueur::prendreRessource() : Banque vide");
         if (getPlateau().getBanque(i) <= 3 && j.getJetonsPris(i) > 0)
-            throw SplendorException("Splendor::Joueur::prendreRessources() : Impossible de prendre 2 jetons d'une pile de moins de 4 de haut");
+            stopJetons = true;
+            //throw SplendorException("Splendor::Joueur::prendreRessources() : Impossible de prendre 2 jetons d'une pile de moins de 4 de haut");
+
+        tourJeton = true;   //Controle du tour
 
         int nbJetons = 0;
         for (size_t i = 0; i < 5; i++)
             nbJetons+=j.getJetonsPris(i);
-        if(nbJetons == 2 && j.getJetonsPris(i) == 1)
-            throw SplendorException("Splendor::Joueur::prendreRessources() : Impossible de prendre 3 jetons non tous différents");
+        if(nbJetons == 2 && j.getJetonsPris(i) == 1){
+            stopJetons = true;
+            //throw SplendorException("Splendor::Joueur::prendreRessources() : Impossible de prendre 3 jetons non tous différents");
+        }
 
         
         getPlateau().setBanque(i, getPlateau().getBanque(i) - 1); //Retirer un jeton de la banque
         j.setInventaire(i, j.getInventaire(i) + 1); //Ajouter un jeton au joueur
         j.setJetonsPris(i, j.getJetonsPris(i) + 1); //Ajout du jeton à l'historique de jetons du tour
-        isTurnWithJetonsFinished(j);
+        //isTurnWithJetonsFinished(j);
     }
 
     void Controleur::rendreRessource(Joueur&j, unsigned int i) {
@@ -78,15 +83,15 @@ namespace Splendor{
 
     void Controleur::selectCarte(Joueur& j, const Carte& c) {
         if (c.canBeBougth(j)){
-            if (confirmTurn(j)){
+            //if (confirmTurn(j)){
                 acheterCarte(j,c);
-                endOfTurn(j);
-            }
+                //endOfTurn(j);
+            //}
         } else {
-            if (confirmTurn(j)){
+            //if (confirmTurn(j)){
                 j.ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
-                endOfTurn(j);
-            }
+                //endOfTurn(j);
+            //}
         }
     }
 
@@ -94,7 +99,7 @@ namespace Splendor{
             =========================== CONTROLE DES TOURS ==========================
     */
 
-    
+  /*
    void Controleur::isTurnWithJetonsFinished(Joueur& j) {
         int nbJetons = 0;
         for (size_t i = 0; i < 5; i++) {
@@ -140,6 +145,7 @@ namespace Splendor{
         for (size_t i = 0; i < 5; i++)
             j.setJetonsPris(i,0);
     }
+    */
     
 
    void Controleur::nextPlayer() {
@@ -167,12 +173,12 @@ namespace Splendor{
         }
 
         //Check victory
-        if (j.hasVictoryCondition())
+        if (j.hasVictoryCondition()){
             std::cout << "Last lap" << std::endl;
             lastLap = true;
+        }
 
         //Passer au joueur suivant
-
         if ((lastLap && currentPlayer != nbJoueurs - 1) || !lastLap)
             nextPlayer();
         else

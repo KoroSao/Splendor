@@ -28,7 +28,14 @@ namespace Splendor{
             int currentPlayer;
             bool lastLap;
 
+            bool tourJeton = false;
+            bool tourCarte = false;
+            bool stopJetons = false;
+
+
+
         public:
+            friend class VuePartie;
             Controleur(unsigned int nbj, vector<std::string> names);
 
             ~Controleur() = default;
@@ -53,6 +60,14 @@ namespace Splendor{
             void endOfTurn(Joueur& j);
             void nextPlayer();
             void endOfGame();
+
+            //------------Bools-------------
+            void setTourJeton(bool b) { tourJeton = b; }
+            void setTourCarte(bool b) { tourCarte = b; }
+            void setStopJetons(bool b) { tourJeton = b; }
+            bool getTourJeton() { return tourJeton; }
+            bool getTourCarte() { return tourCarte; }
+            bool getStopJetons() { return stopJetons; }
 
 
     };

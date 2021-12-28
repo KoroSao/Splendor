@@ -17,20 +17,22 @@
 using namespace Splendor;
 
 int main(int argc, char* argv[]){
+    QApplication app(argc, argv);
 
-    /*
     unsigned int nbj = 4;
     vector<std::string>names;
     names.push_back("Arthur");
     names.push_back("Emma");
     names.push_back("Francois");
-    names.push_back("Romain"); */
-    QApplication app(argc, argv);
+    names.push_back("Romain");
 
-    //VuePartie partie(nbj,names);
-    //partie.show();
+    VuePartie partie(nbj,names);
+    partie.show();
+
+    /*
     vueNumberOfPlayers menu;
     menu.show();
+    */
 
     return app.exec();
 }
