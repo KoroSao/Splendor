@@ -9,64 +9,43 @@
 
 namespace Splendor{
 
-Jeu& Jeu::getInstance(){
-    if (handler.instance == nullptr)
-        handler.instance = new Jeu;
-    return *handler.instance;
+    Jeu& Jeu::getInstance(){
+        if (handler.instance == nullptr)
+            handler.instance = new Jeu;
+        return *handler.instance;
     }
 
-void Jeu::freeInstance(){
-    delete handler.instance;
-    handler.instance = nullptr;
-}
-
-Jeu::Handler Jeu::handler = Handler();
-
-string readFileIntoString(const string& path) {
-    auto ss = ostringstream{};
-    ifstream input_file(path);
-    if (!input_file.is_open()) {
-        cerr << "Could not open the file - '"
-             << path << "'" << endl;
-        exit(EXIT_FAILURE);
-    }
-    ss << input_file.rdbuf();
-    return ss.str();
-}
-
-void read_line_carteDev(std::istringstream& line,Type type,
-                        ressources& couts,ressources& bonus, int& pdv){
-    char delimiter = ',';
-    string record;
-    read_line_carteC_pdv(line, type, couts, pdv);
-    for (size_t i = 0; i<5; i++){
-        std::getline(line, record, delimiter);
-        std::stringstream(record) >> bonus[i];
+    void Jeu::freeInstance(){
+        delete handler.instance;
+        handler.instance = nullptr;
     }
 
-}
-
-void read_line_carteC_pdv(std::istringstream& line,Type type, ressources& couts, int& pdv){
-    char delimiter = ',';
-    string record;
-    std::getline(line, record, delimiter);
-    if (record != toString(type)) {
-            std::stringstream infos;
-            infos <<"Fichier mal form�."<<endl;
-            infos <<"Type de carte demand� :"<<toString(type)<<endl;
-            infos <<"Type donn� dans le fichier : "<<record<<endl;
-            throw SplendorException(infos.str());
-    }
-    for (size_t i = 0; i<5; i++){
-        std::getline(line, record, delimiter);
-        std::stringstream(record) >> couts[i];
-    }
-    std::getline(line, record, delimiter);
-    std::stringstream(record) >> pdv;
-}
+    Jeu::Handler Jeu::handler = Handler();
 
 Jeu::Jeu(){
+    for (int i = 0; i<10; i++){
+        int j = rand()%(11);
+        ressources cst = {j,j,j,j,j};
+        ressources bns = {j,j,j,j,j};
+        
+        cartes[Type::un].push_back(new CarteDeveloppement(cst, bns, Type::un, rand()%(8)));
+    }
 
+    for (int i = 0; i<10; i++){
+        int j = rand()%(11);
+        ressources cst = {j,j,j,j,j};
+        ressources bns = {j,j,j,j,j};
+        
+        cartes[Type::deux].push_back(new CarteDeveloppement(cst, bns, Type::deux, rand()%(8)));
+    }
+
+    for (int i = 0; i<10; i++){
+        int j = rand()%(11);
+        ressources cst = {j,j,j,j,j};
+        ressources bns = {j,j,j,j,j};
+        
+        cartes[Type::trois].push_back(new CarteDeveloppement(cst, bns, Type::trois, rand()%(8)));
+    }
 
     string file_contents;
     string record;
