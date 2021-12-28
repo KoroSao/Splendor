@@ -248,7 +248,7 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
         vuecartesReserve[i] = new VueCarte;
     for(size_t i=0; i<3;i++){
         layoutCartesReserve->addWidget(vuecartesReserve[i], 0, i);//ajout de la carte sur la grille
-        connect(vuecartesReserve[i],SIGNAL(carteClicked(VueCarte*)),this,SLOT(carteClique(VueCarte*)));
+        //connect(vuecartesReserve[i],SIGNAL(carteClicked(VueCarte*)),this,SLOT(carteClique(VueCarte*)));
     }
 
     //Carte Reserve
@@ -401,7 +401,7 @@ void VuePartie::endTurnClique() {
 }
 
 void VuePartie::emeraudeBoutonClique(){
-   if ( ((nbJetonsPris == 1 && jetonsPris[0] == 1) || (nbJetonsPris <= 2 && jetonsPris[0] == 0 && sameJetonPris == false)) && !cartePrise ){
+   if ( ((nbJetonsPris == 1 && jetonsPris[0] == 1 && controleur.getPlateau().getBanque(0) >= 3) || (nbJetonsPris <= 2 && jetonsPris[0] == 0 && sameJetonPris == false)) && !cartePrise && controleur.getPlateau().getBanque(0) != 0 ){
        nbJetonsPris++;
        jetonsPris[0]++;
        if (jetonsPris[0] == 2)
@@ -413,7 +413,7 @@ void VuePartie::emeraudeBoutonClique(){
 }
 
 void VuePartie::saphirBoutonClique(){
-    if ( ((nbJetonsPris == 1 && jetonsPris[1] == 1) || (nbJetonsPris <= 2 && jetonsPris[1] == 0 && sameJetonPris == false)) && !cartePrise ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[1] == 1 && controleur.getPlateau().getBanque(1) >= 3 ) || (nbJetonsPris <= 2 && jetonsPris[1] == 0 && sameJetonPris == false)) && !cartePrise && controleur.getPlateau().getBanque(1) != 0){
         nbJetonsPris++;
         jetonsPris[1]++;
         if (jetonsPris[1] == 2)
@@ -426,7 +426,7 @@ void VuePartie::saphirBoutonClique(){
 }
 
 void VuePartie::rubisBoutonClique(){
-    if ( ((nbJetonsPris == 1 && jetonsPris[2] == 1) || (nbJetonsPris <= 2 && jetonsPris[2] == 0 && sameJetonPris == false)) && !cartePrise ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[2] == 1 && controleur.getPlateau().getBanque(2) >= 3) || (nbJetonsPris <= 2 && jetonsPris[2] == 0 && sameJetonPris == false)) && !cartePrise && controleur.getPlateau().getBanque(2) != 0){
         nbJetonsPris++;
         jetonsPris[2]++;
         if (jetonsPris[2] == 2)
@@ -439,7 +439,7 @@ void VuePartie::rubisBoutonClique(){
 }
 
 void VuePartie::diamantBoutonClique(){
-    if ( ((nbJetonsPris == 1 && jetonsPris[3] == 1) || (nbJetonsPris <= 2 && jetonsPris[3] == 0  && sameJetonPris == false)) && !cartePrise ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[3] == 1 && controleur.getPlateau().getBanque(3) >= 3) || (nbJetonsPris <= 2 && jetonsPris[3] == 0  && sameJetonPris == false)) && !cartePrise && controleur.getPlateau().getBanque(3) != 0 ){
         nbJetonsPris++;
         jetonsPris[3]++;
         if (jetonsPris[3] == 2)
@@ -452,7 +452,7 @@ void VuePartie::diamantBoutonClique(){
 }
 
 void VuePartie::onyxBoutonClique(){
-    if ( ((nbJetonsPris == 1 && jetonsPris[4] == 1) || (nbJetonsPris <= 2 && jetonsPris[4] == 0 && sameJetonPris == false)) && !cartePrise ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[4] == 1 && controleur.getPlateau().getBanque(4) >= 3) || (nbJetonsPris <= 2 && jetonsPris[4] == 0 && sameJetonPris == false)) && !cartePrise && controleur.getPlateau().getBanque(4) != 0){
         nbJetonsPris++;
         jetonsPris[4]++;
         if (jetonsPris[4] == 2)
