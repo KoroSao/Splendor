@@ -69,8 +69,7 @@ namespace Splendor{
             }
             j.addPDV(c_dev->getPDV());
         }
-        else
-            throw SplendorException("Splendor::Controleur::acheterCarte  : type de carte non supporté");
+        else throw SplendorException("Splendor::Controleur::acheterCarte  : type de carte non supporté");
     }
 
     void Controleur::prendreRessource(Joueur& j, unsigned int i) {
@@ -120,23 +119,46 @@ namespace Splendor{
     }
 
 
+    void Controleur::reserverCarte(Joueur& j, const Carte&c){
+        j.ajouterCarteReserve(c);
+        if (getPlateau().getBanque(5)>0){
+            j.setInventaire(5, j.getInventaire(5)+1);//donne un joker si il y en a encore
+            plateau.setBanque(5, plateau.getBanque(5)-1);
+        }
+        CarteDeveloppement* c_dev = dynamic_cast<CarteDeveloppement*>(const_cast<Carte*>(&c));
+        if(c_dev){
+            int i_type = 0;
+            switch (c_dev->getType()) {
+                case Type::un:
+                    i_type = 0;
+                break;
+                case Type::deux:
+                    i_type = 1;
+                break;
+                case Type::trois:
+                    i_type = 2;
+                break;
+                default:
+                    std::stringstream infos;
+                    infos << "Splendor::Controleur::reserverCarte : Type d'une carte Developement inconnu" << endl;
+                    infos << "c_dev.getType() :" << toString(c_dev->getType());
+                    throw SplendorException(infos.str());
+                break;
+            }
+            //Au cas où la carte viens d'une pioche, on a pas besoin de la retirer d'un niveau
+            if (plateau.getNiveauDeveloppement(i_type).possedeCarte(*c_dev)){
+                plateau.getNiveauDeveloppement(i_type).retirerCarte(*c_dev);
+            }
+        }
+        else throw SplendorException("Splendor::Controleur::acheterCarte  : type de carte non supporté");
+    }
+
     void Controleur::selectCarte(Joueur& j, const Carte& c) {
 
         if (c.canBeBougth(j)){
-            //if (confirmTurn(j)){
-                acheterCarte(j,c);
-                //endOfTurn(j);
-            //}
+            acheterCarte(j,c);
         } else {
-            //if (confirmTurn(j)){
-                j.ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
-                
-                if(getPlateau().getBanque(5) > 0){
-                    getPlateau().setBanque(5,getPlateau().getBanque(5) - 1);
-                    j.setInventaire(5,j.getInventaire(5) +1);
-                }
-                //endOfTurn(j);
-            //}
+            reserverCarte(j, c);
         }
     }
 
