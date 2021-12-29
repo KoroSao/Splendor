@@ -42,7 +42,8 @@ namespace Splendor{
 
             //Fonctions d'usage
             const Carte& retirerCarte(const Carte& c);      // Retirer une carte du Niveau 
-            void ajouterCarte(const Carte& c);              // Ajouter une carte du Niveau
+            //void ajouterCarte(const Carte& c);              // Ajouter une carte du Niveau
+            void piocherCarte();
             
             //Debug
             void afficherNiveau();
