@@ -25,7 +25,7 @@ namespace Splendor{
             int nb;                 //Nombre de cartes sur le Niveau
             const Type type;        //Type de carte développement situées dans le niveau
             Pioche pioche;          //Pioche associée au type distribuant sur cartes.
-
+            Pioche& getPioche() { return pioche; }
         public:
             //Constructor et Destructor
             Niveau(int t, Type ty);
@@ -37,12 +37,11 @@ namespace Splendor{
             int getTaille() { return nbMax; }
             int getNbCartes() { return nb; }
             Type getType() { return type; }
-            Pioche& getPioche() { return pioche; }
+
             vector<const Carte*> getCartes() { return cartes; }    // Renvoie le tableau des cartes
 
             //Fonctions d'usage
             const Carte& retirerCarte(const Carte& c);      // Retirer une carte du Niveau 
-            //void ajouterCarte(const Carte& c);              // Ajouter une carte du Niveau
             void piocherCarte();
             
             //Debug
