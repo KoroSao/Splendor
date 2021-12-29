@@ -56,6 +56,7 @@ namespace Splendor{
             void endOfTurn(Joueur& j);
             void nextPlayer();
             void endOfGame();
+            bool getLastLap() {return lastLap; }
 
     };
 

@@ -396,9 +396,16 @@ void VuePartie::endTurnClique() {
         vuecartes[i]->setChecked(false);
     }
     controleur.endOfTurn(controleur.getJoueur(controleur.getCurrentPlayer()));
+
+    //Fin du jeu
+    if (controleur.getLastLap() && controleur.getCurrentPlayer() == controleur.getNbJoueurs() - 1){
+        hide();
+    }
+
     controleur.nextPlayer();
     updateJoueurInfo();
     updatePlateauInfo();
+
 }
 
 void VuePartie::emeraudeBoutonClique(){
