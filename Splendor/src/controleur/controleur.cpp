@@ -1,5 +1,5 @@
 #include "controleur.h"
-
+#include <sstream>
 
 namespace Splendor{
 
@@ -22,20 +22,29 @@ namespace Splendor{
     */
 
     void Controleur::acheterCarte(Joueur& j, const Carte& c) {
-        if (!c.canBeBougth(j))
-            throw SplendorException("Splendor::Joueur::acheterCarte() : ressources insuffisantes");
+        if (!c.canBeBougth(j)){
+            std::string infos = "Splendor::Controleur::acheterCarte() : ressources insuffisantes \n";
+            infos+= "Couts carte : ";
+            for (size_t i = 0; i<5; i++) infos += to_string(c.getCouts(i));
+            infos += "\nInventaire joueur :";
+            for (size_t i =0; i<6; i++) infos += to_string(j.getInventaire(i));
+            infos += "\n";
+            throw SplendorException(infos);
+        }
 
         CarteDeveloppement* c_dev = dynamic_cast<CarteDeveloppement*>(const_cast<Carte*>(&c));
         if(c_dev){
 
             //on réalise la transaction entre la banque et le joueur
             //on utilise uniquement les jokers comme supplement en cas de manque
-            size_t jetons_manquants = 0;
-            size_t qt_depense = 0;
+            unsigned int jetons_manquants = 0;
             for (size_t i = 0; i<5; i++){
-                qt_depense = min(j.getInventaire(i), c.getCouts(i)-j.getBonus(i));
-                rendreRessource(j, i, qt_depense);
-                jetons_manquants += qt_depense-c.getCouts(i)-j.getBonus(i);
+                if(c_dev->getCouts(i)!=0){
+                    unsigned int cout_moins_bonus = (unsigned int)max(0, (int)(c_dev->getCouts(i)-j.getBonus(i)));
+                    unsigned int qt_depense = min(j.getInventaire(i), cout_moins_bonus);
+                    rendreRessource(j, i, qt_depense);
+                    jetons_manquants += cout_moins_bonus-qt_depense;
+                }
             }
             rendreRessource(j, 5, jetons_manquants);
 
@@ -90,13 +99,22 @@ namespace Splendor{
         //isTurnWithJetonsFinished(j);
     }
 
-    void Controleur::rendreRessource(Joueur&j, unsigned int i, size_t qt) {
-        if(i > 5 || i < 0)
-            throw SplendorException("Splendor::Controleur::prendreRessource() : indice i invalide");
-        if (!j.getInventaire(i))
-            throw SplendorException("Splendor::Controleur::prendreRessource() : Ressource inexistante");
-        if (j.getInventaire(i)<qt)
-            throw SplendorException("Splendor::Controleur::prendreRessource() : Ressource insuffisante");
+    void Controleur::rendreRessource(Joueur&j, unsigned int i, unsigned int qt) {
+        if(i > 5 || i < 0){
+            std::stringstream infos;
+            infos << "Splendor::Controleur::rendreRessource() : indice i invalide";
+            infos << std::endl << "i : "<< i;
+            throw SplendorException(infos.str());
+        }
+        if (j.getInventaire(i)<qt){
+            std::cout << "Erreur : " <<qt << std::endl;
+            std::stringstream infos;
+            infos << "Splendor::Controleur::rendreRessource() : Ressource insuffisante";
+            infos <<std::endl<<"Quantité dans inventaire : "<<j.getInventaire(i)<<std::endl;
+            infos <<std::endl<<"Quantité demandé au retrait : "<<qt<<std::endl;
+            throw SplendorException(infos.str());
+        }
+        if (qt == 0) return;
         j.setInventaire(i, j.getInventaire(i) - qt);       //Retire le jeton de l'inventaire du joueur
         getPlateau().setBanque(i, getPlateau().getBanque(i) + qt);                 //Ajoute le jeton de l'inventaire du joueur dans la banque
     }
