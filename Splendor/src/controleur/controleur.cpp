@@ -25,37 +25,43 @@ namespace Splendor{
         if (!c.canBeBougth(j))
             throw SplendorException("Splendor::Joueur::acheterCarte() : ressources insuffisantes");
 
-        j.addCartesRemportees(c);
-        int jetons_manquants = 0;
-        
-        for (size_t i = 0; i<5;i++){
-            jetons_manquants += max(0, c.getCouts(i)-j.getBonus(i)-j.getInventaire(i));
-            //int temp = j.getInventaire(i);
-            if (c.getCouts(i) > j.getBonus(i)) {
-                getPlateau().setBanque(i, getPlateau().getBanque(i) + max(j.getInventaire(i), j.getInventaire(i) - (c.getCouts(i) - j.getBonus(i))) );
-            }
-            j.setInventaire(i, max(0,j.getBonus(i)+j.getInventaire(i) - c.getCouts(i))); //Soustrait les jetons
-            if (c.getCouts(i) > j.getBonus(i)) {
-                //getPlateau().setBanque(i, getPlateau().getBanque(i) + max(temp, temp - (c.getCouts(i) - j.getBonus(i))) );
-            }
-            //getPlateau().setBanque(i, getPlateau().getBanque(i) + min(j.getInventaire(i),(c.getCouts(i) - j.getBonus(i))));
-        }
+        CarteDeveloppement* c_dev = dynamic_cast<CarteDeveloppement*>(const_cast<Carte*>(&c));
+        if(c_dev){
 
-        if(jetons_manquants){
-            for (auto i = 0; i < jetons_manquants; i++)
-                rendreRessource(j,5);
-                //j.setInventaire(5, j.getInventaire(5) - jetons_manquants);  //soustrait les jokers
-        }
-            
+            //on réalise la transaction entre la banque et le joueur
+            //on utilise uniquement les jokers comme supplement en cas de manque
+            size_t jetons_manquants = 0;
+            size_t qt_depense = 0;
+            for (size_t i = 0; i<5; i++){
+                qt_depense = min(j.getInventaire(i), c.getCouts(i)-j.getBonus(i));
+                rendreRessource(j, i, qt_depense);
+                jetons_manquants += qt_depense-c.getCouts(i)-j.getBonus(i);
+            }
+            rendreRessource(j, 5, jetons_manquants);
 
-        try{
-            CarteDeveloppement* cab = dynamic_cast<CarteDeveloppement*>(const_cast<Carte*>(&c));
+
+
+            switch (c_dev->getType()) {
+                case Type::un:
+                    plateau.getNiveauDeveloppement(0).retirerCarte(*c_dev);
+                break;
+                case Type::deux:
+
+                    plateau.getNiveauDeveloppement(1).retirerCarte(*c_dev);
+                break;
+                case Type::trois:
+                    plateau.getNiveauDeveloppement(2).retirerCarte(*c_dev);
+                break;
+            }
+
+            j.addCartesRemportees(c);
             for (size_t i = 0; i<5;i++){
-                j.setBonus(i, j.getBonus(i) + cab->getBonus(i) );
+                j.setBonus(i, j.getBonus(i) + c_dev->getBonus(i) );
             }
-            j.addPDV(cab->getPDV());
-        }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
-
+            j.addPDV(c_dev->getPDV());
+        }
+        else
+            throw SplendorException("Splendor::Controleur::acheterCarte  : type de carte non supporté");
     }
 
     void Controleur::prendreRessource(Joueur& j, unsigned int i) {
@@ -84,17 +90,20 @@ namespace Splendor{
         //isTurnWithJetonsFinished(j);
     }
 
-    void Controleur::rendreRessource(Joueur&j, unsigned int i) {
+    void Controleur::rendreRessource(Joueur&j, unsigned int i, size_t qt) {
         if(i > 5 || i < 0)
-            throw SplendorException("Splendor::Joueur::prendreRessource() : indice i invalide");
+            throw SplendorException("Splendor::Controleur::prendreRessource() : indice i invalide");
         if (!j.getInventaire(i))
-            throw SplendorException("Splendor::Joueur::prendreRessource() : Ressource inexistante");
-        j.setInventaire(i, j.getInventaire(i) - 1);       //Retire le jeton de l'inventaire du joueur
-        getPlateau().setBanque(i, getPlateau().getBanque(i) + 1);                 //Ajoute le jeton de l'inventaire du joueur dans la banque
+            throw SplendorException("Splendor::Controleur::prendreRessource() : Ressource inexistante");
+        if (j.getInventaire(i)<qt)
+            throw SplendorException("Splendor::Controleur::prendreRessource() : Ressource insuffisante");
+        j.setInventaire(i, j.getInventaire(i) - qt);       //Retire le jeton de l'inventaire du joueur
+        getPlateau().setBanque(i, getPlateau().getBanque(i) + qt);                 //Ajoute le jeton de l'inventaire du joueur dans la banque
     }
 
 
     void Controleur::selectCarte(Joueur& j, const Carte& c) {
+
         if (c.canBeBougth(j)){
             //if (confirmTurn(j)){
                 acheterCarte(j,c);
