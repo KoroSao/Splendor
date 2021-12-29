@@ -134,7 +134,7 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
         vuecartesNobles[i] = new VueCarte;
     for(size_t i=0; i<nb_joueur + 1;i++){
         layoutCartesNobles->addWidget(vuecartesNobles[i],i/(nb_joueur+1),i%(nb_joueur+1));//ajout de la carte sur la grille
-        connect(vuecartesNobles[i],SIGNAL(carteClicked(VueCarte*)),this,SLOT(carteNobleClique(VueCarte*)));
+        connect(vuecartesNobles[i],SIGNAL(carteClicked(VueCarte*)),this,SLOT(carteNobleClique()));
     }
 
     //affectation des cartes du plateau aux vues des cartes
@@ -248,7 +248,7 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
         vuecartesReserve[i] = new VueCarte;
     for(size_t i=0; i<3;i++){
         layoutCartesReserve->addWidget(vuecartesReserve[i], 0, i);//ajout de la carte sur la grille
-        //connect(vuecartesReserve[i],SIGNAL(carteClicked(VueCarte*)),this,SLOT(carteClique(VueCarte*)));
+        connect(vuecartesReserve[i],SIGNAL(carteClicked(VueCarte*)),this,SLOT(carteReserveClique(VueCarte*)));
     }
 
     //Carte Reserve
@@ -363,6 +363,7 @@ void VuePartie::cancelTurnClique() {
     nbJetonsPris = 0;
     cartePrise = false;
     sameJetonPris = false;
+    carteReservePrise = false;
     for (size_t i = 0; i < 5; i++){
         int x = jetonsPris[i];
         for(size_t k = 0; k < x; k++) {
@@ -382,15 +383,18 @@ void VuePartie::endTurnClique() {
     std::cout << "Fin du tour" << std::endl;
 
     //fonctionne mais crash si pas assez de ressource :
-    if(selectionCarte != nullptr && nbJetonsPris == 0)
+    if(selectionCarte != nullptr && nbJetonsPris == 0){
+        //controleur.getPlateau().getNiveauDeveloppement(0).afficherNiveau();
         controleur.selectCarte(controleur.getJoueur(controleur.getCurrentPlayer()), *selectionCarte);
-
+        //controleur.getPlateau().getNiveauDeveloppement(0).afficherNiveau();
+    }
     //Clear local var
     for(size_t i = 0; i < 5; i++)
         jetonsPris[i] = 0;
     nbJetonsPris = 0;
     sameJetonPris = false;
     cartePrise = false;
+    carteReservePrise = false;
     selectionCarte = nullptr;
     for (size_t i=0; i<12; i++) {
         vuecartes[i]->setChecked(false);
@@ -401,7 +405,7 @@ void VuePartie::endTurnClique() {
 }
 
 void VuePartie::emeraudeBoutonClique(){
-   if ( ((nbJetonsPris == 1 && jetonsPris[0] == 1 && controleur.getPlateau().getBanque(0) >= 3) || (nbJetonsPris <= 2 && jetonsPris[0] == 0 && sameJetonPris == false)) && !cartePrise && controleur.getPlateau().getBanque(0) != 0 ){
+   if ( ((nbJetonsPris == 1 && jetonsPris[0] == 1 && controleur.getPlateau().getBanque(0) >= 3) || (nbJetonsPris <= 2 && jetonsPris[0] == 0 && sameJetonPris == false)) && !cartePrise && !carteReservePrise && controleur.getPlateau().getBanque(0) != 0 ){
        nbJetonsPris++;
        jetonsPris[0]++;
        if (jetonsPris[0] == 2)
@@ -413,7 +417,7 @@ void VuePartie::emeraudeBoutonClique(){
 }
 
 void VuePartie::saphirBoutonClique(){
-    if ( ((nbJetonsPris == 1 && jetonsPris[1] == 1 && controleur.getPlateau().getBanque(1) >= 3 ) || (nbJetonsPris <= 2 && jetonsPris[1] == 0 && sameJetonPris == false)) && !cartePrise && controleur.getPlateau().getBanque(1) != 0){
+    if ( ((nbJetonsPris == 1 && jetonsPris[1] == 1 && controleur.getPlateau().getBanque(1) >= 3 ) || (nbJetonsPris <= 2 && jetonsPris[1] == 0 && sameJetonPris == false)) && !cartePrise && !carteReservePrise && controleur.getPlateau().getBanque(1) != 0){
         nbJetonsPris++;
         jetonsPris[1]++;
         if (jetonsPris[1] == 2)
@@ -426,7 +430,7 @@ void VuePartie::saphirBoutonClique(){
 }
 
 void VuePartie::rubisBoutonClique(){
-    if ( ((nbJetonsPris == 1 && jetonsPris[2] == 1 && controleur.getPlateau().getBanque(2) >= 3) || (nbJetonsPris <= 2 && jetonsPris[2] == 0 && sameJetonPris == false)) && !cartePrise && controleur.getPlateau().getBanque(2) != 0){
+    if ( ((nbJetonsPris == 1 && jetonsPris[2] == 1 && controleur.getPlateau().getBanque(2) >= 3) || (nbJetonsPris <= 2 && jetonsPris[2] == 0 && sameJetonPris == false)) && !cartePrise && !carteReservePrise && controleur.getPlateau().getBanque(2) != 0){
         nbJetonsPris++;
         jetonsPris[2]++;
         if (jetonsPris[2] == 2)
@@ -439,7 +443,7 @@ void VuePartie::rubisBoutonClique(){
 }
 
 void VuePartie::diamantBoutonClique(){
-    if ( ((nbJetonsPris == 1 && jetonsPris[3] == 1 && controleur.getPlateau().getBanque(3) >= 3) || (nbJetonsPris <= 2 && jetonsPris[3] == 0  && sameJetonPris == false)) && !cartePrise && controleur.getPlateau().getBanque(3) != 0 ){
+    if ( ((nbJetonsPris == 1 && jetonsPris[3] == 1 && controleur.getPlateau().getBanque(3) >= 3) || (nbJetonsPris <= 2 && jetonsPris[3] == 0  && sameJetonPris == false)) && !cartePrise && !carteReservePrise && controleur.getPlateau().getBanque(3) != 0 ){
         nbJetonsPris++;
         jetonsPris[3]++;
         if (jetonsPris[3] == 2)
@@ -452,7 +456,7 @@ void VuePartie::diamantBoutonClique(){
 }
 
 void VuePartie::onyxBoutonClique(){
-    if ( ((nbJetonsPris == 1 && jetonsPris[4] == 1 && controleur.getPlateau().getBanque(4) >= 3) || (nbJetonsPris <= 2 && jetonsPris[4] == 0 && sameJetonPris == false)) && !cartePrise && controleur.getPlateau().getBanque(4) != 0){
+    if ( ((nbJetonsPris == 1 && jetonsPris[4] == 1 && controleur.getPlateau().getBanque(4) >= 3) || (nbJetonsPris <= 2 && jetonsPris[4] == 0 && sameJetonPris == false)) && !cartePrise && !carteReservePrise && controleur.getPlateau().getBanque(4) != 0){
         nbJetonsPris++;
         jetonsPris[4]++;
         if (jetonsPris[4] == 2)
@@ -469,7 +473,7 @@ void VuePartie::pioche2BoutonClique(){ qInfo("L'utilisateur x souhaite réserver
 void VuePartie::pioche3BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 3 !"); };
 
 void VuePartie::carteClique(VueCarte* vc){
-    if ( (nbJetonsPris==0 && !cartePrise) &&
+    if ( (nbJetonsPris==0 && !cartePrise && !carteReservePrise) &&
          ((vc->getCarte().canBeBougth(controleur.getJoueur(controleur.getCurrentPlayer())) && controleur.getJoueur(controleur.getCurrentPlayer()).getReserve().size() >= 3 )
           || controleur.getJoueur(controleur.getCurrentPlayer()).getReserve().size() < 3 )) {
         if(vc->isChecked()){
@@ -488,7 +492,7 @@ void VuePartie::carteClique(VueCarte* vc){
             for (size_t i=0; i<12; i++) {
                 vuecartes[i]->setChecked(false);
             }
-            if(nbJetonsPris==0  &&
+            if((nbJetonsPris==0 && !carteReservePrise)  &&
                     ((vc->getCarte().canBeBougth(controleur.getJoueur(controleur.getCurrentPlayer())) && controleur.getJoueur(controleur.getCurrentPlayer()).getReserve().size() >= 3 )
                      || controleur.getJoueur(controleur.getCurrentPlayer()).getReserve().size() < 3 ) ){
                 cartePrise = true;
@@ -501,7 +505,37 @@ void VuePartie::carteClique(VueCarte* vc){
     return;
 }
 
-void VuePartie::carteNobleClique(VueCarte* vc){
+void VuePartie::carteReserveClique(VueCarte* vc){
+    if(!vc->cartePresente()) { return; }
+    if ( (nbJetonsPris==0 && !cartePrise && !carteReservePrise) && ((vc->getCarte().canBeBougth(controleur.getJoueur(controleur.getCurrentPlayer())) ))) {
+        if(vc->isChecked()){
+            //Si il n'y a pas déjà des jetons de pris
+            carteReservePrise = true;
+            selectionCarte = &vc->getCarte();
+            std::cout << "Il prend la carte de Reserve !" << std::endl;
+            //Suite du traitement dans le endTOUR
+        }
+    } else {
+        if(!vc->isChecked()){
+            vc->setChecked(false);
+            carteReservePrise = false;
+            selectionCarte = nullptr;
+         } else {
+            for (size_t i=0; i<3; i++) {
+                vuecartesReserve[i]->setChecked(false);
+            }
+            if((nbJetonsPris==0 && !cartePrise)  && ((vc->getCarte().canBeBougth(controleur.getJoueur(controleur.getCurrentPlayer())))) ){
+                carteReservePrise = true;
+                vc->setChecked(true);
+                std::cout << "Il prend la carte !" << std::endl;
+                selectionCarte = &vc->getCarte();
+            }
+        }
+    }
+    return;
+}
+
+void VuePartie::carteNobleClique(){
     for (size_t i=0; i<controleur.getNbJoueurs() + 1; i++) {
         vuecartesNobles[i]->setChecked(false);
     }
@@ -523,6 +557,7 @@ void VuePartie::updateJoueurInfo() {
 
     pdvCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getPDV()));
 
+    //Update de la réserve
     for(size_t i=0; i<3; i++){
         vuecartesReserve[i]->setNoCarte();
     }
@@ -533,6 +568,17 @@ void VuePartie::updateJoueurInfo() {
             vuecartesReserve[k]->setCarte(*it);
         }
         k++;
+    }
+
+    size_t i = 0;
+    //Update Carte de développement
+    for(int j = 0; j<3; j++){
+        for(auto it: controleur.getPlateau().getNiveauDeveloppement(j).getCartes()){
+            //it->afficherCarte();
+            vuecartes[i]->setNoCarte();
+            vuecartes[i]->setCarte(*it);
+            i++;
+        }
     }
 
     currentPlayerBox->setTitle(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
@@ -572,6 +618,7 @@ void VuePartie::updatePlateauInfo(){
     diamantBanque->display(controleur.getPlateau().getBanque(3));
     onyxBanque->display(controleur.getPlateau().getBanque(4));
     jokerBanque->display(controleur.getPlateau().getBanque(5));
+
 
 }
 
