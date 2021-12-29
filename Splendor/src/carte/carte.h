@@ -14,7 +14,7 @@ namespace Splendor{
 
     class Joueur;
     //pour alléger
-    typedef array<int, 5> ressources;
+    typedef array<unsigned int, 5> ressources;
     static map<int, std::string> ressources_name = {{0,"Emeraude"},{1, "Saphir"}, {2, "Rubis"}, {3, "Diamant"}, {4, "Onix"}};
     //classe abstraite
     class Carte{
@@ -23,7 +23,7 @@ namespace Splendor{
         protected:
             Carte(ressources c):couts(c){}
         public:
-            int getCouts(size_t i) const {return couts[i];}
+            unsigned int getCouts(size_t i) const {return couts[i];}
             friend class Jeu; //Jeu est le seul constructeur de la classe Carte
             virtual bool canBeBougth(Joueur& j) const = 0;
             virtual void afficherCarte(std::ostream& f = std::cout) const =  0;

@@ -508,18 +508,18 @@ void VuePartie::carteNobleClique(VueCarte* vc){
 }
 
 void VuePartie::updateJoueurInfo() {
-    emeraudeCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(0));
-    saphirCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(1));
-    rubisCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(2));
-    diamantCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(3));
-    onyxCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(4));
-    jokerCurrentPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(5));
+    emeraudeCurrentPlayer->display((int)controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(0));
+    saphirCurrentPlayer->display((int)controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(1));
+    rubisCurrentPlayer->display((int)controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(2));
+    diamantCurrentPlayer->display((int)controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(3));
+    onyxCurrentPlayer->display((int)controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(4));
+    jokerCurrentPlayer->display((int)controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(5));
 
-    emeraudeCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(0));
-    saphirCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(1));
-    rubisCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(2));
-    diamantCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(3));
-    onyxCurrentBonusPlayer->display(controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(4));
+    emeraudeCurrentBonusPlayer->display((int)controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(0));
+    saphirCurrentBonusPlayer->display((int)controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(1));
+    rubisCurrentBonusPlayer->display((int)controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(2));
+    diamantCurrentBonusPlayer->display((int)controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(3));
+    onyxCurrentBonusPlayer->display((int)controleur.getJoueur(controleur.getCurrentPlayer()).getBonus(4));
 
     pdvCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getPDV()));
 

@@ -12,7 +12,7 @@ namespace Splendor{
         int jetons_manquants = 0;
 
         for (size_t i = 0; i<5;i++)
-            jetons_manquants += max(0, getCouts(i)-j.getBonus(i)-j.getInventaire(i));
+            jetons_manquants += max((unsigned int)0, getCouts(i)-j.getBonus(i)-j.getInventaire(i));
         return j.getInventaire(5)>=jetons_manquants;
     }
 
@@ -20,7 +20,7 @@ namespace Splendor{
         /*Pour acquérir un carte noble il suffit d'avoir les bonus requis*/
         int bonus_manquants = 0;
         for (size_t i = 0; i<5;i++)
-            bonus_manquants += max(0, getCouts(i)-j.getBonus(i));
+            bonus_manquants += max((unsigned int)0, getCouts(i)-j.getBonus(i));
         return bonus_manquants==0;
     }
 
@@ -29,7 +29,7 @@ namespace Splendor{
         et les points de victoire (points de prestige) requis*/
         int bonus_manquants = 0;
         for (size_t i = 0; i<5;i++)
-            bonus_manquants += max(0, getCouts(i)-j.getBonus(i));
+            bonus_manquants += max((unsigned int)0, getCouts(i)-j.getBonus(i));
         return bonus_manquants==0 && j.getPDV() >= pdv_requis;
     }
 
