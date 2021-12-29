@@ -11,7 +11,10 @@ namespace Splendor{
     }
 
 
-
+    bool  Niveau::possedeCarte(const Carte& c) {
+        vector<const Carte*>::iterator it = find(cartes.begin(), cartes.end(), &c);
+        return (it == cartes.end());
+    }
 
 
     const Carte& Niveau::retirerCarte(const Carte& c){

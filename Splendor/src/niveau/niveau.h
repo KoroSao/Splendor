@@ -41,6 +41,7 @@ namespace Splendor{
             vector<const Carte*> getCartes() { return cartes; }    // Renvoie le tableau des cartes
 
             //Fonctions d'usage
+            bool  possedeCarte(const Carte& c);
             const Carte& retirerCarte(const Carte& c);      // Retirer une carte du Niveau 
             void piocherCarte();
             
