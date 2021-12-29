@@ -14,7 +14,7 @@
 #include "../plateau/plateau.h"
 #include "../splendorException/splendorexception.h"
 #include "../type/type.h"
-
+#include "../renduJetons/vueRenduJetons.h"
 
 namespace Splendor{
 
@@ -26,12 +26,8 @@ namespace Splendor{
             Plateau plateau;
             vector<Joueur*> joueurs;
             int currentPlayer;
-            bool lastLap;
 
-            bool tourJeton = false;
-            bool tourCarte = false;
-            bool stopJetons = false;
-
+            bool lastLap = false;
 
 
         public:
@@ -60,15 +56,6 @@ namespace Splendor{
             void endOfTurn(Joueur& j);
             void nextPlayer();
             void endOfGame();
-
-            //------------Bools-------------
-            void setTourJeton(bool b) { tourJeton = b; }
-            void setTourCarte(bool b) { tourCarte = b; }
-            void setStopJetons(bool b) { tourJeton = b; }
-            bool getTourJeton() { return tourJeton; }
-            bool getTourCarte() { return tourCarte; }
-            bool getStopJetons() { return stopJetons; }
-
 
     };
 
