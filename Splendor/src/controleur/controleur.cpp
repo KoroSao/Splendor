@@ -186,8 +186,13 @@ namespace Splendor{
 
        //Check les cartesnobles
         for (size_t i = 0; i < nbJoueurs + 1; i++){
-            if (getPlateau().getNiveauNobles().getCartes()[i]->canBeBougth(j))
+            if (getPlateau().getNiveauNobles().getCartes()[i]->canBeBougth(j)){
                 j.addCartesRemportees(*getPlateau().getNiveauNobles().getCartes()[i]);
+                try{
+                    CarteNoble* cn = dynamic_cast<CarteNoble*>(const_cast<Carte*>(getPlateau().getNiveauNobles().getCartes()[i]));
+                    j.addPDV(cn->getPDV());
+                }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
+            }
         }
 
         //Check victory
@@ -197,9 +202,7 @@ namespace Splendor{
         }
 
         //Passer au joueur suivant
-        if ((lastLap && currentPlayer != nbJoueurs - 1) || !lastLap)
-            nextPlayer();
-        else
+        if (lastLap && currentPlayer == nbJoueurs - 1)
             endOfGame();
    }
 
