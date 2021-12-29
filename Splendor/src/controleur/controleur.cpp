@@ -172,8 +172,9 @@ namespace Splendor{
             currentPlayer = 0;
    }
 
-   void Controleur::endOfTurn(Joueur& j) {
-       
+
+
+   void Controleur::endOfTurn(Joueur& j) { 
        std::cout << "Fin de ton tour !" << std::endl;
        //RESET tableau jetonspris
        for (size_t i = 0; i < 5; i++)
@@ -192,6 +193,7 @@ namespace Splendor{
                     CarteNoble* cn = dynamic_cast<CarteNoble*>(const_cast<Carte*>(getPlateau().getNiveauNobles().getCartes()[i]));
                     j.addPDV(cn->getPDV());
                 }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
+                getPlateau().getNiveauNobles().retirerCarte(*getPlateau().getNiveauNobles().getCartes()[i]);
             }
         }
 
@@ -201,10 +203,12 @@ namespace Splendor{
             lastLap = true;
         }
 
-        //Passer au joueur suivant
+        //fin de partie
         if (lastLap && currentPlayer == nbJoueurs - 1)
             endOfGame();
    }
+
+
 
    void Controleur::endOfGame(){
        int joueurGagnant = 0;

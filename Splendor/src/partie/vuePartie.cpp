@@ -395,6 +395,7 @@ void VuePartie::endTurnClique() {
     for (size_t i=0; i<12; i++) {
         vuecartes[i]->setChecked(false);
     }
+    controleur.endOfTurn(controleur.getJoueur(controleur.getCurrentPlayer()));
     controleur.nextPlayer();
     updateJoueurInfo();
     updatePlateauInfo();
