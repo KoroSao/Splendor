@@ -382,9 +382,9 @@ void VuePartie::endTurnClique() {
     std::cout << "Fin du tour" << std::endl;
 
     //fonctionne mais crash si pas assez de ressource :
-    if(selectionCarte != nullptr && nbJetonsPris == 0)
+    if(selectionCarte != nullptr && nbJetonsPris == 0){
         controleur.selectCarte(controleur.getJoueur(controleur.getCurrentPlayer()), *selectionCarte);
-
+    }
     //Clear local var
     for(size_t i = 0; i < 5; i++)
         jetonsPris[i] = 0;
@@ -392,9 +392,19 @@ void VuePartie::endTurnClique() {
     sameJetonPris = false;
     cartePrise = false;
     selectionCarte = nullptr;
-    for (size_t i=0; i<12; i++) {
-        vuecartes[i]->setChecked(false);
+
+    //Reset les cartes affiché pour coller au plateau
+    size_t i = 0;
+    for(int j = 0; j<3; j++){
+        for(auto it: controleur.getPlateau().getNiveauDeveloppement(j).getCartes()){
+            //it->afficherCarte();
+            vuecartes[i]->setCarte(*it);
+            i++;
+        }
     }
+
+
+
     controleur.nextPlayer();
     updateJoueurInfo();
     updatePlateauInfo();
