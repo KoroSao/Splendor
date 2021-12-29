@@ -7,16 +7,11 @@ namespace Splendor{
         ============================================================================ */
     Niveau::Niveau(int t, Type ty): pioche(ty), nb(0), nbMax(t), type(ty), cartes() {
         for (size_t i = 0; i < t; i++)
-            ajouterCarte(pioche.piocher());
+            piocherCarte();
     }
 
 
-    void Niveau::ajouterCarte(const Carte& c){
-        if (nb>=nbMax)
-            throw SplendorException("Splendor::Pioche::piocher() : niveau plein");
-        cartes.push_back(&c);
-        nb++;
-    }
+
 
 
     const Carte& Niveau::retirerCarte(const Carte& c){
@@ -30,7 +25,7 @@ namespace Splendor{
         cartes.erase(it);
         nb--;
         if(!getPioche().estVide()){
-            ajouterCarte(getPioche().piocher());
+            piocherCarte();
         }
         return c;
     } 
@@ -39,6 +34,13 @@ namespace Splendor{
         for(auto i: getCartes()){
             i->afficherCarte();
         }
+    }
+
+    void Niveau::piocherCarte(){
+        if (nb>=nbMax)
+            throw SplendorException("Splendor::Pioche::piocher() : niveau plein");
+        cartes.push_back(&pioche.piocher());
+        nb++;
     }
 
 }
