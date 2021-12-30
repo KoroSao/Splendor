@@ -14,6 +14,7 @@ HEADERS += ./src/controleur/controleur.h \
             ./src/plateau/plateau.h \
             ./src/joueur/joueur.h \
             ./src/partie/vuePartie.h \
+            src/partie/setvue.h \
             src/partie/vueCarte.h \
             ./src/menu/vueNumberOfPlayers.h \
             ./src/menu/vuePlayerConfig.h \
@@ -31,6 +32,7 @@ SOURCES += ./test/main.cpp \
         ./src/plateau/plateau.cpp \
         ./src/joueur/joueur.cpp \
         ./src/partie/vuePartie.cpp \
+        src/partie/setvue.cpp \
         src/partie/vueCarte.cpp \
         ./src/menu/vueNumberOfPlayers.cpp \
         ./src/menu/vuePlayerConfig.cpp \
