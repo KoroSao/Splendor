@@ -618,21 +618,6 @@ void VuePartie::updatePlateauInfo(){
     onyxBanque->display(controleur.getPlateau().getBanque(4));
     jokerBanque->display(controleur.getPlateau().getBanque(5));
 
-<<<<<<< HEAD
-    //Reset les cartes affiché pour coller au plateau
-    size_t i = 0;
-    for(int j = 0; j<3; j++){
-        for(auto it: controleur.getPlateau().getNiveauDeveloppement(j).getCartes()){
-            //it->afficherCarte();
-            vuecartes[i]->setCarte(*it);
-            i++;
-        }
     }
-=======
->>>>>>> 5e13f992d677b62e471ad286fcea7e4593c8e76d
 
 }
-
-
-
-
