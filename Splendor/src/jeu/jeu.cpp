@@ -82,9 +82,9 @@ Jeu::Jeu(){
       tmp2.pop_back();
 
     std::string path = tmp2 + "Splendor/Deck_cartes/";*/
-    //std::string path = "/home/romain/Documents/GI01/LO21/Projet/splendorlo21/Splendor/Deck_cartes/";
+    std::string path = "/home/romain/Documents/GI01/LO21/Projet/splendorlo21/Splendor/Deck_cartes/";
     //std::string path = "/Users/ax_art/Desktop/LO21/Projet/gitlab/splendorlo21/Splendor/Deck_cartes/";
-    std::string path = "C:\\Users\\33651\\Documents\\Cours\\LO21\\splendorlo21\\splendor\\Deck_cartes\\";
+    //std::string path = "C:\\Users\\33651\\Documents\\Cours\\LO21\\splendorlo21\\splendor\\Deck_cartes\\";
     map<Type, string> noms_files= {
         {Type::un, path+"Niveau1.csv"},
         {Type::deux , path+"Niveau2.csv"},
