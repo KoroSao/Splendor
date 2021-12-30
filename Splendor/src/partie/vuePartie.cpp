@@ -618,6 +618,4 @@ void VuePartie::updatePlateauInfo(){
     onyxBanque->display(controleur.getPlateau().getBanque(4));
     jokerBanque->display(controleur.getPlateau().getBanque(5));
 
-    }
-
 }
