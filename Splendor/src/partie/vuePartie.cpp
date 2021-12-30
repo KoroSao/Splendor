@@ -14,7 +14,8 @@
 using namespace Splendor;
 
 VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *parent) :
-    QWidget(parent), controleur(nbj,names) ,vuecartes(20,nullptr), vuecartesNobles(5,nullptr), vuecartesReserve(3,nullptr)
+    QWidget(parent), controleur(nbj,names) ,vuecartes(20,nullptr), vuecartesNobles(5,nullptr), vuecartesReserve(3,nullptr),
+    vuepioches(3, nullptr)
 {
     setWindowTitle("Splendor !"); // modifier le titre de la fenêtre
     banque = new QLabel("Banque:"); //(émeraude/saphir/rubis/diamant/onyx/joker)
@@ -106,18 +107,12 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     layoutInformations->addWidget(jokerBox);
 
     //Gestion des Pioches 1 2 et 3
-    pioche1Bouton = new QPushButton("Pioche1", this);
-    pioche1Bouton->setFixedSize(QSize(60, 100));
-
-    pioche2Bouton = new QPushButton("Pioche2", this);
-    pioche2Bouton->setFixedSize(QSize(60, 100));
-
-    pioche3Bouton = new QPushButton("Pioche3", this);
-    pioche3Bouton->setFixedSize(QSize(60, 100));
-
-    layoutCartes->addWidget(pioche1Bouton,0,0);
-    layoutCartes->addWidget(pioche2Bouton,1,0);
-    layoutCartes->addWidget(pioche3Bouton,2,0);
+    for (size_t i = 0; i <3; i++){
+        //vuepioches[i] = new VuePioche;
+        vuepioches[i] = new VuePioche(controleur.getPlateau().getNiveauDeveloppement(i).getPioche());
+        layoutCartes->addWidget(vuepioches[i], i, 0);
+        connect(vuepioches[i], SIGNAL(piocheClicked(*VuePioche)), this, SLOT(piocheClique(VuePioche*)));
+    }
 
     //création des vues des cartesDeveloppement
     for(size_t i=0; i<12;i++)
@@ -195,7 +190,7 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     onyxCurrentPlayer=new QLCDNumber;
     onyxCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(4)));
     onyxCurrentPlayer->setFixedHeight(30);
-    onyxCurrentPlayer->setStyleSheet("background-color : gray");
+    onyxCurrentPlayer->setStyleSheet("background-color : black");
     inventaireCurrentPlayerLayout->addWidget(onyxCurrentPlayer);
     jokerCurrentPlayer=new QLCDNumber;
     jokerCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getInventaire(5)));
@@ -350,10 +345,6 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     connect(rubisBouton, &QPushButton::released, this, &VuePartie::rubisBoutonClique);
     connect(diamantBouton, &QPushButton::released, this, &VuePartie::diamantBoutonClique);
     connect(onyxBouton, &QPushButton::released, this, &VuePartie::onyxBoutonClique);
-
-    connect(pioche1Bouton, &QPushButton::released, this, &VuePartie::pioche1BoutonClique);
-    connect(pioche2Bouton, &QPushButton::released, this, &VuePartie::pioche2BoutonClique);
-    connect(pioche3Bouton, &QPushButton::released, this, &VuePartie::pioche3BoutonClique);
     connect(cancelTurnBouton, &QPushButton::released, this, &VuePartie::cancelTurnClique);
     connect(endTurnBouton, &QPushButton::released, this, &VuePartie::endTurnClique);
 }
@@ -476,9 +467,10 @@ void VuePartie::onyxBoutonClique(){
     }
 }
 
-void VuePartie::pioche1BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 1 !"); };
-void VuePartie::pioche2BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 2 !"); };
-void VuePartie::pioche3BoutonClique(){ qInfo("L'utilisateur x souhaite réserver une carte dans la pioche numéro 3 !"); };
+void VuePartie::piocheClique(VuePioche* vp){
+    //if (!jetonsPris && !cartePrise && !carteReservePrise)
+    setStyleSheet("background-color : gray");
+}
 
 void VuePartie::carteClique(VueCarte* vc){
     if ( (nbJetonsPris==0 && !cartePrise && !carteReservePrise) &&

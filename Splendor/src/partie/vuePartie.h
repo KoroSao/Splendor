@@ -9,6 +9,7 @@
 #include <string.h>
 #include "../controleur/controleur.h"
 #include "vueCarte.h"
+#include "vuepioche.h"
 
 class QLabel;
 class QLineEdit;
@@ -38,6 +39,7 @@ private:
     bool sameJetonPris = false;//pour savoir si on a selectoinner deux jetons identique => plus possible continuer d'en prendre
     bool cartePrise = false;//Un bool pour ne pouvoir selectionner qu'une carte à la fois (achat ou reservation)
 
+    const Splendor::Pioche* piocheSelct = nullptr;//la pioche selectionné
     const Splendor::Carte* selectionCarte = nullptr;//la carte selectionné
 
 
@@ -106,9 +108,8 @@ private:
     QGridLayout* layoutCartesReserve;
     QVBoxLayout* couche;
 
-    QPushButton *pioche1Bouton;
-    QPushButton *pioche2Bouton;
-    QPushButton *pioche3Bouton;
+    vector<VuePioche*> vuepioches;//adresse de objet VuePioche
+
 
     QGroupBox* playerActionBox();
     QVBoxLayout* playerActionLayout();
@@ -127,15 +128,13 @@ private:
         void carteClique(VueCarte* vc);
         void carteNobleClique();
         void carteReserveClique(VueCarte* vc);
+        void piocheClique(VuePioche* vp);
 
         void emeraudeBoutonClique();
         void saphirBoutonClique();
         void rubisBoutonClique();
         void diamantBoutonClique();
         void onyxBoutonClique();
-        void pioche1BoutonClique();
-        void pioche2BoutonClique();
-        void pioche3BoutonClique();
         void cancelTurnClique();
         void endTurnClique();
 
