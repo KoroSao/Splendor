@@ -37,12 +37,12 @@ namespace Splendor{
             int getTaille() { return nbMax; }
             int getNbCartes() { return nb; }
             Type getType() { return type; }
-            Pioche& getPioche() { return pioche; }
+            Pioche& getPioche() { return pioche; } //doit être publique pour piocher une carte à réservé
             vector<const Carte*> getCartes() { return cartes; }    // Renvoie le tableau des cartes
 
             //Fonctions d'usage
+            bool  possedeCarte(const Carte& c);
             const Carte& retirerCarte(const Carte& c);      // Retirer une carte du Niveau 
-            //void ajouterCarte(const Carte& c);              // Ajouter une carte du Niveau
             void piocherCarte();
             
             //Debug

@@ -5,19 +5,19 @@ namespace Splendor {
     /*
             =========================== GETTERS ===========================
     */
-    int Joueur::getInventaire(unsigned int i) const { 
+    unsigned int Joueur::getInventaire(unsigned int i) const {
         if (i > 5)
             throw SplendorException("Splendor::Joueur::getInventaire() : indice i invalide");
         return inventaire[i]; 
     }
 
-    int Joueur::getBonus(unsigned int i) const { 
+    unsigned int Joueur::getBonus(unsigned int i) const {
         if (i > 4)
             throw SplendorException("Splendor::Joueur::getBonus() : indice i invalide");
         return bonus[i]; 
     }
 
-    int Joueur::getJetonsPris(unsigned int i) {
+    unsigned int Joueur::getJetonsPris(unsigned int i) {
         if (i > 4)
             throw SplendorException("Splendor::Joueur::getJetonsPris() : indice i invalide");
         return jetonsPris[i]; 
@@ -60,7 +60,7 @@ namespace Splendor {
         reserve.push_back(&c);
     };
 
-    const Carte& Joueur::retirerCarteReserve(const Carte &c){
+    void Joueur::retirerCarteReserve(const Carte &c){
         if (reserve.empty())
             throw SplendorException("Splendor::Joueur::retirerCarteReserve() : reserve vide");
         
@@ -70,7 +70,6 @@ namespace Splendor {
         }
         reserve.erase(it);
 
-        return c;
     };
 
     void Joueur::addCartesRemportees(const Carte &c){

@@ -17,7 +17,7 @@ namespace Splendor{
 
     class Joueur;
     //pour alléger
-    typedef array<int, 5> ressources;
+    typedef array<unsigned int, 5> ressources;
     static map<int, std::string> ressources_name = {{0,"Emeraude"},{1, "Saphir"}, {2, "Rubis"}, {3, "Diamant"}, {4, "Onix"}};
 
     /**
