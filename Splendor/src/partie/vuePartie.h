@@ -32,13 +32,13 @@ public:
 private:
 
     Splendor::Controleur controleur; // controleur de la partie //TODO: fixé à 4 joueurs
-    int nbJetonsPris = 0;
+    int nbJetonsPris = 0;//max 2 jetons identiques ou 3 jetons tous diffs
     int jetonsPris[5] = {0,0,0,0,0};
-    bool sameJetonPris = false;
-    bool cartePrise = false;
     bool carteReservePrise = false;
+    bool sameJetonPris = false;//pour savoir si on a selectoinner deux jetons identique => plus possible continuer d'en prendre
+    bool cartePrise = false;//Un bool pour ne pouvoir selectionner qu'une carte à la fois (achat ou reservation)
 
-    const Splendor::Carte* selectionCarte = nullptr;
+    const Splendor::Carte* selectionCarte = nullptr;//la carte selectionné
 
 
     // - - - - Jeton - - - -
