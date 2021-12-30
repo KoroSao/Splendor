@@ -17,7 +17,8 @@ HEADERS += ./src/controleur/controleur.h \
             src/partie/vueCarte.h \
             ./src/menu/vueNumberOfPlayers.h \
             ./src/menu/vuePlayerConfig.h \
-            ./src/renduJetons/vueRenduJetons.h
+            ./src/renduJetons/vueRenduJetons.h \
+            src/partie/vuepioche.h
 
 
 SOURCES += ./test/main.cpp \
@@ -33,4 +34,5 @@ SOURCES += ./test/main.cpp \
         src/partie/vueCarte.cpp \
         ./src/menu/vueNumberOfPlayers.cpp \
         ./src/menu/vuePlayerConfig.cpp \
-        ./src/renduJetons/vueRenduJetons.cpp
+        ./src/renduJetons/vueRenduJetons.cpp \
+        src/partie/vuepioche.cpp
