@@ -202,7 +202,7 @@ namespace Splendor{
        }
 
        //Check les cartesnobles
-        for (size_t i = 0; i < nbJoueurs + 1; i++){
+        for (size_t i = 0; i < getPlateau().getNiveauNobles().getCartes().size(); i++){
             if (getPlateau().getNiveauNobles().getCartes()[i]->canBeBougth(j)){
 
                 j.addCartesRemportees(*getPlateau().getNiveauNobles().getCartes()[i]);
@@ -210,14 +210,8 @@ namespace Splendor{
                     CarteNoble* cn = dynamic_cast<CarteNoble*>(const_cast<Carte*>(getPlateau().getNiveauNobles().getCartes()[i]));
                     j.addPDV(cn->getPDV());
                 }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
+                getPlateau().getNiveauNobles().retirerCarte(*getPlateau().getNiveauNobles().getCartes()[i]);
 
-                //getPlateau().getNiveauNobles().retirerCarte(*getPlateau().getNiveauNobles().getCartes()[i]);
-                vector<const Carte*>::iterator it = find(getPlateau().getNiveauNobles().getCartes().begin(), getPlateau().getNiveauNobles().getCartes().end(), getPlateau().getNiveauNobles().getCartes()[i]);
-                if(it == getPlateau().getNiveauNobles().getCartes().end()){
-                    throw SplendorException("Splendor::Pioche::piocher() : carte à supp inexistante");
-                }
-                getPlateau().getNiveauNobles().getCartes().erase(it);
-                getPlateau().getNiveauNobles().setNbCartes(getPlateau().getNiveauNobles().getNbCartes() - 1);
             }
         }
 

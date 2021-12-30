@@ -27,8 +27,13 @@ namespace Splendor{
         }
         cartes.erase(it);
         nb--;
-        if(!getPioche().estVide()){
+
+        //Détour pour ne pas repiocher quand carte noble
+        const CarteNoble* cn = dynamic_cast<const CarteNoble*>(&c);
+        if(!getPioche().estVide() && !cn){
             piocherCarte();
+        } else {
+            std::cout << "C'est une carte Noble qu'on veut delete donc pas de rajout" << std::endl;
         }
         return c;
     } 

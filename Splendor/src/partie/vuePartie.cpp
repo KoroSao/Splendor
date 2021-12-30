@@ -578,6 +578,23 @@ void VuePartie::updateJoueurInfo() {
         k++;
     }
 
+
+    k = 0;
+    int n_vue = vuecartesNobles.size();
+    int n_ctrl = controleur.getPlateau().getNiveauNobles().getCartes().size();
+
+    //Mise à vide
+    for (int i = n_ctrl; i < n_vue; i++){
+       vuecartesNobles[i]->setNoCarte();
+    }
+    for(auto it: controleur.getPlateau().getNiveauNobles().getCartes()){ //TODO:: à update
+        if(k< controleur.getPlateau().getNiveauNobles().getCartes().size()){
+            vuecartesNobles[k]->setCarte(*it);
+        }
+        k++;
+    }
+
+
     size_t i = 0;
     //Update Carte de développement
     for(int j = 0; j<3; j++){

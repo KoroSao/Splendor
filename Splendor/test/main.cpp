@@ -18,6 +18,7 @@
 using namespace Splendor;
 
 int main(int argc, char* argv[]){
+    try{
     unsigned int nbj = 4;
     vector<std::string>names;
     names.push_back("Arthur");
@@ -76,6 +77,10 @@ int main(int argc, char* argv[]){
     vueNumberOfPlayers menu;
     menu.show();*/
     return app.exec();
+    }
+    catch(const SplendorException& e){
+        std::cout << e.getInfo()<<endl;
+    }
 }
 
 
