@@ -10,6 +10,7 @@
 #include "../controleur/controleur.h"
 #include "vueCarte.h"
 #include "vuepioche.h"
+#include "setvue.h"
 
 class QLabel;
 class QLineEdit;
@@ -31,16 +32,11 @@ public:
     void updatePlateauInfo();
 
 private:
-
     Splendor::Controleur controleur; // controleur de la partie //TODO: fixé à 4 joueurs
     int nbJetonsPris = 0;//max 2 jetons identiques ou 3 jetons tous diffs
     int jetonsPris[5] = {0,0,0,0,0};
-    bool carteReservePrise = false;
     bool sameJetonPris = false;//pour savoir si on a selectoinner deux jetons identique => plus possible continuer d'en prendre
     bool cartePrise = false;//Un bool pour ne pouvoir selectionner qu'une carte à la fois (achat ou reservation)
-
-    const Splendor::Pioche* piocheSelct = nullptr;//la pioche selectionné
-    const Splendor::Carte* selectionCarte = nullptr;//la carte selectionné
 
 
     // - - - - Jeton - - - -
@@ -114,12 +110,19 @@ private:
     QPushButton* endTurnBouton;
     QPushButton* cancelTurnBouton;
 
-    vector<VuePioche*> vuepioches;//adresse de objet VuePioche
-    vector<VueCarte*> vuecartes; // adresses des objets VueCarte
-    vector<VueCarte*> vuecartesNobles; // adresses des objets VueCarteNobles
-    vector<VueCarte*> vuecartesReserve; //adresses des cartes reserver par le joueur
+    SetVue ensembleVue;
+    //fonction usage
+    void annule_carte_prise(){
+        if (cartePrise){
+            selectionCarte = nullptr;
+            selectionPioche = nullptr;
+            ensembleVue.UncheckVue();
+            cartePrise = false;
+        }
+    }
 
-    std::set<const Splendor::Carte*> selectionCartes; // carte sélectionnée
+    const Splendor::Carte* selectionCarte; // carte sélectionnée
+    Splendor::Pioche* selectionPioche;//pioche dont on veut reserver une carte
 
 
     private slots:

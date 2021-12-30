@@ -8,12 +8,12 @@ VuePioche::VuePioche(QWidget *parent): QPushButton(parent), pioche(nullptr)
     setAutoFillBackground(true);
     setFixedSize(60,100);
     connect(this,SIGNAL(clicked()),this,SLOT(clickedEvent()));
-    setCheckable(false);
+    setCheckable(true);
 }
 
 
 
-VuePioche::VuePioche(const Splendor::Pioche& p, QWidget *parent): QPushButton(parent), pioche(&p)
+VuePioche::VuePioche(Splendor::Pioche& p, QWidget *parent): QPushButton(parent), pioche(&p)
 {
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);

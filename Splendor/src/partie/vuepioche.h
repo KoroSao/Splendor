@@ -17,13 +17,14 @@ class VuePioche : public QPushButton
     Q_OBJECT
 public:
     VuePioche(QWidget* parent = nullptr);
-    VuePioche(const Splendor::Pioche& p, QWidget *parent = nullptr);
-    const Splendor::Pioche& getPioche() const { return *pioche; }
+    VuePioche(Splendor::Pioche& p, QWidget *parent = nullptr);
+    void setPioche(Splendor::Pioche& pioche) {this->pioche = &pioche;}
+    Splendor::Pioche& getPioche() const{ return *pioche; }
 
 protected:
     void paintEvent(QPaintEvent *event) override;
 private:
-    const Splendor::Pioche* const pioche;
+    Splendor::Pioche* pioche;
     QPen pen;
     QBrush brush;
 signals:
