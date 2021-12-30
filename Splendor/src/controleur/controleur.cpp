@@ -49,18 +49,30 @@ namespace Splendor{
             rendreRessource(j, 5, jetons_manquants);
 
 
-
+            int i_type = -1;
             switch (c_dev->getType()) {
                 case Type::un:
-                    plateau.getNiveauDeveloppement(0).retirerCarte(*c_dev);
+                    i_type = 0;
                 break;
                 case Type::deux:
-
-                    plateau.getNiveauDeveloppement(1).retirerCarte(*c_dev);
+                    i_type = 1;
                 break;
                 case Type::trois:
-                    plateau.getNiveauDeveloppement(2).retirerCarte(*c_dev);
+                    i_type = 2;
                 break;
+                default:
+                    std::stringstream infos;
+                    infos << "Splendor::Controleur::reserverCarte : Type d'une carte Developement inconnu" << endl;
+                    infos << "c_dev.getType() :" << toString(c_dev->getType());
+                    throw SplendorException(infos.str());
+                break;
+            }
+            //Au cas où la carte viens des cartes reservé par le joueur
+            if (plateau.getNiveauDeveloppement(i_type).possedeCarte(*c_dev)){
+                plateau.getNiveauDeveloppement(i_type).retirerCarte(*c_dev);
+            }
+            else{//la carte ne vient pas du plateau donc de la main du joueur
+                j.retirerCarteReserve(*c_dev);
             }
 
             j.addCartesRemportees(c);

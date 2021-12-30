@@ -60,7 +60,7 @@ namespace Splendor {
         reserve.push_back(&c);
     };
 
-    const Carte& Joueur::retirerCarteReserve(const Carte &c){
+    void Joueur::retirerCarteReserve(const Carte &c){
         if (reserve.empty())
             throw SplendorException("Splendor::Joueur::retirerCarteReserve() : reserve vide");
         
@@ -70,7 +70,6 @@ namespace Splendor {
         }
         reserve.erase(it);
 
-        return c;
     };
 
     void Joueur::addCartesRemportees(const Carte &c){

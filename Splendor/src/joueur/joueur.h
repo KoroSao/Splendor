@@ -55,7 +55,7 @@ namespace Splendor{
             void setJetonsPris(unsigned int i, unsigned int val);
             void addCartesRemportees(const Carte &c);
             void ajouterCarteReserve(const Carte &c);
-            const Carte& retirerCarteReserve(const Carte &c);
+            void retirerCarteReserve(const Carte &c);
             void addPDV(unsigned int i);
 
             // ----------- Affichage -----------
