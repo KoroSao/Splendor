@@ -557,29 +557,6 @@ void VuePartie::updateJoueurInfo() {
 
     pdvCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getPDV()));
 
-    //Update de la réserve
-    for(size_t i=0; i<3; i++){
-        vuecartesReserve[i]->setNoCarte();
-    }
-
-    size_t k = 0;
-    for(auto it: controleur.getJoueur(controleur.getCurrentPlayer()).getReserve()){ //TODO:: à update
-        if(k<3){
-            vuecartesReserve[k]->setCarte(*it);
-        }
-        k++;
-    }
-
-    size_t i = 0;
-    //Update Carte de développement
-    for(int j = 0; j<3; j++){
-        for(auto it: controleur.getPlateau().getNiveauDeveloppement(j).getCartes()){
-            //it->afficherCarte();
-            vuecartes[i]->setNoCarte();
-            vuecartes[i]->setCarte(*it);
-            i++;
-        }
-    }
 
     currentPlayerBox->setTitle(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
 
@@ -618,5 +595,30 @@ void VuePartie::updatePlateauInfo(){
     diamantBanque->display(controleur.getPlateau().getBanque(3));
     onyxBanque->display(controleur.getPlateau().getBanque(4));
     jokerBanque->display(controleur.getPlateau().getBanque(5));
+
+    //Update de la réserve
+    for(size_t i=0; i<3; i++){
+        vuecartesReserve[i]->setNoCarte();
+    }
+
+    size_t k = 0;
+    for(auto it: controleur.getJoueur(controleur.getCurrentPlayer()).getReserve()){ //TODO:: à update
+        if(k<3){
+            vuecartesReserve[k]->setCarte(*it);
+        }
+        k++;
+    }
+
+
+    //Update Carte de développement
+    for (size_t i=0; i<12; i++) vuecartes[i]->setNoCarte();
+    for(int j = 0; j<3; j++){
+        size_t i = 0;
+        for(auto it: controleur.getPlateau().getNiveauDeveloppement(j).getCartes()){
+            vuecartes[4*j+i]->setCarte(*it);
+            i++;
+        }
+    }
+
 
 }

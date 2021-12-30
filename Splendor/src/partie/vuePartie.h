@@ -108,14 +108,13 @@ private:
     QGridLayout* layoutCartesReserve;
     QVBoxLayout* couche;
 
-    vector<VuePioche*> vuepioches;//adresse de objet VuePioche
-
 
     QGroupBox* playerActionBox();
     QVBoxLayout* playerActionLayout();
     QPushButton* endTurnBouton;
     QPushButton* cancelTurnBouton;
 
+    vector<VuePioche*> vuepioches;//adresse de objet VuePioche
     vector<VueCarte*> vuecartes; // adresses des objets VueCarte
     vector<VueCarte*> vuecartesNobles; // adresses des objets VueCarteNobles
     vector<VueCarte*> vuecartesReserve; //adresses des cartes reserver par le joueur
