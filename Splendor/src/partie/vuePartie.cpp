@@ -396,11 +396,20 @@ void VuePartie::endTurnClique() {
     cartePrise = false;
     carteReservePrise = false;
     selectionCarte = nullptr;
+    for (size_t i=0; i<12; i++) {
+        vuecartes[i]->setChecked(false);
+    }
+    controleur.endOfTurn(controleur.getJoueur(controleur.getCurrentPlayer()));
 
+    //Fin du jeu
+    if (controleur.getLastLap() && controleur.getCurrentPlayer() == controleur.getNbJoueurs() - 1){
+        hide();
+    }
 
     controleur.nextPlayer();
     updateJoueurInfo();
     updatePlateauInfo();
+
 }
 
 void VuePartie::emeraudeBoutonClique(){

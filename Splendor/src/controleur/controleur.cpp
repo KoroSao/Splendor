@@ -89,7 +89,7 @@ namespace Splendor{
             throw SplendorException("Splendor::Joueur::prendreRessource() : indice i, Plateau& p invalide");
         if (!getPlateau().getBanque(i))
             throw SplendorException("Splendor::Joueur::prendreRessource() : Banque vide");
-        if (getPlateau().getBanque(i) <= 3 && j.getJetonsPris(i) > 0)
+        /*if (getPlateau().getBanque(i) <= 3 && j.getJetonsPris(i) > 0)
             stopJetons = true;
             //throw SplendorException("Splendor::Joueur::prendreRessources() : Impossible de prendre 2 jetons d'une pile de moins de 4 de haut");
 
@@ -101,7 +101,7 @@ namespace Splendor{
         if(nbJetons == 2 && j.getJetonsPris(i) == 1){
             stopJetons = true;
             //throw SplendorException("Splendor::Joueur::prendreRessources() : Impossible de prendre 3 jetons non tous différents");
-        }
+        }*/
 
         
         getPlateau().setBanque(i, getPlateau().getBanque(i) - 1); //Retirer un jeton de la banque
@@ -233,8 +233,9 @@ namespace Splendor{
             currentPlayer = 0;
    }
 
-   void Controleur::endOfTurn(Joueur& j) {
-       
+
+
+   void Controleur::endOfTurn(Joueur& j) { 
        std::cout << "Fin de ton tour !" << std::endl;
        //RESET tableau jetonspris
        for (size_t i = 0; i < 5; i++)
@@ -243,12 +244,20 @@ namespace Splendor{
        //Check si trop de ressources (demander d'en surppirmer)
        if (j.inventaireFull()){
            std::cout << "Il faut vider ton inventaire" << std::endl;
+           VueRenduJetons* rendu = new VueRenduJetons(&getJoueur(getCurrentPlayer()));
+           rendu->show();
        }
 
        //Check les cartesnobles
         for (size_t i = 0; i < nbJoueurs + 1; i++){
-            if (getPlateau().getNiveauNobles().getCartes()[i]->canBeBougth(j))
+            if (getPlateau().getNiveauNobles().getCartes()[i]->canBeBougth(j)){
                 j.addCartesRemportees(*getPlateau().getNiveauNobles().getCartes()[i]);
+                try{
+                    CarteNoble* cn = dynamic_cast<CarteNoble*>(const_cast<Carte*>(getPlateau().getNiveauNobles().getCartes()[i]));
+                    j.addPDV(cn->getPDV());
+                }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
+                getPlateau().getNiveauNobles().retirerCarte(*getPlateau().getNiveauNobles().getCartes()[i]);
+            }
         }
 
         //Check victory
@@ -257,12 +266,12 @@ namespace Splendor{
             lastLap = true;
         }
 
-        //Passer au joueur suivant
-        if ((lastLap && currentPlayer != nbJoueurs - 1) || !lastLap)
-            nextPlayer();
-        else
+        //fin de partie
+        if (lastLap && currentPlayer == nbJoueurs - 1)
             endOfGame();
    }
+
+
 
    void Controleur::endOfGame(){
        int joueurGagnant = 0;
