@@ -36,6 +36,7 @@ private:
     int jetonsPris[5] = {0,0,0,0,0};
     bool sameJetonPris = false;
     bool cartePrise = false;
+    bool carteReservePrise = false;
 
     const Splendor::Carte* selectionCarte = nullptr;
 
@@ -116,16 +117,16 @@ private:
 
     vector<VueCarte*> vuecartes; // adresses des objets VueCarte
     vector<VueCarte*> vuecartesNobles; // adresses des objets VueCarteNobles
-
     vector<VueCarte*> vuecartesReserve; //adresses des cartes reserver par le joueur
 
-    std::set<const Splendor::Carte*> selectionCartes; // ensemble des cartes sélectionnées
+    std::set<const Splendor::Carte*> selectionCartes; // carte sélectionnée
 
 
     private slots:
         // slots qui gère les clics sur les cartes et boutons
         void carteClique(VueCarte* vc);
-        void carteNobleClique(VueCarte* vc);
+        void carteNobleClique();
+        void carteReserveClique(VueCarte* vc);
 
         void emeraudeBoutonClique();
         void saphirBoutonClique();

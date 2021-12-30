@@ -21,9 +21,9 @@ namespace Splendor{
         private:
             unsigned int id;                            
             string nom;                                 
-            int inventaire[6];                          // ordre : émeraude / saphir / rubis / diamant / onyx / joker
-            int bonus[5];                               // ordre : émeraude / saphir / rubis / diamant / onyx / joker
-            int jetonsPris[5];                          //Stocke les jetons prix à la fin de son tour
+            unsigned int inventaire[6];                          // ordre : émeraude / saphir / rubis / diamant / onyx / joker
+            unsigned int bonus[5];                               // ordre : émeraude / saphir / rubis / diamant / onyx / joker
+            unsigned int jetonsPris[5];                          //Stocke les jetons prix à la fin de son tour
             vector<const Carte*> reserve;               // reserve (un joueur peut posséder au max 3 cartes en réserve)
             vector<const Carte*> cartesRemportees;      //Stocke les cartes gagnées par le joueur (size infinie)
             unsigned int PDV;                          // Nombre de point de victoire du joueur
@@ -40,11 +40,11 @@ namespace Splendor{
             //----------- Getters -----------
             unsigned int getId() const { return id; }
             const string getNom() const { return nom; }
-            int getInventaire(unsigned int i) const;
-            int* getInventaire() { return inventaire; }
-            int getBonus(unsigned int i) const;
-            int* getBonus() { return bonus; }
-            int getJetonsPris(unsigned int i);
+            unsigned int getInventaire(unsigned int i) const;
+            unsigned int* getInventaire() { return inventaire; }
+            unsigned int getBonus(unsigned int i) const;
+            unsigned int* getBonus() { return bonus; }
+            unsigned int getJetonsPris(unsigned int i);
             vector<const Carte*> getReserve() { return reserve; }
             vector<const Carte*> getCartesRemportees() { return cartesRemportees; }
             unsigned int getPDV() const { return PDV; }
@@ -55,7 +55,7 @@ namespace Splendor{
             void setJetonsPris(unsigned int i, unsigned int val);
             void addCartesRemportees(const Carte &c);
             void ajouterCarteReserve(const Carte &c);
-            const Carte& retirerCarteReserve(const Carte &c);
+            void retirerCarteReserve(const Carte &c);
             void addPDV(unsigned int i);
 
             // ----------- Affichage -----------

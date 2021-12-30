@@ -1,5 +1,5 @@
 #include "controleur.h"
-
+#include <sstream>
 
 namespace Splendor{
 
@@ -22,40 +22,66 @@ namespace Splendor{
     */
 
     void Controleur::acheterCarte(Joueur& j, const Carte& c) {
-        if (!c.canBeBougth(j))
-            throw SplendorException("Splendor::Joueur::acheterCarte() : ressources insuffisantes");
-
-        j.addCartesRemportees(c);
-        int jetons_manquants = 0;
-        
-        for (size_t i = 0; i<5;i++){
-            jetons_manquants += max(0, c.getCouts(i)-j.getBonus(i)-j.getInventaire(i));
-            //int temp = j.getInventaire(i);
-            if (c.getCouts(i) > j.getBonus(i)) {
-                getPlateau().setBanque(i, getPlateau().getBanque(i) + max(j.getInventaire(i), j.getInventaire(i) - (c.getCouts(i) - j.getBonus(i))) );
-            }
-            j.setInventaire(i, max(0,j.getBonus(i)+j.getInventaire(i) - c.getCouts(i))); //Soustrait les jetons
-            if (c.getCouts(i) > j.getBonus(i)) {
-                //getPlateau().setBanque(i, getPlateau().getBanque(i) + max(temp, temp - (c.getCouts(i) - j.getBonus(i))) );
-            }
-            //getPlateau().setBanque(i, getPlateau().getBanque(i) + min(j.getInventaire(i),(c.getCouts(i) - j.getBonus(i))));
+        if (!c.canBeBougth(j)){
+            std::string infos = "Splendor::Controleur::acheterCarte() : ressources insuffisantes \n";
+            infos+= "Couts carte : ";
+            for (size_t i = 0; i<5; i++) infos += to_string(c.getCouts(i));
+            infos += "\nInventaire joueur :";
+            for (size_t i =0; i<6; i++) infos += to_string(j.getInventaire(i));
+            infos += "\n";
+            throw SplendorException(infos);
         }
 
-        if(jetons_manquants){
-            for (auto i = 0; i < jetons_manquants; i++)
-                rendreRessource(j,5);
-                //j.setInventaire(5, j.getInventaire(5) - jetons_manquants);  //soustrait les jokers
-        }
-            
+        CarteDeveloppement* c_dev = dynamic_cast<CarteDeveloppement*>(const_cast<Carte*>(&c));
+        if(c_dev){
 
-        try{
-            CarteDeveloppement* cab = dynamic_cast<CarteDeveloppement*>(const_cast<Carte*>(&c));
+            //on réalise la transaction entre la banque et le joueur
+            //on utilise uniquement les jokers comme supplement en cas de manque
+            unsigned int jetons_manquants = 0;
+            for (size_t i = 0; i<5; i++){
+                if(c_dev->getCouts(i)!=0){
+                    unsigned int cout_moins_bonus = (unsigned int)max(0, (int)(c_dev->getCouts(i)-j.getBonus(i)));
+                    unsigned int qt_depense = min(j.getInventaire(i), cout_moins_bonus);
+                    rendreRessource(j, i, qt_depense);
+                    jetons_manquants += cout_moins_bonus-qt_depense;
+                }
+            }
+            rendreRessource(j, 5, jetons_manquants);
+
+
+            int i_type = -1;
+            switch (c_dev->getType()) {
+                case Type::un:
+                    i_type = 0;
+                break;
+                case Type::deux:
+                    i_type = 1;
+                break;
+                case Type::trois:
+                    i_type = 2;
+                break;
+                default:
+                    std::stringstream infos;
+                    infos << "Splendor::Controleur::reserverCarte : Type d'une carte Developement inconnu" << endl;
+                    infos << "c_dev.getType() :" << toString(c_dev->getType());
+                    throw SplendorException(infos.str());
+                break;
+            }
+            //Au cas où la carte viens des cartes reservé par le joueur
+            if (plateau.getNiveauDeveloppement(i_type).possedeCarte(*c_dev)){
+                plateau.getNiveauDeveloppement(i_type).retirerCarte(*c_dev);
+            }
+            else{//la carte ne vient pas du plateau donc de la main du joueur
+                j.retirerCarteReserve(*c_dev);
+            }
+
+            j.addCartesRemportees(c);
             for (size_t i = 0; i<5;i++){
-                j.setBonus(i, j.getBonus(i) + cab->getBonus(i) );
+                j.setBonus(i, j.getBonus(i) + c_dev->getBonus(i) );
             }
-            j.addPDV(cab->getPDV());
-        }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
-
+            j.addPDV(c_dev->getPDV());
+        }
+        else throw SplendorException("Splendor::Controleur::acheterCarte  : type de carte non supporté");
     }
 
     void Controleur::prendreRessource(Joueur& j, unsigned int i) {
@@ -84,32 +110,67 @@ namespace Splendor{
         //isTurnWithJetonsFinished(j);
     }
 
-    void Controleur::rendreRessource(Joueur&j, unsigned int i) {
-        if(i > 5 || i < 0)
-            throw SplendorException("Splendor::Joueur::prendreRessource() : indice i invalide");
-        if (!j.getInventaire(i))
-            throw SplendorException("Splendor::Joueur::prendreRessource() : Ressource inexistante");
-        j.setInventaire(i, j.getInventaire(i) - 1);       //Retire le jeton de l'inventaire du joueur
-        getPlateau().setBanque(i, getPlateau().getBanque(i) + 1);                 //Ajoute le jeton de l'inventaire du joueur dans la banque
+    void Controleur::rendreRessource(Joueur&j, unsigned int i, unsigned int qt) {
+        if(i > 5 || i < 0){
+            std::stringstream infos;
+            infos << "Splendor::Controleur::rendreRessource() : indice i invalide";
+            infos << std::endl << "i : "<< i;
+            throw SplendorException(infos.str());
+        }
+        if (j.getInventaire(i)<qt){
+            std::cout << "Erreur : " <<qt << std::endl;
+            std::stringstream infos;
+            infos << "Splendor::Controleur::rendreRessource() : Ressource insuffisante";
+            infos <<std::endl<<"Quantité dans inventaire : "<<j.getInventaire(i)<<std::endl;
+            infos <<std::endl<<"Quantité demandé au retrait : "<<qt<<std::endl;
+            throw SplendorException(infos.str());
+        }
+        if (qt == 0) return;
+        j.setInventaire(i, j.getInventaire(i) - qt);       //Retire le jeton de l'inventaire du joueur
+        getPlateau().setBanque(i, getPlateau().getBanque(i) + qt);                 //Ajoute le jeton de l'inventaire du joueur dans la banque
     }
 
 
+    void Controleur::reserverCarte(Joueur& j, const Carte&c){
+        j.ajouterCarteReserve(c);
+        if (getPlateau().getBanque(5)>0){
+            j.setInventaire(5, j.getInventaire(5)+1);//donne un joker si il y en a encore
+            plateau.setBanque(5, plateau.getBanque(5)-1);
+        }
+        CarteDeveloppement* c_dev = dynamic_cast<CarteDeveloppement*>(const_cast<Carte*>(&c));
+        if(c_dev){
+            int i_type = 0;
+            switch (c_dev->getType()) {
+                case Type::un:
+                    i_type = 0;
+                break;
+                case Type::deux:
+                    i_type = 1;
+                break;
+                case Type::trois:
+                    i_type = 2;
+                break;
+                default:
+                    std::stringstream infos;
+                    infos << "Splendor::Controleur::reserverCarte : Type d'une carte Developement inconnu" << endl;
+                    infos << "c_dev.getType() :" << toString(c_dev->getType());
+                    throw SplendorException(infos.str());
+                break;
+            }
+            //Au cas où la carte viens d'une pioche, on a pas besoin de la retirer d'un niveau
+            if (plateau.getNiveauDeveloppement(i_type).possedeCarte(*c_dev)){
+                plateau.getNiveauDeveloppement(i_type).retirerCarte(*c_dev);
+            }
+        }
+        else throw SplendorException("Splendor::Controleur::acheterCarte  : type de carte non supporté");
+    }
+
     void Controleur::selectCarte(Joueur& j, const Carte& c) {
+
         if (c.canBeBougth(j)){
-            //if (confirmTurn(j)){
-                acheterCarte(j,c);
-                //endOfTurn(j);
-            //}
+            acheterCarte(j,c);
         } else {
-            //if (confirmTurn(j)){
-                j.ajouterCarteReserve(c); //Testdans ajouterCarteReserve de la taille de la réserve
-                
-                if(getPlateau().getBanque(5) > 0){
-                    getPlateau().setBanque(5,getPlateau().getBanque(5) - 1);
-                    j.setInventaire(5,j.getInventaire(5) +1);
-                }
-                //endOfTurn(j);
-            //}
+            reserverCarte(j, c);
         }
     }
 
