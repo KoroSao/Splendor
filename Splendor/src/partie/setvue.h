@@ -11,15 +11,25 @@
 
 class SetVue
 {
-    map<std::string, vector<QPushButton*>> dictionnaireVues;
+    vector<VueCarte*> vueCarteDevI;
+    vector<VueCarte*> vueCarteDevII;
+    vector<VueCarte*> vueCarteDevIII;
+    vector<VueCarte*> vueCarteNobles;
+    vector<VueCarte*> vueCarteReserve;
+    vector<VuePioche*> vuePioche;
 public:
     SetVue(int);
-    vector<QPushButton*> getCheckable();
+    //getter
+    vector<QPushButton*> getVueCheckable();
+    vector<QPushButton*> getVueChecked();
     vector<VueCarte*> getVueCarte();
-    vector<VueCarte*> getVueNobles();
+    vector<VueCarte*> getVueCarteReserve(){return vueCarteReserve;}
+    vector<VueCarte*> getVueNobles(){return vueCarteNobles;};
     vector<VueCarte*> getVueCarteDev();
     vector<VueCarte*> getVueCarteDev(int i);
     vector<VuePioche*> getVuePioche();
+    //utilitaire
+    void UncheckVue();
 };
 
 #endif // SETVUE_H

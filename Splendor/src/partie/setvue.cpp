@@ -3,77 +3,92 @@
 
 using namespace Splendor;
 
-SetVue::SetVue(int nb_joueur)
+SetVue::SetVue(int nb_joueur):vueCarteDevI(4, nullptr), vueCarteDevII(4, nullptr), vueCarteDevIII(4, nullptr),
+    vueCarteNobles(nb_joueur+1, nullptr), vueCarteReserve(3, nullptr), vuePioche(3, nullptr)
 {
-    dictionnaireVues["cartesDevI"] = vector<QPushButton*>(4, new VueCarte);
-    dictionnaireVues["cartesDevII"] = vector<QPushButton*>(4, new VueCarte);
-    dictionnaireVues["cartesDevIII"] = vector<QPushButton*>(4, new VueCarte);
-    dictionnaireVues["cartesNobles"] = vector<QPushButton*>(nb_joueur+1, new VueCarte);
-    dictionnaireVues["pioches"] = vector<QPushButton*>(3, new VuePioche);
+    for (size_t i = 0; i<4; i++){
+        vueCarteDevI[i] = new VueCarte;
+        vueCarteDevII[i] = new VueCarte;
+        vueCarteDevIII[i] = new VueCarte;
+    }
+    for(size_t i = 0; i<3; i++){
+        vueCarteReserve[i] = new VueCarte;
+        vuePioche[i] = new VuePioche;
+    }
+    for (size_t i = 0; i<nb_joueur+1; i++){
+        vueCarteNobles[i] = new VueCarte;
+    }
+    for (VueCarte* carteNoble : vueCarteNobles) carteNoble->setCheckable(false);
 }
 
-vector<QPushButton*> SetVue::getCheckable(){
+vector<QPushButton*> SetVue::getVueCheckable(){
     vector<QPushButton*> checkable;
-    vector<std::string> categorieCheckable = {"carteDevI", "carteDevII", "carteDevIII", "pioches"};
-    for (std::string& cat : categorieCheckable){
-        for (size_t j = 0; j<dictionnaireVues[cat].size(); j++){
-            checkable.push_back(dictionnaireVues[cat][j]);
-        }
-    }
+    for (auto vuecarte : vueCarteDevI) checkable.push_back(vuecarte);
+    for (auto vuecarte : vueCarteDevII) checkable.push_back(vuecarte);
+    for (auto vuecarte : vueCarteDevIII) checkable.push_back(vuecarte);
+    for (auto vuecarte : vueCarteReserve) checkable.push_back(vuecarte);
+    for (auto vuepioche : vuePioche) checkable.push_back(vuepioche);
     return checkable;
 }
 
 vector<VueCarte*> SetVue::getVueCarte(){
     vector<VueCarte*> vuecartes;
-    vector<string> categorieVueCarte = {"carteDevI", "carteDevII", "carteDevIII", "carteNobles"};
-    for (std::string& cat : categorieVueCarte){
-        for (size_t j = 0; j<dictionnaireVues[cat].size(); j++){
-            vuecartes.push_back(dynamic_cast<VueCarte*>( dictionnaireVues[cat][j]));
-        }
-    }
+    for (auto vuecarte : vueCarteDevI) vuecartes.push_back(vuecarte);
+    for (auto vuecarte : vueCarteDevII) vuecartes.push_back(vuecarte);
+    for (auto vuecarte : vueCarteDevIII) vuecartes.push_back(vuecarte);
+    for (auto vuecarte : vueCarteReserve) vuecartes.push_back(vuecarte);
+    for (auto vuecarte : vueCarteNobles) vuecartes.push_back(vuecarte);
     return vuecartes;
 
 }
 
 vector<VueCarte*> SetVue::getVueCarteDev(){
     vector<VueCarte*> vuecartes;
-    vector<string> categorieVueCarte = {"carteDevI", "carteDevII", "carteDevIII"};
-    for (std::string& cat : categorieVueCarte){
-        for (size_t j = 0; j<dictionnaireVues[cat].size(); j++){
-            vuecartes.push_back(dynamic_cast<VueCarte*>( dictionnaireVues[cat][j]));
-        }
-    }
+    for (auto vuecarte : vueCarteDevI) vuecartes.push_back(vuecarte);
+    for (auto vuecarte : vueCarteDevII) vuecartes.push_back(vuecarte);
+    for (auto vuecarte : vueCarteDevIII) vuecartes.push_back(vuecarte);
     return vuecartes;
+
 }
 
 vector<VueCarte*> SetVue::getVueCarteDev(int i ){
-    if (i<0 || i>3) throw SplendorException(
-                "Splendor::SetVue::getVueCarteDev(int i ) : argument i invalide : "+to_string(i));
-    vector<VueCarte*> vuecartes;
-    vector<string> categorieVueCarte = {"carteDevI", "carteDevII", "carteDevIII", "carteNobles"};
-    std::string cat = categorieVueCarte[i];
-    for (size_t j = 0; j<dictionnaireVues[cat].size(); j++){
-        vuecartes.push_back(dynamic_cast<VueCarte*>( dictionnaireVues[cat][j]));
+    switch(i){
+    case 0 :
+        return vueCarteDevI;
+    case 1:
+        return vueCarteDevII;
+    case 2:
+        return vueCarteDevIII;
+    default:
+        throw SplendorException("SetVue::getVueCarteDev(int i) invalide parameter i : "+to_string(i));
     }
-    return vuecartes;
 }
-
-vector<VueCarte*> SetVue::getVueNobles(){
-    vector<VueCarte*> vuecartes;
-    std::string cat = "carteNobles";
-    for (size_t j = 0; j<dictionnaireVues[cat].size(); j++){
-        vuecartes.push_back(dynamic_cast<VueCarte*>( dictionnaireVues[cat][j]));
-    }
-    return vuecartes;
-
-}
-
 vector<VuePioche*> SetVue::getVuePioche(){
-    vector<VuePioche*> vuepioche;
-    std::string cat = "pioches";
-    for (size_t j = 0; j<dictionnaireVues[cat].size(); j++){
-        vuepioche.push_back(dynamic_cast<VuePioche*>( dictionnaireVues[cat][j]));
+    vector<VuePioche*> vuepioches;
+    for (auto vuepioche : vuePioche) vuepioches.push_back(vuepioche);
+    return vuepioches;
+
+}
+
+//vector<VueCarte*> SetVue::getVueNobles(){
+//    return vueCarteNobles;
+//}
+
+
+vector<QPushButton*> SetVue::getVueChecked(){
+    vector<QPushButton*> vueCheckable = getVueCheckable();
+    vector<QPushButton*> vueChecked;
+    for (size_t j = 0; j<vueCheckable.size(); j++){
+        if (vueCheckable[j]->isChecked())
+            vueChecked.push_back(vueCheckable[j]);
     }
-    return vuepioche;
+    return vueChecked;
+}
+
+void SetVue::UncheckVue(){
+    vector<QPushButton*> vueChecked = getVueChecked();
+    for (size_t j = 0; j<vueChecked.size(); j++){
+        vueChecked[j]->setChecked(false);
+    }
 
 }
