@@ -393,17 +393,6 @@ void VuePartie::endTurnClique() {
     cartePrise = false;
     selectionCarte = nullptr;
 
-    //Reset les cartes affiché pour coller au plateau
-    size_t i = 0;
-    for(int j = 0; j<3; j++){
-        for(auto it: controleur.getPlateau().getNiveauDeveloppement(j).getCartes()){
-            //it->afficherCarte();
-            vuecartes[i]->setCarte(*it);
-            i++;
-        }
-    }
-
-
 
     controleur.nextPlayer();
     updateJoueurInfo();
@@ -582,6 +571,16 @@ void VuePartie::updatePlateauInfo(){
     diamantBanque->display(controleur.getPlateau().getBanque(3));
     onyxBanque->display(controleur.getPlateau().getBanque(4));
     jokerBanque->display(controleur.getPlateau().getBanque(5));
+
+    //Reset les cartes affiché pour coller au plateau
+    size_t i = 0;
+    for(int j = 0; j<3; j++){
+        for(auto it: controleur.getPlateau().getNiveauDeveloppement(j).getCartes()){
+            //it->afficherCarte();
+            vuecartes[i]->setCarte(*it);
+            i++;
+        }
+    }
 
 }
 
