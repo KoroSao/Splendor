@@ -260,7 +260,9 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
     QVBoxLayout* playerActionLayout = new QVBoxLayout();
 
     QPushButton* endTurnBouton = new QPushButton("Terminer tour", this);
+    endTurnBouton->setFixedHeight(50);
     QPushButton* cancelTurnBouton = new QPushButton("Annuler action", this);
+    cancelTurnBouton->setFixedHeight(50);
 
     playerActionLayout->addWidget(endTurnBouton);
     playerActionLayout->addWidget(cancelTurnBouton);

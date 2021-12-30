@@ -1,7 +1,7 @@
 #include "vueRenduJetons.h"
 
 
-VueRenduJetons::VueRenduJetons(Splendor::Joueur* j, QWidget *parent): QWidget(parent)
+VueRenduJetons::VueRenduJetons(Splendor::Joueur* j, QDialog *parent): QDialog(parent)
 {
     descriptionText = new QLabel(tr("Veuillez choisir quelles ressources rendre, vous en avez trop ! Vous devez en rendre exactement le nombre indiqué."));
 
