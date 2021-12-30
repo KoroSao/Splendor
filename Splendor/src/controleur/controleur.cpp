@@ -211,7 +211,6 @@ namespace Splendor{
                     j.addPDV(cn->getPDV());
                 }catch(SplendorException& e) { std::cout << e.getInfo() << std::endl; }
                 getPlateau().getNiveauNobles().retirerCarte(*getPlateau().getNiveauNobles().getCartes()[i]);
-
             }
         }
 
