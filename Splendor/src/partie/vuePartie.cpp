@@ -16,10 +16,6 @@ using namespace Splendor;
 VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *parent) :
     QWidget(parent), controleur(nbj,names) ,vuecartes(20,nullptr), vuecartesNobles(5,nullptr), vuecartesReserve(3,nullptr)
 {
-    for (auto i = 0; i < nbj; i++) {
-        controleur.getJoueur(i).setBonus(1,4);
-        controleur.getJoueur(i).setBonus(2,4);
-    }
 
     setWindowTitle("Splendor !"); // modifier le titre de la fenêtre
     banque = new QLabel("Banque:"); //(émeraude/saphir/rubis/diamant/onyx/joker)
