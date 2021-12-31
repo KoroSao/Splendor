@@ -10,6 +10,7 @@
 #include "./vuePartie.h"
 #include "vueCarte.h"
 #include "setvue.h"
+#include <sstream>
 
 
 using namespace Splendor;
@@ -350,18 +351,8 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
 }
 
 void VuePartie::cancelTurnClique() {
-    nbJetonsPris = 0;
-    cartePrise = false;
-    sameJetonPris = false;
-    for (size_t i = 0; i < 5; i++){
-        int x = jetonsPris[i];
-        for(size_t k = 0; k < x; k++) {
-            controleur.rendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()),i);
-        }
-        jetonsPris[i] = 0;
-    }
-    selectionCarte = nullptr;
-    ensembleVue.UncheckVue();
+    annule_carte_prise();
+    annule_jeton_pris();
     updateJoueurInfo();
     updatePlateauInfo();
 }
@@ -369,10 +360,22 @@ void VuePartie::cancelTurnClique() {
 void VuePartie::endTurnClique() {
     std::cout << "Fin du tour" << std::endl;
 
-    if(selectionCarte != nullptr && nbJetonsPris == 0 && selectionPioche == nullptr){
+    //test de verification si plusieurs actions on était réalisé
+    //normalement impossible
+    if ((nbJetonsPris != 0 && (selectionCarte != nullptr || selectionPioche != nullptr))
+         || (selectionCarte!= nullptr && selectionPioche != nullptr)){
+        std::stringstream infos;
+        infos << "VuePartie::endTurnClique : plusieurs actions sont en court"<< std::endl;
+        infos << "nbJetonsPris : " << nbJetonsPris<< std::endl;
+        infos << "selectionCarte : "<< selectionCarte<< std::endl;
+        infos << "selectionPioche : " << selectionPioche << std::endl;
+        throw Splendor::SplendorException(infos.str());
+    }
+
+    if(selectionCarte != nullptr){
         controleur.selectCarte(controleur.getJoueur(controleur.getCurrentPlayer()), *selectionCarte);
     }
-    if (selectionPioche != nullptr && selectionCarte == nullptr && nbJetonsPris == 0){
+    if (selectionPioche != nullptr){
         controleur.reserverCarte(controleur.getJoueur(controleur.getCurrentPlayer()), selectionPioche->piocher());
     }
     //Clear local var
@@ -461,6 +464,7 @@ void VuePartie::diamantBoutonClique(){
 }
 
 void VuePartie::onyxBoutonClique(){
+    annule_carte_prise();
     if ( ((nbJetonsPris == 1 && jetonsPris[4] == 1 && controleur.getPlateau().getBanque(4) >= 3)
           || (nbJetonsPris <= 2 && jetonsPris[4] == 0 && sameJetonPris == false))
          && controleur.getPlateau().getBanque(4) != 0){
@@ -476,10 +480,10 @@ void VuePartie::onyxBoutonClique(){
 }
 
 void VuePartie::piocheClique(VuePioche* vp){
-    std::cout << "piocheClique" << std::endl;
     if (vp->isChecked()){
         bool peut_reserver_carte = controleur.getJoueur(controleur.getCurrentPlayer()).getReserve().size() < 3;
-        if(nbJetonsPris == 0 && peut_reserver_carte && !vp->getPioche().estVide()){
+        if(peut_reserver_carte && !vp->getPioche().estVide()){
+            annule_jeton_pris();
             annule_carte_prise();
             vp->setChecked(true);
             cartePrise = true;
@@ -498,7 +502,8 @@ void VuePartie::carteClique(VueCarte* vc){
     if (vc->isChecked()){
         bool peut_acheter_carte = vc->getCarte().canBeBougth(controleur.getJoueur(controleur.getCurrentPlayer()));
         bool peut_reserver_carte = controleur.getJoueur(controleur.getCurrentPlayer()).getReserve().size() < 3;
-        if(nbJetonsPris == 0 && (peut_acheter_carte || peut_reserver_carte)){
+        if(peut_acheter_carte || peut_reserver_carte){
+            annule_jeton_pris();
             annule_carte_prise();
             vc->setChecked(true);
             cartePrise = true;
@@ -516,7 +521,8 @@ void VuePartie::carteReserveClique(VueCarte* vc){
     if (!vc->isCheckable()) return;
     if (vc->isChecked()){
         bool peut_acheter_carte = vc->getCarte().canBeBougth(controleur.getJoueur(controleur.getCurrentPlayer()));
-        if(nbJetonsPris == 0 && peut_acheter_carte){
+        if(peut_acheter_carte){
+            annule_jeton_pris();
             annule_carte_prise();
             vc->setChecked(true);
             cartePrise = true;

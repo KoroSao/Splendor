@@ -120,6 +120,21 @@ private:
             cartePrise = false;
         }
     }
+    void annule_jeton_pris(){
+        if (nbJetonsPris !=0){
+            //reitinitialise les var de services
+            sameJetonPris = false;
+            nbJetonsPris = 0;
+            //rend les jetons pris
+            for (size_t i = 0; i < 5; i++){
+                controleur.rendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()),i, jetonsPris[i]);
+                jetonsPris[i] = 0;
+            }
+            updateJoueurInfo();
+            updatePlateauInfo();
+        }
+
+    }
 
     const Splendor::Carte* selectionCarte = nullptr; // carte sélectionnée
     Splendor::Pioche* selectionPioche = nullptr;//pioche dont on veut reserver une carte
