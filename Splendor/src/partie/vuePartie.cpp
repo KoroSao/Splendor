@@ -560,46 +560,9 @@ void VuePartie::updateJoueurInfo() {
 
     pdvCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getPDV()));
 
-    //Update de la réserve
-    for(size_t i=0; i<3; i++){
-        vuecartesReserve[i]->setNoCarte();
-    }
-
-    size_t k = 0;
-    for(auto it: controleur.getJoueur(controleur.getCurrentPlayer()).getReserve()){ //TODO:: à update
-        if(k<3){
-            vuecartesReserve[k]->setCarte(*it);
-        }
-        k++;
-    }
 
 
-    k = 0;
-    int n_vue = vuecartesNobles.size();
-    int n_ctrl = controleur.getPlateau().getNiveauNobles().getCartes().size();
 
-    //Mise à vide
-    for (int i = n_ctrl; i < n_vue; i++){
-       vuecartesNobles[i]->setNoCarte();
-    }
-    for(auto it: controleur.getPlateau().getNiveauNobles().getCartes()){ //TODO:: à update
-        if(k< controleur.getPlateau().getNiveauNobles().getCartes().size()){
-            vuecartesNobles[k]->setCarte(*it);
-        }
-        k++;
-    }
-
-
-    size_t i = 0;
-    //Update Carte de développement
-    for(int j = 0; j<3; j++){
-        for(auto it: controleur.getPlateau().getNiveauDeveloppement(j).getCartes()){
-            //it->afficherCarte();
-            vuecartes[i]->setNoCarte();
-            vuecartes[i]->setCarte(*it);
-            i++;
-        }
-    }
 
     currentPlayerBox->setTitle(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
 
@@ -663,6 +626,27 @@ void VuePartie::updatePlateauInfo(){
             vuecartes[4*j+i]->setCarte(*it);
             i++;
         }
+    }
+
+    //Update Carte Nobles
+    vector<VueCarte*> vuecartesNobles = ensembleVue.getVueNobles();
+    for (auto i=0; i<controleur.getNbJoueurs() + 1; i++) {
+        vuecartesNobles[i]->setChecked(false);
+    }
+
+    k = 0;
+    int n_vue = vuecartesNobles.size();
+    int n_ctrl = controleur.getPlateau().getNiveauNobles().getCartes().size();
+
+    //Mise à vide
+    for (int i = n_ctrl; i < n_vue; i++){
+       vuecartesNobles[i]->setNoCarte();
+    }
+    for(auto it: controleur.getPlateau().getNiveauNobles().getCartes()){ //TODO:: à update
+        if(k< controleur.getPlateau().getNiveauNobles().getCartes().size()){
+            vuecartesNobles[k]->setCarte(*it);
+        }
+        k++;
     }
 
 
