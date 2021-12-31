@@ -44,11 +44,11 @@ namespace Splendor{
             int getCurrentPlayer() const { return currentPlayer; }
 
             // ------------ Action du joueur --------------
-            void acheterCarte(Joueur& j, const Carte& c);
-            void prendreRessource(Joueur& j, unsigned int i);
-            void rendreRessource(Joueur&j, unsigned int i, unsigned int qt = 1);
-            void reserverCarte(Joueur& j, const Carte&c);
-            void selectCarte(Joueur& j, const Carte&c);
+            void acheterCarte(Joueur& j, const Carte& c);//achète la carte
+            void prendreRessource(Joueur& j, unsigned int i);//prend un jetons de la i ème ressource à la banque
+            void rendreRessource(Joueur&j, unsigned int i, unsigned int qt = 1);//rend qt jetons de la ième ressources à la banque
+            void reserverCarte(Joueur& j, const Carte&c);//reserve la carte
+            void selectCarte(Joueur& j, const Carte&c);//decide si il faut l'acheter ou la reserver pour les cartes visible
 
             // ------------ Controle des tours --------------
             void isTurnWithJetonsFinished(Joueur& j);      //Fonction controlant la quantité de jetons pris par le joueur

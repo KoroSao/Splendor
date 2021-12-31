@@ -4,6 +4,8 @@
 #include <sstream>
 #include <map>
 #include <array>
+#include <QString>
+#include <QDir>
 #include "jeu.h"
 //#include <filesystem>
 //#include <unistd.h>
@@ -75,14 +77,16 @@ Jeu::Jeu(){
     ressources couts;
     ressources bonus;
     int pdv;
-    /*char tmp[512];
-    getcwd(tmp, 512);
-    string tmp2 = tmp;
+
+    const auto filePath = QDir::currentPath();
+
+    string tmp2 = filePath.toStdString();
     while(tmp2[tmp2.size()-1]!='/')
       tmp2.pop_back();
 
-    std::string path = tmp2 + "Splendor/Deck_cartes/";*/
-    std::string path = "/home/romain/Documents/GI01/LO21/Projet/splendorlo21/Splendor/Deck_cartes/";
+    std::string path = tmp2 + "Splendor/Deck_cartes/";
+
+    //std::string path = "/home/romain/Documents/GI01/LO21/Projet/splendorlo21/Splendor/Deck_cartes/";
     //std::string path = "/Users/ax_art/Desktop/LO21/Projet/gitlab/splendorlo21/Splendor/Deck_cartes/";
     //std::string path = "C:\\Users\\33651\\Documents\\Cours\\LO21\\splendorlo21\\splendor\\Deck_cartes\\";
     map<Type, string> noms_files= {
