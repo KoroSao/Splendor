@@ -245,7 +245,7 @@ namespace Splendor{
        if (j.inventaireFull()){
            std::cout << "Il faut vider ton inventaire" << std::endl;
            VueRenduJetons* rendu = new VueRenduJetons(&getJoueur(getCurrentPlayer()));
-           rendu->show();
+           rendu->exec();
        }
 
        //Check les cartesnobles
