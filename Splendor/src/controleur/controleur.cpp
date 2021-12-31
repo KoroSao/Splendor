@@ -178,53 +178,6 @@ namespace Splendor{
             =========================== CONTROLE DES TOURS ==========================
     */
 
-  /*
-   void Controleur::isTurnWithJetonsFinished(Joueur& j) {
-        int nbJetons = 0;
-        for (size_t i = 0; i < 5; i++) {
-            int x = j.getJetonsPris(i);
-            if (x == 2) {
-                if (confirmTurn(j))
-                    endOfTurn(j);
-                else
-                    cancelTurn(j);
-                break;
-            }
-            nbJetons += x;
-        }
-        if (nbJetons == 3){
-            if (confirmTurn(j))
-                endOfTurn(j);
-            else   
-                cancelTurn(j);
-        }
-            
-   }
-
-   bool Controleur::confirmTurn(Joueur& j) {
-        std::cout << "Confirmez-vous votre action ?" << std::endl;
-        int answer;
-        std::cin >> answer;
-        if (answer == 1)
-            return true;
-        else
-            return false;  
-    }
-
-    void Controleur::cancelTurn(Joueur& j) {
-        //Méthode permettant de rendre les jetons pris par le joueur
-        //quand il cancel son tour
-        for (size_t i = 0; i < 5; i++){
-            int x = j.getJetonsPris(i);
-            for(size_t k = 0; k < x; k++) {
-                rendreRessource(j,i);
-            }
-        }
-        //RESET tableau jetonspris
-        for (size_t i = 0; i < 5; i++)
-            j.setJetonsPris(i,0);
-    }
-    */
     
 
    void Controleur::nextPlayer() {
@@ -249,8 +202,9 @@ namespace Splendor{
        }
 
        //Check les cartesnobles
-        for (size_t i = 0; i < nbJoueurs + 1; i++){
+        for (size_t i = 0; i < getPlateau().getNiveauNobles().getCartes().size(); i++){
             if (getPlateau().getNiveauNobles().getCartes()[i]->canBeBougth(j)){
+
                 j.addCartesRemportees(*getPlateau().getNiveauNobles().getCartes()[i]);
                 try{
                     CarteNoble* cn = dynamic_cast<CarteNoble*>(const_cast<Carte*>(getPlateau().getNiveauNobles().getCartes()[i]));

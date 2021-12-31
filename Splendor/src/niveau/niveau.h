@@ -40,6 +40,8 @@ namespace Splendor{
             Pioche& getPioche() { return pioche; } //doit être publique pour piocher une carte à réservé
             vector<const Carte*> getCartes() { return cartes; }    // Renvoie le tableau des cartes
 
+            //Setters
+            void setNbCartes(unsigned int i) { nb=i; }
             //Fonctions d'usage
             bool  possedeCarte(const Carte& c);
             const Carte& retirerCarte(const Carte& c);      // Retirer une carte du Niveau 

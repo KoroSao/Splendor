@@ -18,6 +18,7 @@ using namespace Splendor;
 VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *parent) :
     QWidget(parent), controleur(nbj,names), ensembleVue(nbj)
 {
+
     setWindowTitle("Splendor !"); // modifier le titre de la fenêtre
     banque = new QLabel("Banque:"); //(émeraude/saphir/rubis/diamant/onyx/joker)
 
@@ -560,6 +561,9 @@ void VuePartie::updateJoueurInfo() {
     pdvCurrentPlayer->display(QString::number(controleur.getJoueur(controleur.getCurrentPlayer()).getPDV()));
 
 
+
+
+
     currentPlayerBox->setTitle(QString::fromStdString(controleur.getJoueur(controleur.getCurrentPlayer()).getNom()));
 
      QString str;
@@ -622,6 +626,27 @@ void VuePartie::updatePlateauInfo(){
             vuecartes[4*j+i]->setCarte(*it);
             i++;
         }
+    }
+
+    //Update Carte Nobles
+    vector<VueCarte*> vuecartesNobles = ensembleVue.getVueNobles();
+    for (auto i=0; i<controleur.getNbJoueurs() + 1; i++) {
+        vuecartesNobles[i]->setChecked(false);
+    }
+
+    k = 0;
+    int n_vue = vuecartesNobles.size();
+    int n_ctrl = controleur.getPlateau().getNiveauNobles().getCartes().size();
+
+    //Mise à vide
+    for (int i = n_ctrl; i < n_vue; i++){
+       vuecartesNobles[i]->setNoCarte();
+    }
+    for(auto it: controleur.getPlateau().getNiveauNobles().getCartes()){ //TODO:: à update
+        if(k< controleur.getPlateau().getNiveauNobles().getCartes().size()){
+            vuecartesNobles[k]->setCarte(*it);
+        }
+        k++;
     }
 
 
