@@ -15,7 +15,6 @@
 
 VueCarte::VueCarte(const Splendor::Carte& c, QWidget *parent) : QPushButton(parent),carte(&c)
 {
-    //setStyleSheet("background-color : blue");
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
     setFixedSize(60,100);
@@ -27,8 +26,7 @@ VueCarte::VueCarte(const Splendor::Carte& c, QWidget *parent) : QPushButton(pare
 VueCarte::VueCarte(QWidget *parent): QPushButton(parent)
 {
 
-    //setBackgroundRole(QPalette::AlternateBase);
-    setStyleSheet("background-color : yellow");
+    setBackgroundRole(QPalette::AlternateBase);
     setAutoFillBackground(true);
     setFixedSize(60,100);
     connect(this,SIGNAL(clicked()),this,SLOT(clickedEvent()));
@@ -103,7 +101,5 @@ void VueCarte::paintEvent(QPaintEvent * /* event */)
 
             }
         }
-
-        }
-
+    }
 }

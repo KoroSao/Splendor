@@ -9,6 +9,8 @@
 #include <string.h>
 #include "../controleur/controleur.h"
 #include "vueCarte.h"
+#include "vuepioche.h"
+#include "setvue.h"
 
 class QLabel;
 class QLineEdit;
@@ -30,15 +32,11 @@ public:
     void updatePlateauInfo();
 
 private:
-
     Splendor::Controleur controleur; // controleur de la partie //TODO: fixé à 4 joueurs
-    int nbJetonsPris = 0;
+    int nbJetonsPris = 0;//max 2 jetons identiques ou 3 jetons tous diffs
     int jetonsPris[5] = {0,0,0,0,0};
-    bool sameJetonPris = false;
-    bool cartePrise = false;
-    bool carteReservePrise = false;
-
-    const Splendor::Carte* selectionCarte = nullptr;
+    bool sameJetonPris = false;//pour savoir si on a selectoinner deux jetons identique => plus possible continuer d'en prendre
+    bool cartePrise = false;//Un bool pour ne pouvoir selectionner qu'une carte à la fois (achat ou reservation)
 
 
     // - - - - Jeton - - - -
@@ -106,20 +104,40 @@ private:
     QGridLayout* layoutCartesReserve;
     QVBoxLayout* couche;
 
-    QPushButton *pioche1Bouton;
-    QPushButton *pioche2Bouton;
-    QPushButton *pioche3Bouton;
 
     QGroupBox* playerActionBox();
     QVBoxLayout* playerActionLayout();
     QPushButton* endTurnBouton;
     QPushButton* cancelTurnBouton;
 
-    vector<VueCarte*> vuecartes; // adresses des objets VueCarte
-    vector<VueCarte*> vuecartesNobles; // adresses des objets VueCarteNobles
-    vector<VueCarte*> vuecartesReserve; //adresses des cartes reserver par le joueur
+    SetVue ensembleVue;
+    //fonction usage
+    void annule_carte_prise(){
+        if (cartePrise){
+            selectionCarte = nullptr;
+            selectionPioche = nullptr;
+            ensembleVue.UncheckVue();
+            cartePrise = false;
+        }
+    }
+    void annule_jeton_pris(){
+        if (nbJetonsPris !=0){
+            //reitinitialise les var de services
+            sameJetonPris = false;
+            nbJetonsPris = 0;
+            //rend les jetons pris
+            for (size_t i = 0; i < 5; i++){
+                controleur.rendreRessource(controleur.getJoueur(controleur.getCurrentPlayer()),i, jetonsPris[i]);
+                jetonsPris[i] = 0;
+            }
+            updateJoueurInfo();
+            updatePlateauInfo();
+        }
 
-    std::set<const Splendor::Carte*> selectionCartes; // carte sélectionnée
+    }
+
+    const Splendor::Carte* selectionCarte = nullptr; // carte sélectionnée
+    Splendor::Pioche* selectionPioche = nullptr;//pioche dont on veut reserver une carte
 
 
     private slots:
@@ -127,15 +145,13 @@ private:
         void carteClique(VueCarte* vc);
         void carteNobleClique();
         void carteReserveClique(VueCarte* vc);
+        void piocheClique(VuePioche* vp);
 
         void emeraudeBoutonClique();
         void saphirBoutonClique();
         void rubisBoutonClique();
         void diamantBoutonClique();
         void onyxBoutonClique();
-        void pioche1BoutonClique();
-        void pioche2BoutonClique();
-        void pioche3BoutonClique();
         void cancelTurnClique();
         void endTurnClique();
 

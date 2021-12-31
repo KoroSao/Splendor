@@ -7,12 +7,13 @@
 #include <QComboBox>
 #include <QPushButton>
 #include <string>
+#include <QDialog>
 #include <QGroupBox>
 #include <QLCDNumber>
 #include "./src/controleur/controleur.h"
 
 
-class VueRenduJetons : public QWidget
+class VueRenduJetons : public QDialog
 {
     Q_OBJECT
     int nb_jetons_a_rendre;
@@ -68,7 +69,7 @@ public slots :
     void retirerJoker();
 
 public:
-    explicit VueRenduJetons(Splendor::Joueur* j, QWidget* parent = nullptr);
+    explicit VueRenduJetons(Splendor::Joueur* j, QDialog* parent = nullptr);
 
 };
 
