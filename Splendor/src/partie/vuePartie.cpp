@@ -513,8 +513,8 @@ void VuePartie::carteClique(VueCarte* vc){
 void VuePartie::carteReserveClique(VueCarte* vc){
     if (!vc->isCheckable()) return;
     if (vc->isChecked()){
-        bool peut_reserver_carte = controleur.getJoueur(controleur.getCurrentPlayer()).getReserve().size() < 3;
-        if(nbJetonsPris == 0 && peut_reserver_carte){
+        bool peut_acheter_carte = vc->getCarte().canBeBougth(controleur.getJoueur(controleur.getCurrentPlayer()));
+        if(nbJetonsPris == 0 && peut_acheter_carte){
             annule_carte_prise();
             vc->setChecked(true);
             cartePrise = true;

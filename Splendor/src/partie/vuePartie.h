@@ -121,8 +121,8 @@ private:
         }
     }
 
-    const Splendor::Carte* selectionCarte; // carte sélectionnée
-    Splendor::Pioche* selectionPioche;//pioche dont on veut reserver une carte
+    const Splendor::Carte* selectionCarte = nullptr; // carte sélectionnée
+    Splendor::Pioche* selectionPioche = nullptr;//pioche dont on veut reserver une carte
 
 
     private slots:
