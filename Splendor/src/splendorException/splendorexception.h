@@ -8,10 +8,17 @@
 #include <initializer_list>
 #include <array>
 
-
+/**
+* \file splendorexception.h
+* Ce fichier permet de gérer les exceptions 
+* \version 1.0
+*/
 namespace Splendor{
 
-    //Exception class for the game Splendor
+  /**
+  * \class SplendorException splendorexception.h
+  * Classe qui permet de gérer les exceptions du jeu Splendor
+  */
     class SplendorException {
         private:
             std::string info;
