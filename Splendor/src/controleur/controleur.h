@@ -16,9 +16,19 @@
 #include "../type/type.h"
 #include "../renduJetons/vueRenduJetons.h"
 
+/**
+* \file controleur.h
+* Le code a été réalisé selon l'architecture MVC,
+* le contrôleur permet la gestion d'un tour et des différentes actions qui sont associées
+* \version 1.0
+*/
+
 namespace Splendor{
 
-
+  /**
+  * \class controleur controleur.h
+  * Classe qui permet de gérer les actions du joueur et le contrôle des tours
+  */
     class Controleur{
         private:
             //Attributes
@@ -44,20 +54,67 @@ namespace Splendor{
             int getCurrentPlayer() const { return currentPlayer; }
 
             // ------------ Action du joueur --------------
-            void acheterCarte(Joueur& j, const Carte& c);//achète la carte
-            void prendreRessource(Joueur& j, unsigned int i);//prend un jetons de la i ème ressource à la banque
-            void rendreRessource(Joueur&j, unsigned int i, unsigned int qt = 1);//rend qt jetons de la ième ressources à la banque
-            void reserverCarte(Joueur& j, const Carte&c);//reserve la carte
-            void selectCarte(Joueur& j, const Carte&c);//decide si il faut l'acheter ou la reserver pour les cartes visible
+
+            /**
+           * \brief Permet d'acheter une carte
+           * \param Joueur& j Prend le joueur qui souhaite acheter une carte en paramètre
+           */
+           void acheterCarte(Joueur& j, const Carte& c);
+
+            /**
+           * \brief Permet de prendre un jeton de la i ème ressource à la banque
+           */
+           void prendreRessource(Joueur& j, unsigned int i);
+
+            /**
+           * \brief Permet de rendre qt jetons de la ième ressources à la banque
+           */
+           void rendreRessource(Joueur&j, unsigned int i, unsigned int qt = 1);
+
+            /**
+           * \brief Permet de réserver une carte
+           */
+           void reserverCarte(Joueur& j, const Carte&c);
+
+            /**
+           * \brief Permet de sélectionner une carte afin d'être achetée ou réservée
+           */
+           void selectCarte(Joueur& j, const Carte&c);
+
 
             // ------------ Controle des tours --------------
-            void isTurnWithJetonsFinished(Joueur& j);      //Fonction controlant la quantité de jetons pris par le joueur
-            bool confirmTurn(Joueur& j);
-            void cancelTurn(Joueur& j);
-            void endOfTurn(Joueur& j);
-            void nextPlayer();
-            void endOfGame();
-            bool getLastLap() {return lastLap; }
+
+            /**
+           * \brief Permet de controler la quantité de jetons prise par le joueur
+           */
+          void isTurnWithJetonsFinished(Joueur& j);
+
+          /**
+         * \brief Permet de confirmer les actions du tour
+         * \return retournera vrai si les actions sont confirmées
+         */
+          bool confirmTurn(Joueur& j);
+
+          /**
+         * \brief Permet d'infirmer les actions du tour
+         */
+          void cancelTurn(Joueur& j);
+
+          /**
+         * \brief C'est la méthode enclenchée à la fin d'un tour afin de vérifier les ressources et d'appeler les cartes spéciales
+         */
+         void endOfTurn(Joueur& j);
+
+         /**
+        * \brief Permet de passer au joueur suivant
+        */
+         void nextPlayer();
+
+          /**
+         * \brief Permet de vérifier si les conditions de victoire sont atteintes et de désigner un vainqueur
+         */
+         void endOfGame();
+         bool getLastLap() {return lastLap; }
 
     };
 
