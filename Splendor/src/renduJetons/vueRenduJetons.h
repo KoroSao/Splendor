@@ -10,6 +10,8 @@
 #include <QDialog>
 #include <QGroupBox>
 #include <QLCDNumber>
+#include <QEvent>
+#include <QCloseEvent>
 #include "./src/controleur/controleur.h"
 
 
@@ -70,7 +72,8 @@ public slots :
 
 public:
     explicit VueRenduJetons(Splendor::Joueur* j, QDialog* parent = nullptr);
-
+    //empêche le joueur de fermer la fenêtre
+    void closeEvent(QCloseEvent *event);
 };
 
 

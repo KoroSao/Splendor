@@ -207,7 +207,12 @@ void VueRenduJetons::retirerJoker(){
     }
 }
 
+void VueRenduJetons::closeEvent(QCloseEvent *event)
+ {
 
+         event->ignore();
+
+ }
 
 
 
