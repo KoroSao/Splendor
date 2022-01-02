@@ -19,63 +19,13 @@ using namespace Splendor;
 
 int main(int argc, char* argv[]){
     try{
-    unsigned int nbj = 4;
-    vector<std::string>names;
-    names.push_back("Arthur");
-    names.push_back("Emma");
-    names.push_back("Francois");
-    names.push_back("Romain");
-    /*
-    try{
-    Controleur c(4, names);
-    for (size_t i =0; i<5; i++) c.getJoueur(c.getCurrentPlayer()).setInventaire(i, 5);
-    const Carte* crt = c.getPlateau().getNiveauDeveloppement(0).getCartes()[0];
-    std::cout << "carte dev niv I : " << std::endl;
-    c.getPlateau().getNiveauDeveloppement(0).afficherNiveau();
-    std::cout << "Inventaire Joueur : " << std::endl;
-    c.getJoueur(c.getCurrentPlayer()).afficherInventaire();
-    std::cout << "Carte a acheter" << std::endl;
-    crt->afficherCarte();
 
-    c.acheterCarte(c.getJoueur(c.getCurrentPlayer()), *crt);
-    std::cout << "Achat realise !"<<std::endl;
-    std::cout <<"carte dev niv I :"<<std::endl;
-    c.getPlateau().getNiveauDeveloppement(0).afficherNiveau();
-    std::cout << "carte achetee par le joueur : "<<std::endl;
-    c.getJoueur(c.getCurrentPlayer()).afficherCartesRemportees();
-
-    for (size_t i =0; i<5; i++) c.getJoueur(c.getCurrentPlayer()).setInventaire(i, 5);
-    crt = c.getPlateau().getNiveauDeveloppement(0).getCartes()[0];
-    std::cout << "carte dev niv I : " << std::endl;
-    c.getPlateau().getNiveauDeveloppement(0).afficherNiveau();
-    std::cout << "Inventaire Joueur : " << std::endl;
-    c.getJoueur(c.getCurrentPlayer()).afficherInventaire();
-    std::cout << "Bonus Joueur : " << std::endl;
-    c.getJoueur(c.getCurrentPlayer()).afficherBonus();
-    std::cout << "Carte a acheter" << std::endl;
-    crt->afficherCarte();
-
-    c.acheterCarte(c.getJoueur(c.getCurrentPlayer()), *crt);
-    std::cout << "Achat realise !"<<std::endl;
-    std::cout <<"carte dev niv I :"<<std::endl;
-    c.getPlateau().getNiveauDeveloppement(0).afficherNiveau();
-    std::cout << "carte achetee par le joueur : "<<std::endl;
-    c.getJoueur(c.getCurrentPlayer()).afficherCartesRemportees();
-    }
-    catch(const SplendorException& e){
-        std::cout << e.getInfo()<<endl;
-    }
-    */
     QApplication app(argc, argv);
     QApplication::setStyle("Fusion");
 
-
-    VuePartie partie(nbj,names);
-    partie.show();
-
-    /*
     vueNumberOfPlayers menu;
-    menu.show();*/
+    menu.show();
+
     return app.exec();
     }
     catch(const SplendorException& e){
