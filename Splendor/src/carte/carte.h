@@ -80,11 +80,11 @@ namespace Splendor{
             /**
            * \brief Permet d'avoir le niveau de la carte
            */
-            const Type getType() const { return type; }
+            Type getType() const { return type; }
             /**
            * \brief Permet d'avoir le nombre de points de victoire de la carte
            */
-            const int getPDV() const { return PDV; }
+            int getPDV() const { return PDV; }
             bool canBeBougth(Joueur& j) const override;
             void afficherCarte(std::ostream& f = std::cout) const override;
     };
@@ -103,7 +103,7 @@ namespace Splendor{
             /**
            * \brief Permet d'avoir le nombre de points de victoire de la carte
            */
-            const int getPDV() const {return PDV;};
+            int getPDV() const {return PDV;};
             bool canBeBougth(Joueur& j) const override;
             void afficherCarte(std::ostream& f = std::cout) const override;
     };

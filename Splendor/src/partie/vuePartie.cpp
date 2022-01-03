@@ -321,10 +321,6 @@ VuePartie::VuePartie(unsigned int nbj, vector<std::string> names, QWidget *paren
 
         playersData->setText(str);
 
-
-        //Manque affichage des cartes Reserve et CarteRemportées ? (pas besoin carteRemporté?)
-        //controleur.getJoueur(i).getReserve();
-        //controleur.getJoueur(i).getCartesRemportees();
     }
 
     playerBox->addWidget(playersData);

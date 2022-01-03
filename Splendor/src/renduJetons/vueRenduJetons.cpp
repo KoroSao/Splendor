@@ -159,7 +159,6 @@ VueRenduJetons::VueRenduJetons(Splendor::Joueur* j,Splendor::Plateau* p, QDialog
                     renduLCD->display(0);
             }
             );
-    //QObject::connect(validButton, SIGNAL(clicked()), this, SLOT(suivant(j)));
     QObject::connect(resetButton, SIGNAL(clicked()), this, SLOT(reset(j)));
     QObject::connect(emeraudeBouton, SIGNAL(clicked()), this, SLOT(retirerEmeraude()));
     QObject::connect(saphirBouton, SIGNAL(clicked()), this, SLOT(retirerSaphir()));

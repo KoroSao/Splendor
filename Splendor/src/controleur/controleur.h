@@ -45,7 +45,6 @@ namespace Splendor{
             Controleur(unsigned int nbj, vector<std::string> names);
 
             ~Controleur() = default;
-            Controleur(const Controleur&) = default;
             Controleur& operator=(const Controleur&) = default;
 
             int getNbJoueurs() const { return nbJoueurs; }

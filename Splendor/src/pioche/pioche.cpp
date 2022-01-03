@@ -20,7 +20,6 @@ namespace Splendor {
 
     size_t x = rand() % nb; //on choisit une carte au hasard
     Carte* c = cartes[x]; //on retient l'adresse de la carte
-    //std::cout << cartes.begin() << std::endl;
     vector<Carte*>::iterator it = find(cartes.begin(), cartes.end(), c);
     if(it == cartes.end()){
       throw SplendorException("Splendor::Pioche::piocher() : carte à supp inexistante");

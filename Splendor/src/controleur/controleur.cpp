@@ -89,25 +89,10 @@ namespace Splendor{
             throw SplendorException("Splendor::Joueur::prendreRessource() : indice i, Plateau& p invalide");
         if (!getPlateau().getBanque(i))
             throw SplendorException("Splendor::Joueur::prendreRessource() : Banque vide");
-        /*if (getPlateau().getBanque(i) <= 3 && j.getJetonsPris(i) > 0)
-            stopJetons = true;
-            //throw SplendorException("Splendor::Joueur::prendreRessources() : Impossible de prendre 2 jetons d'une pile de moins de 4 de haut");
 
-        tourJeton = true;   //Controle du tour
-
-        int nbJetons = 0;
-        for (size_t i = 0; i < 5; i++)
-            nbJetons+=j.getJetonsPris(i);
-        if(nbJetons == 2 && j.getJetonsPris(i) == 1){
-            stopJetons = true;
-            //throw SplendorException("Splendor::Joueur::prendreRessources() : Impossible de prendre 3 jetons non tous différents");
-        }*/
-
-        
         getPlateau().setBanque(i, getPlateau().getBanque(i) - 1); //Retirer un jeton de la banque
         j.setInventaire(i, j.getInventaire(i) + 1); //Ajouter un jeton au joueur
         j.setJetonsPris(i, j.getJetonsPris(i) + 1); //Ajout du jeton à l'historique de jetons du tour
-        //isTurnWithJetonsFinished(j);
     }
 
     void Controleur::rendreRessource(Joueur&j, unsigned int i, unsigned int qt) {

@@ -70,10 +70,6 @@ vector<VuePioche*> SetVue::getVuePioche(){
 
 }
 
-//vector<VueCarte*> SetVue::getVueNobles(){
-//    return vueCarteNobles;
-//}
-
 
 vector<QPushButton*> SetVue::getVueChecked(){
     vector<QPushButton*> vueCheckable = getVueCheckable();

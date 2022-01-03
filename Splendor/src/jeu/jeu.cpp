@@ -56,9 +56,9 @@ void read_line_carteC_pdv(std::istringstream& line,Type type, ressources& couts,
     std::getline(line, record, delimiter);
     if (record != toString(type)) {
             std::stringstream infos;
-            infos <<"Fichier mal form�."<<endl;
-            infos <<"Type de carte demand� :"<<toString(type)<<endl;
-            infos <<"Type donn� dans le fichier : "<<record<<endl;
+            infos <<"Fichier mal forme."<<endl;
+            infos <<"Type de carte demande :"<<toString(type)<<endl;
+            infos <<"Type donne dans le fichier : "<<record<<endl;
             throw SplendorException(infos.str());
     }
     for (size_t i = 0; i<5; i++){
@@ -85,6 +85,14 @@ Jeu::Jeu(){
       tmp2.pop_back();
 
     std::string path = tmp2 + "Splendor/Deck_cartes/";
+
+    /*
+     Commentaire pour le prof: Si vuous avez une erreur de chargement des fichiers CSV
+     lors de la compilation, ci-dessous sont 3 exemples de chemins fonctionnels:
+     - sous Linux
+     - sous MacOS
+     - sous Windows
+      */
 
     //std::string path = "/home/romain/Documents/GI01/LO21/Projet/splendorlo21/Splendor/Deck_cartes/";
     //std::string path = "/Users/ax_art/Desktop/LO21/Projet/gitlab/splendorlo21/Splendor/Deck_cartes/";

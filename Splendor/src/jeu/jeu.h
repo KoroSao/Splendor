@@ -60,13 +60,6 @@ class Jeu{
 
 };
 
-/*class Jeu_Classique:public Jeu{
-    Jeu_Classique();
-};
-
-class Jeu_Cite:public Jeu{
-    Jeu_Cite();
-};*/
 
 }
 
