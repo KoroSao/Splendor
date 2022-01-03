@@ -584,7 +584,7 @@ void VuePartie::updateJoueurInfo() {
          for (size_t j = 0; j < 4; j++) {
              str += QString::number(controleur.getJoueur(i).getBonus()[j]) + ",";
          }
-         str += QString::number(controleur.getJoueur(i).getInventaire()[4]) + "]   ";
+         str += QString::number(controleur.getJoueur(i).getBonus()[4]) + "]   ";
 
          if (i != controleur.getNbJoueurs() - 1){
              str += "\n";
