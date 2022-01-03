@@ -11,9 +11,9 @@ vuePlayerConfig::vuePlayerConfig(int choix, int nbJoueurs, QWidget *parent): QWi
         sentence = new QLabel(tr("Choisissez le type du joueur %1").arg(i));
         choixtype = new QComboBox;
         choixtype->addItem("Humain");
-        choixtype->addItem("IA Equilibré");
-        choixtype->addItem("IA Spécialisé");
-        choixtype->addItem("IA Antoine Jouglet");
+        choixtype->addItem("IA Simple");
+        //choixtype->addItem("IA Spécialisé");
+        //choixtype->addItem("IA Antoine Jouglet");
 
         layout->addWidget(sentence);
         layout->addWidget(choixtype);

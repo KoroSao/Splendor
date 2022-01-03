@@ -16,6 +16,7 @@
 #include "../type/type.h"
 #include "../renduJetons/vueRenduJetons.h"
 
+
 /**
 * \file controleur.h
 * Le code a été réalisé selon l'architecture MVC,
@@ -24,6 +25,8 @@
 */
 
 namespace Splendor{
+
+    class IA;
 
   /**
   * \class controleur controleur.h
@@ -115,6 +118,15 @@ namespace Splendor{
          */
          void endOfGame();
          bool getLastLap() {return lastLap; }
+
+         /**
+          * \brief currentPlayerIsIA true si le joueur actuel est une IA false sinon
+          */
+         bool currentPlayerIsIA();
+         /**
+          * \brief faireJouerIA fait jouer l'IA
+          */
+         void faireJouerIA(IA& ia);
 
     };
 

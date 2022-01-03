@@ -168,6 +168,11 @@ namespace Splendor{
             */
             bool hasVictoryCondition() const { return getPDV() >= 15; }
 
+            /**
+             * \brief justvirtual pour rendre la class Joueur polymorphic
+             */
+            virtual void justvirtual();
+
 
 
     };

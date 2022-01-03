@@ -178,12 +178,20 @@ namespace Splendor{
             =========================== CONTROLE DES TOURS ==========================
     */
 
-    
+    void Controleur::faireJouerIA(IA& ia){
+        ia.JouerSonTour();
+    }
+
+
 
    void Controleur::nextPlayer() {
         currentPlayer++;
         if (currentPlayer >= nbJoueurs)
             currentPlayer = 0;
+        if (currentPlayerIsIA()){
+            IA* ia = dynamic_cast<IA*>(&getJoueur(currentPlayer));
+            faireJouerIA(*ia);
+        }
    }
 
 
