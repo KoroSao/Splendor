@@ -116,7 +116,7 @@ namespace Splendor {
         //Retourne vrai si l'inventaire du joueur est plein (faux sinon)
         unsigned int nbJetons = 0;
 
-        for (size_t i = 0; i < 5; i++)
+        for (size_t i = 0; i < 6; i++)
             nbJetons += getInventaire(i);
 
         return nbJetons>10;
