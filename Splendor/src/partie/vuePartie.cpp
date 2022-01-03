@@ -392,6 +392,7 @@ void VuePartie::endTurnClique() {
 
     //Fin du jeu
     if (controleur.getLastLap() && controleur.getCurrentPlayer() == controleur.getNbJoueurs() - 1){
+        controleur.endOfGame();
         hide();
     }
 
@@ -539,7 +540,7 @@ void VuePartie::carteReserveClique(VueCarte* vc){
 
 void VuePartie::carteNobleClique(){
     vector<VueCarte*> vuecartesNobles = ensembleVue.getVueNobles();
-    for (size_t i=0; i<controleur.getNbJoueurs() + 1; i++) {
+    for (auto i=0; i<controleur.getNbJoueurs() + 1; i++) {
         vuecartesNobles[i]->setChecked(false);
     }
 }
