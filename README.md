@@ -1,3 +1,7 @@
 # SplendorLO21
 
-Lors de la réalisation du code des classes : toujours penser à faire un code simple de modification => utiliser des méthodes d'interface.
+Dépot Git de l'application Splendor.
+
+Réalisé dans le cadre de l'UV LO21 à l'Univeristé de Technologie de Compiègne
+
+Réalisée en C++11 et avec le framework Qt 6.0
