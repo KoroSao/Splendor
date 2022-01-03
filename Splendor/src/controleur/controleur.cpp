@@ -197,7 +197,7 @@ namespace Splendor{
        //Check si trop de ressources (demander d'en surppirmer)
        if (j.inventaireFull()){
            std::cout << "Il faut vider ton inventaire" << std::endl;
-           VueRenduJetons* rendu = new VueRenduJetons(&getJoueur(getCurrentPlayer()));
+           VueRenduJetons* rendu = new VueRenduJetons(&getJoueur(getCurrentPlayer()), &getPlateau());
            rendu->exec();
        }
 

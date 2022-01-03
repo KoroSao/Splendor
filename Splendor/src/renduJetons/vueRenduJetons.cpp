@@ -1,10 +1,11 @@
 #include "vueRenduJetons.h"
 
 
-VueRenduJetons::VueRenduJetons(Splendor::Joueur* j, QDialog *parent): QDialog(parent)
+VueRenduJetons::VueRenduJetons(Splendor::Joueur* j,Splendor::Plateau* p, QDialog *parent): QDialog(parent)
 {
     descriptionText = new QLabel(tr("Veuillez choisir quelles ressources rendre, vous en avez trop ! Vous devez en rendre exactement le nombre indiqué."));
 
+    nb_jetons_a_rendre = -10;
     nb_jetons_a_rendre = -10;
     for (auto i = 0; i < 6; i ++){
         nb_jetons_a_rendre += j->getInventaire(i);
@@ -36,7 +37,7 @@ VueRenduJetons::VueRenduJetons(Splendor::Joueur* j, QDialog *parent): QDialog(pa
 
     indicatorLayout->addWidget(aRendreBox);
 
-    QGroupBox* renduBox = new QGroupBox(tr("Nombre de ressources que vous rendez actuellement"));
+    QGroupBox* renduBox = new QGroupBox(tr("Ressources que vous rendez actuellement"));
     QHBoxLayout* renduLayout = new QHBoxLayout;
     renduLCD = new QLCDNumber;
     renduLCD->setFixedHeight(30);
@@ -128,13 +129,18 @@ VueRenduJetons::VueRenduJetons(Splendor::Joueur* j, QDialog *parent): QDialog(pa
                 validButton, &QPushButton::clicked,
                 [=]() {
                     if (renduLCD->intValue() == nb_jetons_a_rendre){
+                        p->setBanque(0,p->getBanque(0) + j->getInventaire(0) - emeraudeBanque->intValue());
+                        p->setBanque(1,p->getBanque(1) + j->getInventaire(1) - saphirBanque->intValue());
+                        p->setBanque(2,p->getBanque(2) + j->getInventaire(2) - rubisBanque->intValue());
+                        p->setBanque(3,p->getBanque(3) + j->getInventaire(3) - diamantBanque->intValue());
+                        p->setBanque(4,p->getBanque(4) + j->getInventaire(4) - onyxBanque->intValue());
+                        p->setBanque(5,p->getBanque(5) + j->getInventaire(5) - jokerBanque->intValue());
                         j->setInventaire(0, emeraudeBanque->intValue());
                         j->setInventaire(1, saphirBanque->intValue());
                         j->setInventaire(2, rubisBanque->intValue());
                         j->setInventaire(3, diamantBanque->intValue());
                         j->setInventaire(4, onyxBanque->intValue());
                         j->setInventaire(5, jokerBanque->intValue());
-                        j->afficherInventaire();
                         hide();
                     }
 

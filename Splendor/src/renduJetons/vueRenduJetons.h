@@ -14,6 +14,8 @@
 #include <QCloseEvent>
 #include "./src/controleur/controleur.h"
 
+using namespace Splendor;
+
 
 class VueRenduJetons : public QDialog
 {
@@ -71,7 +73,7 @@ public slots :
     void retirerJoker();
 
 public:
-    explicit VueRenduJetons(Splendor::Joueur* j, QDialog* parent = nullptr);
+    explicit VueRenduJetons(Splendor::Joueur* j, Splendor::Plateau* p, QDialog* parent = nullptr);
     //empêche le joueur de fermer la fenêtre
     void closeEvent(QCloseEvent *event);
 };
